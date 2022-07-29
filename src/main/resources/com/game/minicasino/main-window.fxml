@@ -3,7 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.game.minicasino.MainAppController">
+<BorderPane fx:id="mainWindowTopLevelLayout" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.game.minicasino.MainAppController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>

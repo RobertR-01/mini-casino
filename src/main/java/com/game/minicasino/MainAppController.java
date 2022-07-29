@@ -4,9 +4,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 
 public class MainAppController {
+    @FXML
+    private BorderPane mainWindowTopLevelLayout;
     @FXML
     private Label titleLabel;
 
