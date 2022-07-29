@@ -12,7 +12,7 @@
         <Label fx:id="titleLabel" textAlignment="CENTER" BorderPane.alignment="CENTER"/>
     </top>
     <center>
-        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="20" alignment="CENTER">
+        <VBox spacing="20" alignment="CENTER">
             <Button fx:id="playButton" text="Play" prefWidth="100" onAction="#handlePlayButton"/>
             <Button fx:id="optionsButton" text="Options" prefWidth="100" onAction="#handleOptionsButton"/>
             <Button fx:id="aboutButton" text="Credits" prefWidth="100" onAction="#handleAboutButton"/>

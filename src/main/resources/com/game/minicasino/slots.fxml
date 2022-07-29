@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.game.minicasino.SlotsController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <top>
+        <GridPane BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="20.0"/>
+                <ColumnConstraints percentWidth="20.0"/>
+                <ColumnConstraints percentWidth="20.0"/>
+                <ColumnConstraints percentWidth="20.0"/>
+                <ColumnConstraints percentWidth="20.0"/>
+            </columnConstraints>
+            <Label fx:id="titleLabel" text="Classic Fruits" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                   GridPane.halignment="CENTER"/>
+            <Button fx:id="mainWindowButton" text="Return to Main Menu" onAction="#handleMainMenuButton"
+                    GridPane.rowIndex="0" GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
+        </GridPane>
+    </top>
+    <center>
+        <HBox BorderPane.alignment="CENTER" alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" top="20.0"/>
+            </padding>
+            <ListView>
+
+            </ListView>
+            <ListView>
+
+            </ListView>
+            <ListView>
+
+            </ListView>
+        </HBox>
+    </center>
+    <left>
+
+    </left>
+    <right>
+
+    </right>
+    <bottom>
+        <GridPane BorderPane.alignment="CENTER" alignment="CENTER" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="10.0"/>
+                <ColumnConstraints percentWidth="20.0"/>
+                <ColumnConstraints percentWidth="20.0"/>
+                <ColumnConstraints percentWidth="10.0"/>
+                <ColumnConstraints percentWidth="10.0"/>
+                <ColumnConstraints percentWidth="10.0"/>
+                <ColumnConstraints percentWidth="20.0"/>
+            </columnConstraints>
+            <Button fx:id="infoButton" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="2"
+                    GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" prefHeight="50.0" onAction="#clickDebug">
+                <graphic>
+                    <ImageView>
+                        <Image url="@/toolbarButtonGraphics/general/Information24.gif"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <GridPane GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50.0"/>
+                    <ColumnConstraints percentWidth="50.0"/>
+                </columnConstraints>
+                <Label fx:id="balanceLabel" text="Balance:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       prefHeight="25.0"/>
+                <Label fx:id="balanceValueLabel" text="placeholder_value" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       prefHeight="25.0"/>
+                <Label fx:id="betAmountLabel" text="Total bet:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       prefHeight="25.0"/>
+                <Spinner fx:id="betAmountSpinner" GridPane.rowIndex="1" GridPane.columnIndex="1" initialValue="500"
+                         max="5000" min="500" amountToStepBy="500" prefHeight="25.0"/>
+            </GridPane>
+            <VBox GridPane.rowIndex="0" GridPane.columnIndex="2" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+                <Label fx:id="lastWinLabel" text="Last win:" prefHeight="25.0"/>
+                <Label fx:id="lastWinValueLabel" text="placeholder_value" prefHeight="25.0"/>
+            </VBox>
+            <Button fx:id="maxBetButton" text="MAX BET" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                    prefHeight="50.0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/>
+            <ToggleButton fx:id="turboButton" GridPane.rowIndex="0" GridPane.columnIndex="4" prefHeight="50.0"
+                          GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+                <graphic>
+                    <ImageView>
+                        <Image url="@/toolbarButtonGraphics/general/Stop24.gif"/>
+                    </ImageView>
+                </graphic>
+            </ToggleButton>
+            <ToggleButton fx:id="autoSpinButton" text="Auto Spin" GridPane.rowIndex="0" GridPane.columnIndex="5"
+                          prefHeight="50.0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/>
+            <Button fx:id="spinButton" text="SPIN" GridPane.rowIndex="0" GridPane.columnIndex="6" prefHeight="50.0"
+                    GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/>
+        </GridPane>
+    </bottom>
+</BorderPane>

@@ -29,4 +29,9 @@ public class GameChoiceController {
     public void handleCancelButton() throws IOException {
         MainApp.setRoot("main-window");
     }
+
+    @FXML
+    public void handleSlotsButton() throws IOException {
+        MainApp.setRoot("slots");
+    }
 }

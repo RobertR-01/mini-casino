@@ -11,7 +11,7 @@
     <Label fx:id="headerLabel" text="Choose the game to play:" GridPane.rowIndex="0" GridPane.columnIndex="0"
            GridPane.columnSpan="2" textAlignment="CENTER" GridPane.halignment="CENTER"/>
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="20" alignment="CENTER">
-        <Button fx:id="slotsButton" text="Slots - Classic Fruits" prefWidth="200"/>
+        <Button fx:id="slotsButton" text="Slots - Classic Fruits" prefWidth="200" onAction="#handleSlotsButton"/>
         <Button text="..." prefWidth="200"/>
         <Button text="..." prefWidth="200"/>
         <Button text="..." prefWidth="200"/>
