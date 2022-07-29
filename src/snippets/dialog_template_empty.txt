@@ -1,0 +1,33 @@
+    Dialog<ButtonType> dialog = new Dialog<>();
+    dialog.initOwner(mainBorderPane.getScene().getWindow());
+    dialog.setTitle("Add New Todo Item");
+    dialog.setHeaderText("Use this dialog to create a new to-do item. (dialog's headerText)");
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(getClass().getResource("todoDialog.fxml")); // can be passed to the constructor as well
+
+    try {
+        dialog.getDialogPane().setContent(fxmlLoader.load());
+    } catch (IOException e) {
+        System.out.println("Couldn't load the dialog.");
+        e.printStackTrace();
+        return;
+    }
+
+    dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+    dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+    // from the Dialog documentation template:
+    Optional<ButtonType> result = dialog.showAndWait();
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+        // to access the DialogController method:
+        DialogController controller = fxmlLoader.getController();
+        TodoItem newItem = controller.processResults();
+        // force updating the ListView (dirty):
+        todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
+        // selecting the newly added item
+        todoListView.getSelectionModel().select(newItem);
+        System.out.println("OK pressed");
+    } else {
+        System.out.println("Cancel pressed");
+    }
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.game.minicasino.MainAppController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <top>
+        <Label fx:id="titleLabel" textAlignment="CENTER" BorderPane.alignment="CENTER"/>
+    </top>
+    <center>
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="20" alignment="CENTER">
+            <Button fx:id="playButton" text="Play" prefWidth="100" onAction="#handlePlayButton"/>
+            <Button fx:id="optionsButton" text="Options" prefWidth="100" onAction="#handleOptionsButton"/>
+            <Button fx:id="aboutButton" text="Credits" prefWidth="100" onAction="#handleAboutButton"/>
+            <Button fx:id="exitButton" text="Exit" prefWidth="100" onAction="#handleExitButton"/>
+        </VBox>
+    </center>
+</BorderPane>
