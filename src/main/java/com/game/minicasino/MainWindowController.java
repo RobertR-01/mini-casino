@@ -7,22 +7,24 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 
-public class MainAppController {
+import java.io.IOException;
+
+public class MainWindowController {
     @FXML
-    private BorderPane mainWindowTopLevelLayout;
+    private BorderPane topLevelLayout;
     @FXML
     private Label titleLabel;
 
+    @FXML
     public void initialize() {
-        // title label
+        // title label setup
         titleLabel.setText("Mini Casino\nThe Game");
         titleLabel.setFont(Font.font("Algerian", 30));
-
     }
 
     @FXML
-    public void handlePlayButton() {
-
+    public void handlePlayButton() throws IOException {
+        MainApp.setRoot("game-choice");
     }
 
     @FXML
