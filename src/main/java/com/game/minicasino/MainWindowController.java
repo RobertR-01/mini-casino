@@ -19,7 +19,7 @@ public class MainWindowController {
     public void initialize() {
         // title label setup
         titleLabel.setText("Mini Casino\nThe Game");
-        titleLabel.setFont(Font.font("Algerian", 30));
+        titleLabel.setFont(Font.font("Times New Roman", 30));
     }
 
     @FXML

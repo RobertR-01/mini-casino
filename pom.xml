@@ -43,6 +43,13 @@
             <artifactId>jlfgr</artifactId>
             <version>1_0</version>
         </dependency>
+        <dependency>
+            <groupId>com.local.graphics</groupId>
+            <artifactId>graphics</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/jar/graphics.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

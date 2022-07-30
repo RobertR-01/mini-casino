@@ -3,7 +3,6 @@ package com.game.minicasino;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
@@ -22,7 +21,7 @@ public class GameChoiceController {
     @FXML
     public void initialize() {
         // header label setup
-        headerLabel.setFont(Font.font("Arial", 20));
+        headerLabel.setFont(Font.font("Times New Roman", 20));
     }
 
     @FXML

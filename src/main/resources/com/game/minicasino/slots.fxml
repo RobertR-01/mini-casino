@@ -5,7 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<BorderPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml"
+<?import java.lang.String?>
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml" stylesheets="@styles.css"
             fx:controller="com.game.minicasino.SlotsController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
@@ -30,25 +32,290 @@
             <padding>
                 <Insets bottom="20.0" top="20.0"/>
             </padding>
-            <ListView>
-
-            </ListView>
-            <ListView>
-
-            </ListView>
-            <ListView>
-
-            </ListView>
+            <GridPane fx:id="firstReel" gridLinesVisible="true" prefWidth="100.0">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="33.3"/>
+                    <RowConstraints percentHeight="33.3"/>
+                    <RowConstraints percentHeight="33.4"/>
+                </rowConstraints>
+                <Label fx:id="firstReelPositionOne" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label fx:id="firstReelPositionTwo" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label fx:id="firstReelPositionThree" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </GridPane>
+            <GridPane fx:id="secondReel" gridLinesVisible="true" prefWidth="100.0">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="33.3"/>
+                    <RowConstraints percentHeight="33.3"/>
+                    <RowConstraints percentHeight="33.4"/>
+                </rowConstraints>
+                <Label fx:id="secondReelPositionOne" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label fx:id="secondReelPositionTwo" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label fx:id="secondReelPositionThree" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </GridPane>
+            <GridPane fx:id="thirdReel" gridLinesVisible="true" prefWidth="100.0">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="33.3"/>
+                    <RowConstraints percentHeight="33.3"/>
+                    <RowConstraints percentHeight="33.4"/>
+                </rowConstraints>
+                <Label fx:id="thirdReelPositionOne" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label fx:id="thirdReelPositionTwo" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label fx:id="thirdReelPositionThree" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                       GridPane.halignment="CENTER">
+                    <graphic>
+                        <ImageView fitWidth="50.0" fitHeight="50.0">
+                            <Image url="set_two/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </GridPane>
         </HBox>
     </center>
     <left>
-
+        <GridPane BorderPane.alignment="CENTER" alignment="CENTER" maxWidth="100.0">
+            <padding>
+                <Insets bottom="10.0" top="10.0"/>
+            </padding>
+            <rowConstraints>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+            </rowConstraints>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="100.0"/>
+            </columnConstraints>
+            <Label id="infoIcons" text="x4" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/meat48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="x3" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/hotdog48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="x3" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/cheese48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="x2" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/icecream48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="x2" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/mustard48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+        </GridPane>
     </left>
     <right>
-
+        <GridPane BorderPane.alignment="CENTER" alignment="CENTER" maxWidth="100.0">
+            <padding>
+                <Insets bottom="10.0" top="10.0"/>
+            </padding>
+            <rowConstraints>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+                <RowConstraints percentHeight="20.0"/>
+            </rowConstraints>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="100.0"/>
+            </columnConstraints>
+            <Label id="infoIcons" text="x25" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/drink48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="x15" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/coffee48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="x7" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/water48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="x1" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/pear48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+            <Label id="infoIcons" text="15" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <font>
+                    <Font name="Arial bold" size="20"/>
+                </font>
+                <graphic>
+                    <ImageView fitWidth="40" fitHeight="40">
+                        <Image url="set_two/cherries48.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+        </GridPane>
     </right>
     <bottom>
-        <GridPane BorderPane.alignment="CENTER" alignment="CENTER" vgap="10">
+        <GridPane fx:id="nestedGridPane" BorderPane.alignment="CENTER" alignment="CENTER" vgap="10"
+                  maxHeight="50.0">
+            <padding>
+                <Insets top="5" bottom="5" left="5" right="5"/>
+            </padding>
             <columnConstraints>
                 <ColumnConstraints percentWidth="10.0"/>
                 <ColumnConstraints percentWidth="20.0"/>
@@ -58,36 +325,72 @@
                 <ColumnConstraints percentWidth="10.0"/>
                 <ColumnConstraints percentWidth="20.0"/>
             </columnConstraints>
-            <Button fx:id="infoButton" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="2"
-                    GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" prefHeight="50.0" onAction="#clickDebug">
+            <rowConstraints>
+                <RowConstraints percentHeight="100.0"/>
+            </rowConstraints>
+            <Button fx:id="infoButton" GridPane.rowIndex="0" GridPane.columnIndex="0" onAction="#clickDebug"
+                    alignment="CENTER" GridPane.halignment="CENTER" prefWidth="Infinity" prefHeight="Infinity">
                 <graphic>
                     <ImageView>
                         <Image url="@/toolbarButtonGraphics/general/Information24.gif"/>
                     </ImageView>
                 </graphic>
             </Button>
-            <GridPane GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+            <GridPane GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="Infinity" prefHeight="Infinity">
                 <columnConstraints>
                     <ColumnConstraints percentWidth="50.0"/>
                     <ColumnConstraints percentWidth="50.0"/>
                 </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="50.0"/>
+                    <RowConstraints percentHeight="50.0"/>
+                </rowConstraints>
                 <Label fx:id="balanceLabel" text="Balance:" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                       prefHeight="25.0"/>
-                <Label fx:id="balanceValueLabel" text="placeholder_value" GridPane.rowIndex="0" GridPane.columnIndex="1"
-                       prefHeight="25.0"/>
+                       prefWidth="Infinity" prefHeight="Infinity">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                </Label>
+                <Label fx:id="balanceValueLabel" text="0 000 000" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       prefWidth="Infinity" prefHeight="Infinity" alignment="CENTER">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                </Label>
                 <Label fx:id="betAmountLabel" text="Total bet:" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                       prefHeight="25.0"/>
+                       prefWidth="Infinity" prefHeight="Infinity">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                </Label>
                 <Spinner fx:id="betAmountSpinner" GridPane.rowIndex="1" GridPane.columnIndex="1" initialValue="500"
-                         max="5000" min="500" amountToStepBy="500" prefHeight="25.0"/>
+                         max="5000" min="500" amountToStepBy="500" prefWidth="Infinity" prefHeight="Infinity"/>
             </GridPane>
-            <VBox GridPane.rowIndex="0" GridPane.columnIndex="2" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
-                <Label fx:id="lastWinLabel" text="Last win:" prefHeight="25.0"/>
-                <Label fx:id="lastWinValueLabel" text="placeholder_value" prefHeight="25.0"/>
-            </VBox>
+            <GridPane GridPane.rowIndex="0" GridPane.columnIndex="2" prefWidth="Infinity" prefHeight="Infinity">
+                <rowConstraints>
+                    <RowConstraints percentHeight="50.0"/>
+                    <RowConstraints percentHeight="50.0"/>
+                </rowConstraints>
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100.0"/>
+                </columnConstraints>
+                <Label fx:id="lastWinLabel" text="Last win:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       prefWidth="Infinity" prefHeight="Infinity">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                </Label>
+                <Label fx:id="lastWinValueLabel" text="0 000 000" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                       prefWidth="Infinity" prefHeight="Infinity" alignment="CENTER">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                </Label>
+            </GridPane>
             <Button fx:id="maxBetButton" text="MAX BET" GridPane.rowIndex="0" GridPane.columnIndex="3"
-                    prefHeight="50.0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/>
-            <ToggleButton fx:id="turboButton" GridPane.rowIndex="0" GridPane.columnIndex="4" prefHeight="50.0"
-                          GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+                    prefWidth="Infinity" prefHeight="Infinity"/>
+            <ToggleButton fx:id="turboButton" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="Infinity"
+                          prefHeight="Infinity">
                 <graphic>
                     <ImageView>
                         <Image url="@/toolbarButtonGraphics/general/Stop24.gif"/>
@@ -95,9 +398,9 @@
                 </graphic>
             </ToggleButton>
             <ToggleButton fx:id="autoSpinButton" text="Auto Spin" GridPane.rowIndex="0" GridPane.columnIndex="5"
-                          prefHeight="50.0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/>
-            <Button fx:id="spinButton" text="SPIN" GridPane.rowIndex="0" GridPane.columnIndex="6" prefHeight="50.0"
-                    GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/>
+                          prefWidth="Infinity" prefHeight="Infinity"/>
+            <Button fx:id="spinButton" text="SPIN" GridPane.rowIndex="0" GridPane.columnIndex="6" prefWidth="Infinity"
+                    prefHeight="Infinity"/>
         </GridPane>
     </bottom>
 </BorderPane>

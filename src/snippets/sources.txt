@@ -1,0 +1,18 @@
+graphics:
+    icons:
+        set_two:
+            food icon set (awesome sort of vector food collection)
+            https://freeicons.io/icon-list/food-icon-set
+            author: Reda (https://freeicons.io/profile/6156)
+        set_one:
+            Icon Pack: Fruit | Flat
+            https://www.flaticon.com/packs/fruit-80
+            author: amonrat rungreangfangsai (https://www.flaticon.com/authors/amonrat-rungreangfangsai)
+
+            Icon Pack: Casino | Outline Color
+            https://www.flaticon.com/packs/casino-144
+            author: Backwoods (https://www.flaticon.com/authors/backwoods)
+
+            Icon Pack: Casino | Flat
+            https://www.flaticon.com/packs/casino-243
+            author: Freepik (https://www.flaticon.com/authors/freepik)
