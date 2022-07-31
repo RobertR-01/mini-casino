@@ -1,17 +1,17 @@
 package com.game.logic;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Slots {
     private static final Slots slotsInstance = new Slots();
-    private final List<SlotSymbol> symbolsList;
+    private  ObservableList<SlotSymbol> symbolsList;
 
     private Slots() {
-        symbolsList = new LinkedList<>();
+        symbolsList = FXCollections.observableArrayList();
         addSymbol(new SlotSymbol(0, new Image("set_two/meat48.png"), 4, false, false));
         addSymbol(new SlotSymbol(1, new Image("set_two/hotdog48.png"), 3, false, false));
         addSymbol(new SlotSymbol(2, new Image("set_two/cheese48.png"), 3, false, false));
@@ -35,7 +35,8 @@ public class Slots {
     }
 
     public List<SlotSymbol> getSymbolsList() {
-        return Collections.unmodifiableList(symbolsList);
+//        return Collections.unmodifiableList(symbolsList);
+        return symbolsList;
     }
 
     public static class SlotSymbol {

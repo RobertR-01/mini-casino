@@ -1,6 +1,9 @@
 package com.game.minicasino;
 
 import com.game.logic.Slots;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -13,6 +16,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
+import java.util.Collections;
+import java.util.List;
+
 public class TestWindowController {
     @FXML
     private GridPane topLayout;
@@ -24,13 +30,43 @@ public class TestWindowController {
     private Button button1;
     @FXML
     private Button button2;
-    @FXML
-    private Label imageLabel;
+
     @FXML
     private ObservableList<Slots.SlotSymbol> listView;
 
-    public void initialize() {
+    @FXML
+    private Label label;
+    @FXML
+    private ImageView imageView;
+    @FXML
+    private Button imageButton;
 
+    private List<Image> imagesList;
+    private ObjectProperty<Image> imageObjectProperty;
+
+    public void initialize() {
+        imagesList = FXCollections.observableArrayList();
+        imagesList.add(new Image("set_two/meat48.png"));
+        imagesList.add(new Image("set_two/hotdog48.png"));
+
+        imageView = new ImageView();
+        imageView.setFitHeight(100.0);
+        imageView.setFitWidth(100.0);
+
+        imageObjectProperty = new SimpleObjectProperty<>();
+        imageView.imageProperty().bind(imageObjectProperty);
+        imageObjectProperty.set(imagesList.get(0));
+
+        label.graphicProperty().set(imageView);
+    }
+
+    @FXML
+    public void handleImageButton() {
+        Collections.rotate(imagesList, 1);
+
+        imageObjectProperty.setValue(imagesList.get(0));
+
+//        label.graphicProperty().set(new ImageView(imagesList.get(0)));
     }
 
     @FXML
@@ -51,6 +87,6 @@ public class TestWindowController {
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(100.0);
         imageView.setFitWidth(100.0);
-        imageLabel.graphicProperty().set(imageView);
+        label.graphicProperty().set(imageView);
     }
 }

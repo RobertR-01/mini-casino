@@ -2,26 +2,23 @@ package com.game.minicasino;
 
 import com.game.logic.Slots;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class SlotsController {
+public class SlotsControllerBackup {
     @FXML
     private GridPane nestedGridPane;
     @FXML
@@ -39,7 +36,7 @@ public class SlotsController {
     @FXML
     private Button spinButton;
 
-    //    private ObservableList<Slots.SlotSymbol> slotSymbolsObservableList;
+    private ObservableList<Slots.SlotSymbol> slotSymbolsObservableList;
     private List<Slots.SlotSymbol> rollingSymbolsList;
     private ImageView firstReelPositionOneImageView;
     private ImageView firstReelPositionTwoImageView;
@@ -51,46 +48,30 @@ public class SlotsController {
 
     @FXML
     public void initialize() {
-        // title label setup:
+        // title label setup
         titleLabel.setFont(Font.font("Times New Roman", 20));
 
-        // spin button setup:
+        // spin button setup
         spinButton.idProperty().set("spinButtonStyle");
         spinButton.fontProperty().set(new Font("Arial Bold", 20.0));
 
-        // list setup:
-        rollingSymbolsList = new ArrayList<>(Slots.getSlotsInstance().getSymbolsList());
-//        slotSymbolsObservableList = FXCollections.observableList(rollingSymbolsList);
+        // list modifications
+        slotSymbolsObservableList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
 
-        // reels (labels) setup:
-        // first reel - position one:
-        firstReelPositionOneImageView = new ImageView(rollingSymbolsList.get(0).getImage());
-        firstReelPositionOneImageView.setFitWidth(50.0);
-        firstReelPositionOneImageView.setFitHeight(50.0);
-        ObjectProperty<Image> image = new SimpleObjectProperty<>(rollingSymbolsList.get(0).getImage());
-//        firstReelPositionOneImageView.imageProperty().bind(rollingSymbolsList.get(0).getImage());
-        // first reel - position two:
-        firstReelPositionTwoImageView = new ImageView(rollingSymbolsList.get(1).getImage());
-        firstReelPositionTwoImageView.setFitWidth(50.0);
-        firstReelPositionTwoImageView.setFitHeight(50.0);
-        // first reel - position one:
-        firstReelPositionThreeImageView = new ImageView(rollingSymbolsList.get(2).getImage());
-        firstReelPositionThreeImageView.setFitWidth(50.0);
-        firstReelPositionThreeImageView.setFitHeight(50.0);
-
-        // counters setup (old):
+        // initializing reels
+        rollingSymbolsList = Slots.getSlotsInstance().getSymbolsList();
+        firstReelPositionOneImageView = (ImageView) firstReelPositionOne.getGraphic();
+        firstReelPositionTwoImageView = (ImageView) firstReelPositionTwo.getGraphic();
+        firstReelPositionThreeImageView = (ImageView) firstReelPositionThree.getGraphic();
         globalCounter = 0;
         firstPositionCounter = 0;
         secondPositionCounter = 1;
         thirdPositionCounter = 2;
-    }
 
-    private void shiftSymbolsList(List<Slots.SlotSymbol> list) {
-        Collections.rotate(list, 1);
-    }
-
-    private void setImageView(ImageView imageView, List<Slots.SlotSymbol> list, int listIndex) {
-        imageView.setImage(list.get(listIndex).getImage());
+        // initial symbols on reels
+        firstReelPositionThreeImageView.setImage(rollingSymbolsList.get(0).getImage());
+        firstReelPositionTwoImageView.setImage(rollingSymbolsList.get(1).getImage());
+        firstReelPositionOneImageView.setImage(rollingSymbolsList.get(2).getImage());
     }
 
     @FXML
@@ -116,11 +97,36 @@ public class SlotsController {
                         if (globalCounter >= 50) {
                             break;
                         }
+                        for (int i = 0; i < rollingSymbolsList.size(); i++) {
+                            System.out.println("handleSpinButton -> for() -> globalCounter = " + globalCounter);
+                            // fix code duplication
+                            if (globalCounter >= 50) {
+                                break;
+                            }
+//                            System.out.println("First counter: " + firstPositionCounter);
+                            firstReelPositionThreeImageView.setImage(rollingSymbolsList.get(firstPositionCounter).getImage());
+                            firstPositionCounter++;
+                            if (firstPositionCounter > 9) {
+                                firstPositionCounter = 0;
+                            }
 
-                        shiftSymbolsList(rollingSymbolsList);
+//                            System.out.println("Second counter: " + secondPositionCounter);
+                            firstReelPositionTwoImageView.setImage(rollingSymbolsList.get(secondPositionCounter).getImage());
+                            secondPositionCounter++;
+                            if (secondPositionCounter > 9) {
+                                secondPositionCounter = 0;
+                            }
 
-                        Thread.sleep(100);
-                        globalCounter++;
+//                            System.out.println("Third counter: " + thirdPositionCounter);
+                            firstReelPositionOneImageView.setImage(rollingSymbolsList.get(thirdPositionCounter).getImage());
+                            thirdPositionCounter++;
+                            if (thirdPositionCounter > 9) {
+                                thirdPositionCounter = 0;
+                            }
+
+                            Thread.sleep(100);
+                            globalCounter++;
+                        }
                     }
                     Platform.runLater(new Runnable() {
                         @Override
