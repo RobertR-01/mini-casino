@@ -1,0 +1,6 @@
+//        Random random = new Random();
+//        Slots.SlotSymbol randomSymbol = observableFirstReel.get(random.nextInt(observableFirstReel.size()));
+//        ImageView imageView = (ImageView) firstReelPositionOne.getGraphic();
+//        imageView.setImage(randomSymbol.getImage());
+//        firstReelPositionOne.graphicProperty().set(imageView);
+        ////////////////////

@@ -3,3 +3,11 @@
     -fx-border-color: black;
     -fx-border-width: 2;
 }
+
+#spinButtonStyle {
+    -fx-background-color: blue;
+}
+
+#stopButtonStyle {
+    -fx-background-color: red;
+}

@@ -45,7 +45,7 @@
                        GridPane.halignment="CENTER">
                     <graphic>
                         <ImageView fitWidth="50.0" fitHeight="50.0">
-                            <Image url="set_two/drink48.png"/>
+                            <Image url="set_two/meat48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -53,7 +53,7 @@
                        GridPane.halignment="CENTER">
                     <graphic>
                         <ImageView fitWidth="50.0" fitHeight="50.0">
-                            <Image url="set_two/drink48.png"/>
+                            <Image url="set_two/hotdog48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -61,7 +61,7 @@
                        GridPane.halignment="CENTER">
                     <graphic>
                         <ImageView fitWidth="50.0" fitHeight="50.0">
-                            <Image url="set_two/drink48.png"/>
+                            <Image url="set_two/cheese48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -400,7 +400,7 @@
             <ToggleButton fx:id="autoSpinButton" text="Auto Spin" GridPane.rowIndex="0" GridPane.columnIndex="5"
                           prefWidth="Infinity" prefHeight="Infinity"/>
             <Button fx:id="spinButton" text="SPIN" GridPane.rowIndex="0" GridPane.columnIndex="6" prefWidth="Infinity"
-                    prefHeight="Infinity"/>
+                    prefHeight="Infinity" onAction="#handleSpinButton"/>
         </GridPane>
     </bottom>
 </BorderPane>
