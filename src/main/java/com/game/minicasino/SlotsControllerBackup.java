@@ -1,6 +1,6 @@
 package com.game.minicasino;
 
-import com.game.logic.Slots;
+import com.game.data.Slots;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

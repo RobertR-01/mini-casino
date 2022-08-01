@@ -1,6 +1,6 @@
 package com.game.minicasino;
 
-import com.game.logic.Slots;
+import com.game.data.Slots;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -18,7 +18,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
 import java.util.Collections;
-import java.util.List;
 
 public class TestWindowController {
     @FXML

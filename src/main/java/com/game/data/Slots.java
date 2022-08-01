@@ -1,17 +1,19 @@
-package com.game.logic;
+package com.game.data;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Slots {
     private static final Slots slotsInstance = new Slots();
-    private  ObservableList<SlotSymbol> symbolsList;
+    private List<SlotSymbol> symbolsList;
 
     private Slots() {
-        symbolsList = FXCollections.observableArrayList();
+        symbolsList = new ArrayList<>();
         addSymbol(new SlotSymbol(0, new Image("set_two/meat48.png"), 4, false, false));
         addSymbol(new SlotSymbol(1, new Image("set_two/hotdog48.png"), 3, false, false));
         addSymbol(new SlotSymbol(2, new Image("set_two/cheese48.png"), 3, false, false));
@@ -35,8 +37,8 @@ public class Slots {
     }
 
     public List<SlotSymbol> getSymbolsList() {
-//        return Collections.unmodifiableList(symbolsList);
-        return symbolsList;
+        return Collections.unmodifiableList(symbolsList);
+//        return symbolsList;
     }
 
     public static class SlotSymbol {
@@ -45,6 +47,7 @@ public class Slots {
         private final int multiplier;
         private final boolean isFreeSpin;
         private final boolean isWild;
+        private final ObjectProperty<Image> imageObjectProperty;
 
         public SlotSymbol(int index, Image image, int multiplier, boolean isFreeSpin, boolean isWild) {
             this.index = index;
@@ -52,6 +55,7 @@ public class Slots {
             this.multiplier = multiplier;
             this.isFreeSpin = isFreeSpin;
             this.isWild = isWild;
+            this.imageObjectProperty = new SimpleObjectProperty<>(image);
         }
 
         public int getIndex() {
@@ -72,6 +76,10 @@ public class Slots {
 
         public boolean isWild() {
             return isWild;
+        }
+
+        public ObjectProperty<Image> getImageObjectProperty() {
+            return imageObjectProperty;
         }
     }
 }

@@ -41,7 +41,7 @@
                     <RowConstraints percentHeight="33.3"/>
                     <RowConstraints percentHeight="33.4"/>
                 </rowConstraints>
-                <Label fx:id="firstReelPositionOne" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                <Label fx:id="reel1pos1" GridPane.rowIndex="0" GridPane.columnIndex="0"
                        GridPane.halignment="CENTER">
                     <graphic>
                         <ImageView fitWidth="50.0" fitHeight="50.0">
@@ -49,7 +49,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label fx:id="firstReelPositionTwo" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                <Label fx:id="reel1pos2" GridPane.rowIndex="1" GridPane.columnIndex="0"
                        GridPane.halignment="CENTER">
                     <graphic>
                         <ImageView fitWidth="50.0" fitHeight="50.0">
@@ -57,7 +57,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label fx:id="firstReelPositionThree" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                <Label fx:id="reel1pos3" GridPane.rowIndex="2" GridPane.columnIndex="0"
                        GridPane.halignment="CENTER">
                     <graphic>
                         <ImageView fitWidth="50.0" fitHeight="50.0">
