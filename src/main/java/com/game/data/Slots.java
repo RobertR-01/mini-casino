@@ -1,7 +1,5 @@
 package com.game.data;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -47,7 +45,6 @@ public class Slots {
         private final int multiplier;
         private final boolean isFreeSpin;
         private final boolean isWild;
-        private final ObjectProperty<Image> imageObjectProperty;
 
         public SlotSymbol(int index, Image image, int multiplier, boolean isFreeSpin, boolean isWild) {
             this.index = index;
@@ -55,7 +52,6 @@ public class Slots {
             this.multiplier = multiplier;
             this.isFreeSpin = isFreeSpin;
             this.isWild = isWild;
-            this.imageObjectProperty = new SimpleObjectProperty<>(image);
         }
 
         public int getIndex() {
@@ -76,10 +72,6 @@ public class Slots {
 
         public boolean isWild() {
             return isWild;
-        }
-
-        public ObjectProperty<Image> getImageObjectProperty() {
-            return imageObjectProperty;
         }
     }
 }

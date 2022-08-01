@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -41,29 +40,14 @@ public class SlotsController {
     @FXML
     private Button spinButton;
 
-    //    private ObservableList<Slots.SlotSymbol> slotSymbolsObservableList;
     private ObservableList<Slots.SlotSymbol> symbolsList;
 
     // new approach
     private ObjectProperty<Slots.SlotSymbol> reel1symbol1;
     private ObjectProperty<Slots.SlotSymbol> reel1symbol2;
     private ObjectProperty<Slots.SlotSymbol> reel1symbol3;
-    private Image image;
-    private ObjectProperty<Image> imageObjectProperty;
-    private ObjectProperty<Slots.SlotSymbol> slotSymbolObjectProperty;
-    private Slots.SlotSymbol tempSymbol;
-
-
-    private ImageView firstReelPositionOneImageView;
-    private ImageView firstReelPositionTwoImageView;
-    private ImageView firstReelPositionThreeImageView;
-    private ObjectProperty<Image> firstReelPositionOneImageViewImageObjectProperty;
-    private ObjectProperty<Image> firstReelPositionTwoImageViewImageObjectProperty;
-    private ObjectProperty<Image> firstReelPositionThreeImageViewImageObjectProperty;
+    private ImageView imageView;
     private int globalCounter;
-    int firstPositionCounter;
-    int secondPositionCounter;
-    int thirdPositionCounter;
 
     @FXML
     public void initialize() {
@@ -85,49 +69,20 @@ public class SlotsController {
         reel1symbol2.bind(Bindings.valueAt(symbolsList, 1));
         reel1symbol3.bind(Bindings.valueAt(symbolsList, 2));
 
-
-
-        // list <- symbol <- image <- imageview <- set for label
-        ObjectProperty<Image> imageProp = new SimpleObjectProperty<>();
-        // bind imageProp with reelsymbol
-        ObjectProperty<Image> middleman = new SimpleObjectProperty<>();
-        middleman.setValue(reel1symbol1.getValue().getImage());
-
-        imageProp.bind(middleman);
-
-        ImageView imageView = new ImageView(image);
+        // ImageView prep:
+        imageView = new ImageView();
         imageView.setFitWidth(50.0);
         imageView.setFitHeight(50.0);
-        imageView.imageProperty().bind(imageProp);
+
+        // ImageView binding to symbols (wrapped):
+        imageView.imageProperty().bind(Bindings.createObjectBinding(() ->
+                reel1symbol1.getValue().getImage(), reel1symbol1));
+
         reel1pos1.graphicProperty().set(imageView);
-
-
-        // temp refs for midway binding:
-//        ObjectProperty<Image> tempImageProp = new SimpleObjectProperty<>();
-//        tempImageProp.setValue(reel1symbol1.get().getImage());
-
-//        ObjectProperty<ImageView> tempImageViewProp = new SimpleObjectProperty<>();
-
-//        tempImageProp.bind(reel1symbol1.getValue().getImage());
-//        ImageView tempImageView = new ImageView(); // 1 imageview for labels
-//        tempImageView.setFitWidth(50.0);
-//        tempImageView.setFitHeight(50.0);
-//        ObjectProperty<Image> tempObjectProperty = new SimpleObjectProperty<>(); // 1 property for temp imageview
-//        tempImageView.imageProperty().bind(tempObjectProperty);
-
-
-//        tempImageView.setImage(reel1symbol1.get().getImage());
-
-        // labels setup:
-//        reel1pos1.graphicProperty().set(tempImageView);
     }
 
     private void shiftSymbolsList(List<Slots.SlotSymbol> list) {
         Collections.rotate(list, 1);
-    }
-
-    private void setImageView(ImageView imageView, List<Slots.SlotSymbol> list, int listIndex) {
-        imageView.setImage(list.get(listIndex).getImage());
     }
 
     @FXML
@@ -155,8 +110,8 @@ public class SlotsController {
                         }
 
                         shiftSymbolsList(symbolsList);
-//                        System.out.println(tempSymbol.getImage().getUrl());
                         Thread.sleep(100);
+
                         globalCounter++;
                     }
                     Platform.runLater(new Runnable() {
@@ -188,7 +143,7 @@ public class SlotsController {
                 handleSpinButton();
             }
         });
-        startSpinning();
+        stopSpinning();
     }
 
     @FXML
