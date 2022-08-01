@@ -1,6 +1,7 @@
 package com.game.minicasino;
 
 import com.game.logic.Slots;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -41,7 +42,7 @@ public class TestWindowController {
     @FXML
     private Button imageButton;
 
-    private List<Image> imagesList;
+    private ObservableList<Image> imagesList;
     private ObjectProperty<Image> imageObjectProperty;
 
     public void initialize() {
@@ -54,9 +55,25 @@ public class TestWindowController {
         imageView.setFitWidth(100.0);
 
         imageObjectProperty = new SimpleObjectProperty<>();
-        imageView.imageProperty().bind(imageObjectProperty);
-        imageObjectProperty.set(imagesList.get(0));
 
+        // binding the list to the object property
+        imageObjectProperty.bind(Bindings.valueAt(imagesList, 0));
+
+        // If you want more control over the action that is triggered when the List changes you can use a Listener
+        // imagesList.addListener((InvalidationListener) c -> {
+        //     Image img = null;
+        //     if (!imagesList.isEmpty()) {
+        //         img = imagesList.get(0);
+        //     }
+        //     imageObjectProperty.setValue(img);
+        // });
+
+        // binding the image property to the image view
+        imageView.imageProperty().bind(imageObjectProperty);
+//        imageObjectProperty.set(imagesList.get(0)); // old - incorrect
+
+        // either of those works:
+//        label.setGraphic(imageView);
         label.graphicProperty().set(imageView);
     }
 
@@ -64,9 +81,9 @@ public class TestWindowController {
     public void handleImageButton() {
         Collections.rotate(imagesList, 1);
 
-        imageObjectProperty.setValue(imagesList.get(0));
+//        imageObjectProperty.setValue(imagesList.get(0)); // old - incorrect
 
-//        label.graphicProperty().set(new ImageView(imagesList.get(0)));
+//        label.graphicProperty().set(new ImageView(imagesList.get(0))); // incorrect / not needed
     }
 
     @FXML
