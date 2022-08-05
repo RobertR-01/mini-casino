@@ -1,0 +1,75 @@
+// different methods of data binding presented
+
+public class SlotsController {
+    @FXML
+    private GridPane firstReel;
+    @FXML
+    private Label reel1pos1;
+    @FXML
+    private Label reel1pos2;
+    @FXML
+    private Label reel1pos3;
+
+    private ObservableList<Slots.SlotSymbol> symbolsList;
+    private ObjectProperty<Slots.SlotSymbol> reel1symbol1;
+    private Image image;
+    private ObjectProperty<Image> imageObjectProperty;
+    private ObjectProperty<Slots.SlotSymbol> slotSymbolObjectProperty;
+    private ImageView imageView;
+
+    @FXML
+    public void initialize() {
+        // list setup:
+        symbolsList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
+
+        // symbols binding:
+        reel1symbol1 = new SimpleObjectProperty<>();
+        reel1symbol1.bind(Bindings.valueAt(symbolsList, 0));
+
+        imageView = new ImageView();
+        imageView.setFitWidth(50.0);
+        imageView.setFitHeight(50.0);
+
+        // 1st method - using change listener
+        imageObjectProperty = new SimpleObjectProperty<>();
+
+        reel1symbol1.addListener(new ChangeListener<Slots.SlotSymbol>() {
+            @Override
+            public void changed(ObservableValue<? extends Slots.SlotSymbol> observable, Slots.SlotSymbol oldValue, Slots.SlotSymbol newValue) {
+                //imageObjectProperty.setValue(reel1symbol1.get().getImage()); // can be skipped
+                imageView.setImage(reel1symbol1.get().getImage());
+            }
+        });
+
+        imageView.imageProperty().bind(imageObjectProperty);
+        reel1pos1.graphicProperty().set(imageView);
+        //
+
+        // 2nd method - using createObjectBinding - list
+        imageView.imageProperty().bind(Bindings.createObjectBinding(() ->
+                symbolsList.get(0).getImage(), symbolsList));
+
+        reel1pos1.graphicProperty().set(imageView);
+        //
+
+        // 3rd method - using createObjectBinding - object ref wrapped in the ObjectProperty<ObjectsClass>
+        imageView.imageProperty().bind(Bindings.createObjectBinding(() ->
+                reel1symbol1.getValue().getImage(), reel1symbol1));
+
+        // without lambda:
+        imageView.imageProperty().bind(Bindings.createObjectBinding(new Callable<Image>() {
+            @Override
+            public Image call() throws Exception {
+                return reel1symbol1.get().getImage();
+            }
+        }, reel1symbol1));
+
+        reel1pos1.graphicProperty().set(imageView);
+        //
+    }
+
+    // use to mod list
+    private void shiftSymbolsList(List<Slots.SlotSymbol> list) {
+        Collections.rotate(list, 1);
+    }
+}

@@ -1,0 +1,43 @@
+In your code there is no connection between the imageObjectProperty and the imagesList. You just picked an item once and used it to set the imageObjectProperty. So when the list is updated the changes are not reflected in the imageObjectProperty because imageObjectProperty always refers to the item you set explicitly. The binding you set between the ImageView.imageProperty() and the imageObjectProperty is not enough, because this binding only means that the ImageView will update if the imageObjectProperty changes.
+
+You can achieve the behavior you described by using an ObservableList. You can then either create a binding between the list and the imageObjectProperty or you can use a Listener to trigger an update each time the list changes.
+
+Example:
+
+public class AppFx extends Application {
+
+@Override
+public void start(Stage primaryStage) throws Exception {
+    Label label = new Label();
+    ImageView imageView = new ImageView();
+    Button imageButton = new Button("CLICK ME");
+
+    ObservableList<Image> imagesList = FXCollections.observableArrayList();
+    imagesList.add(new Image("red.jpg"));
+    imagesList.add(new Image("green.jpg"));
+    imagesList.add(new Image("blue.jpg"));
+
+    ObjectProperty<Image> imageObjectProperty = new SimpleObjectProperty<>();
+    // This creates a binding between the Property and the List.
+    imageObjectProperty.bind(Bindings.valueAt(imagesList, 0));
+
+    // If you want more control over the action that is triggered
+    // when the List changes you can use a Listener
+    // imagesList.addListener((InvalidationListener) c -> {
+    //     Image img = null;
+    //     if (!imagesList.isEmpty()) {
+    //         img = imagesList.get(0);
+    //     }
+    //     imageObjectProperty.setValue(img);
+    // });
+
+    imageView.setFitHeight(100);
+    imageView.setFitWidth(100);
+    imageView.imageProperty().bind(imageObjectProperty);
+
+    label.setGraphic(imageView);
+
+    imageButton.setOnAction(event -> {
+        Collections.rotate(imagesList, 1);
+    });
+}

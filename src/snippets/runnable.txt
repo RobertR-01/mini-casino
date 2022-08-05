@@ -1,0 +1,28 @@
+Runnable task = new Runnable() {
+    @Override
+    public void run() {
+        try {
+            String s = Platform.isFxApplicationThread() ? "UI Thread" : "Background Thread";
+            System.out.println("This is: " + s);
+            for (int i = 0; i < 5; i++) {
+                System.out.println("\tRunning on the thread: ("
+                                   + Thread.currentThread() + ") - " + (i + 1) + "...");
+                Thread.sleep(1000);
+            }
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    String s = Platform.isFxApplicationThread() ? "UI Thread" : "Background Thread";
+                    System.out.println("This is: " + s);
+                    counter++;
+                    ourLabel.setText("Something happened " + counter + " times.");
+                }
+            });
+            System.out.println("\tThread: " + Thread.currentThread() + " finished.");
+        } catch (InterruptedException exception) {
+            // no need for handling this exception for now
+        }
+    }
+};
+
+new Thread(task).start();
