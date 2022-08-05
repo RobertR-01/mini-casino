@@ -5,11 +5,11 @@ import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Slots {
-    private static final Slots slotsInstance = new Slots();
+public class SlotsData {
+    private static final SlotsData SLOTS_DATA_INSTANCE = new SlotsData();
     private List<SlotSymbol> symbolsList;
 
-    private Slots() {
+    private SlotsData() {
         symbolsList = new ArrayList<>();
         addSymbol(new SlotSymbol(0, new Image("set_two/meat48.png"), 4, false, false, false));
         addSymbol(new SlotSymbol(1));
@@ -42,8 +42,8 @@ public class Slots {
         addSymbol(new SlotSymbol(19));
     }
 
-    public static Slots getSlotsInstance() {
-        return slotsInstance;
+    public static SlotsData getSlotsInstance() {
+        return SLOTS_DATA_INSTANCE;
     }
 
     private void addSymbol(SlotSymbol symbol) {

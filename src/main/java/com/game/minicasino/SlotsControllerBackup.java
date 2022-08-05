@@ -1,6 +1,6 @@
 package com.game.minicasino;
 
-import com.game.data.Slots;
+import com.game.data.SlotsData;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -63,26 +63,26 @@ public class SlotsControllerBackup {
     @FXML
     private Button spinButton;
 
-    private ObservableList<Slots.SlotSymbol> reel0SymbolList;
-    private ObservableList<Slots.SlotSymbol> reel1SymbolList;
-    private ObservableList<Slots.SlotSymbol> reel2SymbolList;
+    private ObservableList<SlotsData.SlotSymbol> reel0SymbolList;
+    private ObservableList<SlotsData.SlotSymbol> reel1SymbolList;
+    private ObservableList<SlotsData.SlotSymbol> reel2SymbolList;
 
     // new approach
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol0;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol1;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol2;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol3;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol4;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol0;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol1;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol2;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol3;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol4;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol0;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol1;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol2;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol3;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol4;
+    private ObjectProperty<SlotsData.SlotSymbol> reel0symbol0;
+    private ObjectProperty<SlotsData.SlotSymbol> reel0symbol1;
+    private ObjectProperty<SlotsData.SlotSymbol> reel0symbol2;
+    private ObjectProperty<SlotsData.SlotSymbol> reel0symbol3;
+    private ObjectProperty<SlotsData.SlotSymbol> reel0symbol4;
+    private ObjectProperty<SlotsData.SlotSymbol> reel1symbol0;
+    private ObjectProperty<SlotsData.SlotSymbol> reel1symbol1;
+    private ObjectProperty<SlotsData.SlotSymbol> reel1symbol2;
+    private ObjectProperty<SlotsData.SlotSymbol> reel1symbol3;
+    private ObjectProperty<SlotsData.SlotSymbol> reel1symbol4;
+    private ObjectProperty<SlotsData.SlotSymbol> reel2symbol0;
+    private ObjectProperty<SlotsData.SlotSymbol> reel2symbol1;
+    private ObjectProperty<SlotsData.SlotSymbol> reel2symbol2;
+    private ObjectProperty<SlotsData.SlotSymbol> reel2symbol3;
+    private ObjectProperty<SlotsData.SlotSymbol> reel2symbol4;
     private boolean isSpinning;
     private Thread spin0Thread;
     private Thread spin1Thread;
@@ -98,9 +98,9 @@ public class SlotsControllerBackup {
         spinButton.fontProperty().set(new Font("Arial Bold", 20.0));
 
         // list setup:
-        reel0SymbolList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
-        reel1SymbolList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
-        reel2SymbolList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
+        reel0SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsInstance().getSymbolsList());
+        reel1SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsInstance().getSymbolsList());
+        reel2SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsInstance().getSymbolsList());
 
         // symbols binding:
         // reel0
@@ -138,7 +138,7 @@ public class SlotsControllerBackup {
         reel2symbol4.bind(Bindings.valueAt(reel2SymbolList, 4));
 
         // reel0 graphic setup:
-        List<ObjectProperty<Slots.SlotSymbol>> tempSymbolList = new ArrayList<>();
+        List<ObjectProperty<SlotsData.SlotSymbol>> tempSymbolList = new ArrayList<>();
         Collections.addAll(tempSymbolList, reel0symbol0, reel0symbol1, reel0symbol2, reel0symbol3, reel0symbol4);
         List<Label> tempLabelList = new ArrayList<>();
         Collections.addAll(tempLabelList, reel0pos0, reel0pos1, reel0pos2, reel0pos3, reel0pos4);
@@ -157,9 +157,9 @@ public class SlotsControllerBackup {
         initializeReels(tempSymbolList, tempLabelList);
     }
 
-    private void initializeReels(List<ObjectProperty<Slots.SlotSymbol>> symbolList, List<Label> labelList) {
+    private void initializeReels(List<ObjectProperty<SlotsData.SlotSymbol>> symbolList, List<Label> labelList) {
         // ImageView prep:
-        for (ObjectProperty<Slots.SlotSymbol> symbol : symbolList) {
+        for (ObjectProperty<SlotsData.SlotSymbol> symbol : symbolList) {
             ImageView imageView = new ImageView();
             imageView.setFitWidth(50.0);
             imageView.setFitHeight(50.0);
@@ -169,7 +169,7 @@ public class SlotsControllerBackup {
         }
     }
 
-    private void shiftSymbolsList(List<Slots.SlotSymbol> list) {
+    private void shiftSymbolsList(List<SlotsData.SlotSymbol> list) {
         Collections.rotate(list, 1);
     }
 

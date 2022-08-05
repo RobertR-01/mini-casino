@@ -1,6 +1,6 @@
 package com.game.minicasino;
 
-import com.game.data.Slots;
+import com.game.data.SlotsData;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -32,7 +32,7 @@ public class TestWindowController {
     private Button button2;
 
     @FXML
-    private ObservableList<Slots.SlotSymbol> listView;
+    private ObservableList<SlotsData.SlotSymbol> listView;
 
     @FXML
     private Label label;
