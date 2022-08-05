@@ -14,12 +14,16 @@ public class MainWindowController {
     private BorderPane topLevelLayout;
     @FXML
     private Label titleLabel;
+    @FXML
+    private Label subTitleLabel;
 
     @FXML
     public void initialize() {
         // title label setup
-        titleLabel.setText("Mini Casino\nThe Game");
+        titleLabel.setText("Mini Casino");
         titleLabel.setFont(Font.font("Times New Roman", 30));
+        subTitleLabel.setText("The Game");
+        subTitleLabel.setFont(Font.font("Times New Roman", 20));
     }
 
     @FXML
