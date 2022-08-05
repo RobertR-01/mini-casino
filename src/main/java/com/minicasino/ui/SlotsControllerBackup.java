@@ -1,6 +1,6 @@
-package com.game.minicasino;
+package com.minicasino.ui;
 
-import com.game.data.SlotsData;
+import com.minicasino.data.SlotsData;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;

@@ -1,4 +1,4 @@
-package com.game.minicasino;
+package com.minicasino.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

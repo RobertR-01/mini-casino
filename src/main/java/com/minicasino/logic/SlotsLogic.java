@@ -1,6 +1,6 @@
-package com.game.logic;
+package com.minicasino.logic;
 
-import com.game.data.SlotsData;
+import com.minicasino.data.SlotsData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,6 @@ public class SlotsLogic {
      */
     public double calculateWinnings() {
         double winnings = 0;
-        System.out.println(recentResultsList.get(2).getIndex());
-        System.out.println(recentResultsList.get(7).getIndex());
-        System.out.println(recentResultsList.get(12).getIndex());
-        System.out.println("===");
         if (recentResultsList.get(2).getIndex() == recentResultsList.get(7).getIndex()
             && recentResultsList.get(7).getIndex() == recentResultsList.get(12).getIndex()) {
             int multiplier = recentResultsList.get(2).getMultiplier();

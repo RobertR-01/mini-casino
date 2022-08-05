@@ -1,7 +1,7 @@
-package com.game.minicasino;
+package com.minicasino.ui;
 
-import com.game.data.SlotsData;
-import com.game.logic.SlotsLogic;
+import com.minicasino.data.SlotsData;
+import com.minicasino.logic.SlotsLogic;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -214,21 +214,13 @@ public class SlotsController {
                     spinConditionsList.set(i, false);
                     sleepCurrentThread();
                 }
-
-                System.out.println("list0: \n" + reel0SymbolList);
-                System.out.println("list1: \n" + reel1SymbolList);
-                System.out.println("list2: \n" + reel2SymbolList);
-                System.out.println("===");
                 currentSession.setRecentResultsList(reel0SymbolList, reel1SymbolList, reel2SymbolList);
-                System.out.println("results list: \n" + currentSession.getRecentResultsList());
                 double winnings = currentSession.calculateWinnings();
 
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         lastWinValueLabel.setText(String.valueOf(winnings));
-
-                        System.out.println("setting the winnings label: " + winnings);
                     }
                 });
 

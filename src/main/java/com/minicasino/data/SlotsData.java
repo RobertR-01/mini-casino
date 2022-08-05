@@ -1,4 +1,4 @@
-package com.game.data;
+package com.minicasino.data;
 
 import javafx.scene.image.Image;
 

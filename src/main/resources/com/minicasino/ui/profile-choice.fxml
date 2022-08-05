@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.minicasino.ui.ProfileChoiceController" alignment="CENTER"
+      spacing="60">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+    <Label fx:id="headerLabel" text="Choose the player profile:" textAlignment="CENTER"/>
+    <GridPane hgap="20" vgap="20" alignment="CENTER">
+        <fx:define>
+            <ToggleGroup fx:id="profileToggleGroup"/>
+        </fx:define>
+        <Button fx:id="profile0Button" GridPane.rowIndex="0" GridPane.columnIndex="0" text="Empty" prefWidth="200"
+                alignment="CENTER"/>
+        <RadioButton GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER"
+                     toggleGroup="$profileToggleGroup" selected="true"/>
+        <Button fx:id="profile1Button" GridPane.rowIndex="1" GridPane.columnIndex="0" text="Empty" prefWidth="200"
+                alignment="CENTER"/>
+        <RadioButton GridPane.rowIndex="1" GridPane.columnIndex="1" alignment="CENTER"
+                     toggleGroup="$profileToggleGroup"/>
+        <Button fx:id="profile2Button" GridPane.rowIndex="2" GridPane.columnIndex="0" text="Empty" prefWidth="200"
+                alignment="CENTER"/>
+        <RadioButton GridPane.rowIndex="2" GridPane.columnIndex="1" alignment="CENTER"
+                     toggleGroup="$profileToggleGroup"/>
+        <Button fx:id="profile3Button" GridPane.rowIndex="3" GridPane.columnIndex="0" text="Empty" prefWidth="200"
+                alignment="CENTER"/>
+        <RadioButton GridPane.rowIndex="3" GridPane.columnIndex="1" alignment="CENTER"
+                     toggleGroup="$profileToggleGroup"/>
+        <Button fx:id="profile4Button" GridPane.rowIndex="4" GridPane.columnIndex="0" text="Empty" prefWidth="200"
+                alignment="CENTER"/>
+        <RadioButton GridPane.rowIndex="4" GridPane.columnIndex="1" alignment="CENTER"
+                     toggleGroup="$profileToggleGroup"/>
+    </GridPane>
+    <Button fx:id="cancelButton" text="Cancel" onAction="#handleCancelButton"/>
+</VBox>
+
+        <!--<GridPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml" hgap="20" vgap="60" alignment="CENTER"
+                  fx:controller="com.minicasino.ui.ProfileChoiceController" gridLinesVisible="true">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        </padding>
+        <columnConstraints>
+            <ColumnConstraints percentWidth="33.3333"/>
+            <ColumnConstraints percentWidth="33.3333"/>
+            <ColumnConstraints percentWidth="33.3334"/>
+        </columnConstraints>
+        <Label fx:id="headerLabel" text="Choose the game to play:" GridPane.rowIndex="0" GridPane.columnIndex="1"
+               textAlignment="CENTER" GridPane.halignment="CENTER"/>
+        <Button fx:id="profile1Button" text="Empty" prefWidth="200" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                alignment="CENTER" GridPane.halignment="CENTER"/>
+        <RadioButton GridPane.rowIndex="1" GridPane.columnIndex="2" alignment="CENTER" GridPane.halignment="CENTER"/>
+        <Button fx:id="cancelButton" text="Cancel" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                onAction="#handleCancelButton" GridPane.halignment="CENTER"/>
+        </GridPane>-->

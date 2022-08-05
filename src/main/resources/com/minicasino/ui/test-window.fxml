@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.game.minicasino.TestWindowController"
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.minicasino.ui.TestWindowController"
           alignment="CENTER" vgap="50.0">
     <Button fx:id="imageButton" text="show image" GridPane.rowIndex="0" GridPane.columnIndex="0"
             GridPane.halignment="CENTER" onAction="#handleImageButton"/>
@@ -12,7 +12,7 @@
 
 
         <!--
-        <GridPane fx:id="topLayout" xmlns:fx="http://javafx.com/fxml" fx:controller="com.game.minicasino.TestWindowController"
+        <GridPane fx:id="topLayout" xmlns:fx="http://javafx.com/fxml" fx:controller="com.minicasinocasino.uidowController"
                   gridLinesVisible="true" alignment="CENTER">
             <HBox fx:id="hBox" GridPane.valignment="CENTER" GridPane.halignment="CENTER">
                 <StackPane fx:id="stackPane" maxHeight="100.0" maxWidth="100.0" GridPane.rowIndex="0" GridPane.columnIndex="0">

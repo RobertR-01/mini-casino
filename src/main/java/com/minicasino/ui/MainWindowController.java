@@ -1,4 +1,4 @@
-package com.game.minicasino;
+package com.minicasino.ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -41,8 +41,14 @@ public class MainWindowController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About Mini Casino");
         alert.setHeaderText("Mini Casino: The Game");
-        alert.setContentText("v" + MainApp.APP_VERSION + "\n\nCopyright \u00A9 2022 Mr Smalec");
+        alert.setContentText("v" + MainApp.APP_VERSION + "\n\nCopyright \u00A9 2022 RobertR-01"
+                             + "\nGitHub: https://github.com/RobertR-01/mini-casino");
         alert.show();
+    }
+
+    @FXML
+    public void handleProfileButton() throws IOException {
+        MainApp.setRoot("profile-choice");
     }
 
     @FXML
