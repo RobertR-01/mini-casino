@@ -1,6 +1,7 @@
 package com.game.minicasino;
 
 import com.game.data.SlotsData;
+import com.game.logic.SlotsLogic;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -57,6 +59,10 @@ public class SlotsController {
     private Label reel2pos4;
     @FXML
     private Button spinButton;
+    @FXML
+    private Spinner<Integer> betAmountSpinner;
+    @FXML
+    private Label lastWinValueLabel;
 
     private List<SlotsData.SlotSymbol> reel0SymbolList;
     private List<SlotsData.SlotSymbol> reel1SymbolList;
@@ -65,6 +71,7 @@ public class SlotsController {
     private List<Label> reel1LabelList;
     private List<Label> reel2LabelList;
     private List<Boolean> spinConditionsList;
+    private SlotsLogic currentSession;
 
     @FXML
     public void initialize() {
@@ -130,6 +137,9 @@ public class SlotsController {
         Task<Void> spinReelsTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                // init current session SlotsLogic:
+                currentSession = new SlotsLogic(betAmountSpinner.getValue());
+
                 for (int i = 0; i < 3; i++) {
                     spinConditionsList.set(i, true);
                 }
@@ -148,7 +158,9 @@ public class SlotsController {
     private void sleepCurrentThread() {
         try {
             Random random = new Random();
-            Thread.sleep(random.nextInt(497, 1317));
+//            Thread.sleep(random.nextInt(173, 391));
+            Thread.sleep(0);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -172,7 +184,7 @@ public class SlotsController {
                             }
                         }
                     });
-                    Thread.sleep(100);
+                    Thread.sleep(20);
                 }
                 return null;
             }
@@ -202,6 +214,24 @@ public class SlotsController {
                     spinConditionsList.set(i, false);
                     sleepCurrentThread();
                 }
+
+                System.out.println("list0: \n" + reel0SymbolList);
+                System.out.println("list1: \n" + reel1SymbolList);
+                System.out.println("list2: \n" + reel2SymbolList);
+                System.out.println("===");
+                currentSession.setRecentResultsList(reel0SymbolList, reel1SymbolList, reel2SymbolList);
+                System.out.println("results list: \n" + currentSession.getRecentResultsList());
+                double winnings = currentSession.calculateWinnings();
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        lastWinValueLabel.setText(String.valueOf(winnings));
+
+                        System.out.println("setting the winnings label: " + winnings);
+                    }
+                });
+
                 return null;
             }
         };

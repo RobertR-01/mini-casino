@@ -90,12 +90,24 @@ public class SlotsData {
             return multiplier;
         }
 
+        public boolean isEmpty() {
+            return isEmpty;
+        }
+
         public boolean isFreeSpin() {
             return isFreeSpin;
         }
 
         public boolean isWild() {
             return isWild;
+        }
+
+        @Override
+        public String toString() {
+            return "SlotSymbol {" +
+                   "index = " + index +
+                   ", image = " + image.getUrl() +
+                   "}\n";
         }
     }
 }
