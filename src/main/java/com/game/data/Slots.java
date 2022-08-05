@@ -3,7 +3,6 @@ package com.game.data;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Slots {
@@ -54,8 +53,8 @@ public class Slots {
     }
 
     public List<SlotSymbol> getSymbolsList() {
-        return Collections.unmodifiableList(symbolsList);
-//        return symbolsList;
+//        return Collections.unmodifiableList(symbolsList);
+        return new ArrayList<>(symbolsList);
     }
 
     public static class SlotSymbol {

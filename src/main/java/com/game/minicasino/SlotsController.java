@@ -2,11 +2,7 @@ package com.game.minicasino;
 
 import com.game.data.Slots;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -63,26 +59,26 @@ public class SlotsController {
     @FXML
     private Button spinButton;
 
-    private ObservableList<Slots.SlotSymbol> reel0SymbolList;
-    private ObservableList<Slots.SlotSymbol> reel1SymbolList;
-    private ObservableList<Slots.SlotSymbol> reel2SymbolList;
+    private List<Slots.SlotSymbol> reel0SymbolList;
+    private List<Slots.SlotSymbol> reel1SymbolList;
+    private List<Slots.SlotSymbol> reel2SymbolList;
 
     // new approach
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol0;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol1;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol2;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol3;
-    private ObjectProperty<Slots.SlotSymbol> reel0symbol4;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol0;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol1;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol2;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol3;
-    private ObjectProperty<Slots.SlotSymbol> reel1symbol4;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol0;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol1;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol2;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol3;
-    private ObjectProperty<Slots.SlotSymbol> reel2symbol4;
+    private Slots.SlotSymbol reel0symbol0;
+    private Slots.SlotSymbol reel0symbol1;
+    private Slots.SlotSymbol reel0symbol2;
+    private Slots.SlotSymbol reel0symbol3;
+    private Slots.SlotSymbol reel0symbol4;
+    private Slots.SlotSymbol reel1symbol0;
+    private Slots.SlotSymbol reel1symbol1;
+    private Slots.SlotSymbol reel1symbol2;
+    private Slots.SlotSymbol reel1symbol3;
+    private Slots.SlotSymbol reel1symbol4;
+    private Slots.SlotSymbol reel2symbol0;
+    private Slots.SlotSymbol reel2symbol1;
+    private Slots.SlotSymbol reel2symbol2;
+    private Slots.SlotSymbol reel2symbol3;
+    private Slots.SlotSymbol reel2symbol4;
     private boolean isSpinning;
 
     @FXML
@@ -95,47 +91,32 @@ public class SlotsController {
         spinButton.fontProperty().set(new Font("Arial Bold", 20.0));
 
         // list setup:
-        reel0SymbolList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
-        reel1SymbolList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
-        reel2SymbolList = FXCollections.observableArrayList(Slots.getSlotsInstance().getSymbolsList());
+        reel0SymbolList = new ArrayList<>(Slots.getSlotsInstance().getSymbolsList());
+        reel1SymbolList = new ArrayList<>(Slots.getSlotsInstance().getSymbolsList());
+        reel2SymbolList = new ArrayList<>(Slots.getSlotsInstance().getSymbolsList());
 
         // symbols binding:
         // reel0
-        reel0symbol0 = new SimpleObjectProperty<>();
-        reel0symbol1 = new SimpleObjectProperty<>();
-        reel0symbol2 = new SimpleObjectProperty<>();
-        reel0symbol3 = new SimpleObjectProperty<>();
-        reel0symbol4 = new SimpleObjectProperty<>();
-        reel0symbol0.bind(Bindings.valueAt(reel0SymbolList, 0));
-        reel0symbol1.bind(Bindings.valueAt(reel0SymbolList, 1));
-        reel0symbol2.bind(Bindings.valueAt(reel0SymbolList, 2));
-        reel0symbol3.bind(Bindings.valueAt(reel0SymbolList, 3));
-        reel0symbol4.bind(Bindings.valueAt(reel0SymbolList, 4));
+        reel0symbol0 = reel0SymbolList.get(0);
+        reel0symbol1 = reel0SymbolList.get(1);
+        reel0symbol2 = reel0SymbolList.get(2);
+        reel0symbol3 = reel0SymbolList.get(3);
+        reel0symbol4 = reel0SymbolList.get(4);
         // reel1
-        reel1symbol0 = new SimpleObjectProperty<>();
-        reel1symbol1 = new SimpleObjectProperty<>();
-        reel1symbol2 = new SimpleObjectProperty<>();
-        reel1symbol3 = new SimpleObjectProperty<>();
-        reel1symbol4 = new SimpleObjectProperty<>();
-        reel1symbol0.bind(Bindings.valueAt(reel1SymbolList, 0));
-        reel1symbol1.bind(Bindings.valueAt(reel1SymbolList, 1));
-        reel1symbol2.bind(Bindings.valueAt(reel1SymbolList, 2));
-        reel1symbol3.bind(Bindings.valueAt(reel1SymbolList, 3));
-        reel1symbol4.bind(Bindings.valueAt(reel1SymbolList, 4));
+        reel1symbol0 = reel1SymbolList.get(0);
+        reel1symbol1 = reel1SymbolList.get(1);
+        reel1symbol2 = reel1SymbolList.get(2);
+        reel1symbol3 = reel1SymbolList.get(3);
+        reel1symbol4 = reel1SymbolList.get(4);
         // reel2
-        reel2symbol0 = new SimpleObjectProperty<>();
-        reel2symbol1 = new SimpleObjectProperty<>();
-        reel2symbol2 = new SimpleObjectProperty<>();
-        reel2symbol3 = new SimpleObjectProperty<>();
-        reel2symbol4 = new SimpleObjectProperty<>();
-        reel2symbol0.bind(Bindings.valueAt(reel2SymbolList, 0));
-        reel2symbol1.bind(Bindings.valueAt(reel2SymbolList, 1));
-        reel2symbol2.bind(Bindings.valueAt(reel2SymbolList, 2));
-        reel2symbol3.bind(Bindings.valueAt(reel2SymbolList, 3));
-        reel2symbol4.bind(Bindings.valueAt(reel2SymbolList, 4));
+        reel2symbol0 = reel2SymbolList.get(0);
+        reel2symbol1 = reel2SymbolList.get(1);
+        reel2symbol2 = reel2SymbolList.get(2);
+        reel2symbol3 = reel2SymbolList.get(3);
+        reel2symbol4 = reel2SymbolList.get(4);
 
         // reel0 graphic setup:
-        List<ObjectProperty<Slots.SlotSymbol>> tempSymbolList = new ArrayList<>();
+        List<Slots.SlotSymbol> tempSymbolList = new ArrayList<>();
         Collections.addAll(tempSymbolList, reel0symbol0, reel0symbol1, reel0symbol2, reel0symbol3, reel0symbol4);
         List<Label> tempLabelList = new ArrayList<>();
         Collections.addAll(tempLabelList, reel0pos0, reel0pos1, reel0pos2, reel0pos3, reel0pos4);
@@ -154,15 +135,15 @@ public class SlotsController {
         initializeReels(tempSymbolList, tempLabelList);
     }
 
-    private void initializeReels(List<ObjectProperty<Slots.SlotSymbol>> symbolList, List<Label> labelList) {
+    private void initializeReels(List<Slots.SlotSymbol> symbolList, List<Label> labelList) {
         // ImageView prep:
-        for (ObjectProperty<Slots.SlotSymbol> symbol : symbolList) {
+        for (Slots.SlotSymbol symbol : symbolList) {
             ImageView imageView = new ImageView();
             imageView.setFitWidth(50.0);
             imageView.setFitHeight(50.0);
-            imageView.imageProperty().bind(Bindings.createObjectBinding(() -> symbol.getValue().getImage(), symbol));
+            imageView.imageProperty().set(symbol.getImage());
             // ImageView binding to symbols (wrapped):
-            labelList.get(symbol.get().getIndex()).graphicProperty().set(imageView);
+            labelList.get(symbol.getIndex()).graphicProperty().set(imageView);
         }
     }
 
@@ -184,87 +165,144 @@ public class SlotsController {
     }
 
     private void startSpinning() {
-        // reel0
-        Runnable spinReel0 = new Runnable() {
+        isSpinning = true;
+        // task test
+        // 0
+        Task<Void> reel0Task = new Task<Void>() {
             @Override
-            public void run() {
-                try {
-                    isSpinning = true;
-                    while (true) {
-                        if (!isSpinning) {
-                            break;
-                        }
-
-                        shiftSymbolsList(reel0SymbolList);
-                        Thread.sleep(125);
-                    }
+            protected Void call() throws Exception {
+                while (isSpinning) {
+                    shiftSymbolsList(reel0SymbolList);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            stopSpinning();
+                            ImageView imageView0 = new ImageView();
+                            imageView0.setFitWidth(50.0);
+                            imageView0.setFitHeight(50.0);
+                            imageView0.imageProperty().set(reel0SymbolList.get(0).getImage());
+                            reel0pos0.graphicProperty().set(imageView0);
+                            ImageView imageView1 = new ImageView();
+                            imageView1.setFitWidth(50.0);
+                            imageView1.setFitHeight(50.0);
+                            imageView1.imageProperty().set(reel0SymbolList.get(1).getImage());
+                            reel0pos1.graphicProperty().set(imageView1);
+                            ImageView imageView2 = new ImageView();
+                            imageView2.setFitWidth(50.0);
+                            imageView2.setFitHeight(50.0);
+                            imageView2.imageProperty().set(reel0SymbolList.get(2).getImage());
+                            reel0pos2.graphicProperty().set(imageView2);
+                            ImageView imageView3 = new ImageView();
+                            imageView3.setFitWidth(50.0);
+                            imageView3.setFitHeight(50.0);
+                            imageView3.imageProperty().set(reel0SymbolList.get(3).getImage());
+                            reel0pos3.graphicProperty().set(imageView3);
+                            ImageView imageView4 = new ImageView();
+                            imageView4.setFitWidth(50.0);
+                            imageView4.setFitHeight(50.0);
+                            imageView4.imageProperty().set(reel0SymbolList.get(4).getImage());
+                            reel0pos4.graphicProperty().set(imageView4);
+
                         }
                     });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.sleep(150);
                 }
+                return null;
             }
         };
 
-        // reel1
-        Runnable spinReel1 = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    isSpinning = true;
-                    while (true) {
-                        if (!isSpinning) {
-                            break;
-                        }
+        new Thread(reel0Task).start();
 
-                        shiftSymbolsList(reel1SymbolList);
-                        Thread.sleep(125);
-                    }
+        // 1
+        Task<Void> reel1Task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Thread.sleep(500);
+                while (isSpinning) {
+                    shiftSymbolsList(reel1SymbolList);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            stopSpinning();
+                            ImageView imageView0 = new ImageView();
+                            imageView0.setFitWidth(50.0);
+                            imageView0.setFitHeight(50.0);
+                            imageView0.imageProperty().set(reel1SymbolList.get(0).getImage());
+                            reel1pos0.graphicProperty().set(imageView0);
+                            ImageView imageView1 = new ImageView();
+                            imageView1.setFitWidth(50.0);
+                            imageView1.setFitHeight(50.0);
+                            imageView1.imageProperty().set(reel1SymbolList.get(1).getImage());
+                            reel1pos1.graphicProperty().set(imageView1);
+                            ImageView imageView2 = new ImageView();
+                            imageView2.setFitWidth(50.0);
+                            imageView2.setFitHeight(50.0);
+                            imageView2.imageProperty().set(reel1SymbolList.get(2).getImage());
+                            reel1pos2.graphicProperty().set(imageView2);
+                            ImageView imageView3 = new ImageView();
+                            imageView3.setFitWidth(50.0);
+                            imageView3.setFitHeight(50.0);
+                            imageView3.imageProperty().set(reel1SymbolList.get(3).getImage());
+                            reel1pos3.graphicProperty().set(imageView3);
+                            ImageView imageView4 = new ImageView();
+                            imageView4.setFitWidth(50.0);
+                            imageView4.setFitHeight(50.0);
+                            imageView4.imageProperty().set(reel1SymbolList.get(4).getImage());
+                            reel1pos4.graphicProperty().set(imageView4);
+
                         }
                     });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.sleep(150);
                 }
+                return null;
             }
         };
 
-        // reel2
-        Runnable spinReel2 = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    isSpinning = true;
-                    while (true) {
-                        if (!isSpinning) {
-                            break;
-                        }
+        new Thread(reel1Task).start();
 
-                        shiftSymbolsList(reel2SymbolList);
-                        Thread.sleep(125);
-                    }
+        // 2
+        Task<Void> reel2Task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Thread.sleep(1000);
+                while (isSpinning) {
+                    shiftSymbolsList(reel2SymbolList);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            stopSpinning();
+                            ImageView imageView0 = new ImageView();
+                            imageView0.setFitWidth(50.0);
+                            imageView0.setFitHeight(50.0);
+                            imageView0.imageProperty().set(reel2SymbolList.get(0).getImage());
+                            reel2pos0.graphicProperty().set(imageView0);
+                            ImageView imageView1 = new ImageView();
+                            imageView1.setFitWidth(50.0);
+                            imageView1.setFitHeight(50.0);
+                            imageView1.imageProperty().set(reel2SymbolList.get(1).getImage());
+                            reel2pos1.graphicProperty().set(imageView1);
+                            ImageView imageView2 = new ImageView();
+                            imageView2.setFitWidth(50.0);
+                            imageView2.setFitHeight(50.0);
+                            imageView2.imageProperty().set(reel2SymbolList.get(2).getImage());
+                            reel2pos2.graphicProperty().set(imageView2);
+                            ImageView imageView3 = new ImageView();
+                            imageView3.setFitWidth(50.0);
+                            imageView3.setFitHeight(50.0);
+                            imageView3.imageProperty().set(reel2SymbolList.get(3).getImage());
+                            reel2pos3.graphicProperty().set(imageView3);
+                            ImageView imageView4 = new ImageView();
+                            imageView4.setFitWidth(50.0);
+                            imageView4.setFitHeight(50.0);
+                            imageView4.imageProperty().set(reel2SymbolList.get(4).getImage());
+                            reel2pos4.graphicProperty().set(imageView4);
+
                         }
                     });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.sleep(150);
                 }
+                return null;
             }
         };
 
-        new Thread(spinReel0).start();
-        new Thread(spinReel1).start();
-        new Thread(spinReel2).start();
+        new Thread(reel2Task).start();
     }
 
     private void stopSpinning() {
