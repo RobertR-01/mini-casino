@@ -1,27 +1,38 @@
 package com.minicasino.ui;
 
+import com.minicasino.data.ProfileData;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
 
 public class ProfileChoiceController {
     @FXML
-    private GridPane topLevelLayout;
-    @FXML
     private Label headerLabel;
     @FXML
-    private Button slotsButton;
-    @FXML
     private Button cancelButton;
+    @FXML
+    private HBox profile0HBox;
+    @FXML
+    private ToggleGroup profileToggleGroup;
+
+    private Toggle previouslySelectedRadioButton;
 
     @FXML
     public void initialize() {
         // header label setup
         headerLabel.setFont(Font.font("Times New Roman", 20));
+
+        // testing ProfileData
+//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Ben"));
+//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Cass"));
+//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Clara"));
+//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Tom"));
+//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Jimmy"));
     }
 
     @FXML
@@ -30,7 +41,18 @@ public class ProfileChoiceController {
     }
 
     @FXML
-    public void handleSlotsButton() throws IOException {
-        MainApp.setRoot("slots");
+    public void handleRadioButton(ActionEvent event) {
+        Toggle sourceRadioButton = (Toggle) event.getSource();
+        ((Node) sourceRadioButton).getParent().setId("selectedProfileRow");
+
+        if (previouslySelectedRadioButton != null) {
+            ((Node) previouslySelectedRadioButton).getParent().setId("unselectedProfileRow");
+        }
+        previouslySelectedRadioButton = sourceRadioButton;
+    }
+
+    @FXML
+    public void testXMLSave() {
+        ProfileData.getProfileDataInstance().saveProfileData();
     }
 }

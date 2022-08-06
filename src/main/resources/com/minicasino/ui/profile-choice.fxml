@@ -3,55 +3,63 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.minicasino.ui.ProfileChoiceController" alignment="CENTER"
-      spacing="60">
-    <padding>
-        <Insets bottom="20" left="20" right="20" top="20"/>
-    </padding>
-    <Label fx:id="headerLabel" text="Choose the player profile:" textAlignment="CENTER"/>
-    <GridPane hgap="20" vgap="20" alignment="CENTER">
+<?import javafx.scene.text.Font?>
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.minicasino.ui.ProfileChoiceController" maxWidth="300"
+          alignment="CENTER">
+    <VBox alignment="CENTER" spacing="20" stylesheets="@styles-profile-choice.css" GridPane.rowIndex="0"
+          GridPane.columnIndex="0">
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20"/>
+        </padding>
+        <Label fx:id="headerLabel" text="Choose the player profile:" textAlignment="CENTER"/>
         <fx:define>
             <ToggleGroup fx:id="profileToggleGroup"/>
         </fx:define>
-        <Button fx:id="profile0Button" GridPane.rowIndex="0" GridPane.columnIndex="0" text="Empty" prefWidth="200"
-                alignment="CENTER"/>
-        <RadioButton GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER"
-                     toggleGroup="$profileToggleGroup" selected="true"/>
-        <Button fx:id="profile1Button" GridPane.rowIndex="1" GridPane.columnIndex="0" text="Empty" prefWidth="200"
-                alignment="CENTER"/>
-        <RadioButton GridPane.rowIndex="1" GridPane.columnIndex="1" alignment="CENTER"
-                     toggleGroup="$profileToggleGroup"/>
-        <Button fx:id="profile2Button" GridPane.rowIndex="2" GridPane.columnIndex="0" text="Empty" prefWidth="200"
-                alignment="CENTER"/>
-        <RadioButton GridPane.rowIndex="2" GridPane.columnIndex="1" alignment="CENTER"
-                     toggleGroup="$profileToggleGroup"/>
-        <Button fx:id="profile3Button" GridPane.rowIndex="3" GridPane.columnIndex="0" text="Empty" prefWidth="200"
-                alignment="CENTER"/>
-        <RadioButton GridPane.rowIndex="3" GridPane.columnIndex="1" alignment="CENTER"
-                     toggleGroup="$profileToggleGroup"/>
-        <Button fx:id="profile4Button" GridPane.rowIndex="4" GridPane.columnIndex="0" text="Empty" prefWidth="200"
-                alignment="CENTER"/>
-        <RadioButton GridPane.rowIndex="4" GridPane.columnIndex="1" alignment="CENTER"
-                     toggleGroup="$profileToggleGroup"/>
-    </GridPane>
-    <Button fx:id="cancelButton" text="Cancel" onAction="#handleCancelButton"/>
-</VBox>
-
-        <!--<GridPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml" hgap="20" vgap="60" alignment="CENTER"
-                  fx:controller="com.minicasino.ui.ProfileChoiceController" gridLinesVisible="true">
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-        </padding>
-        <columnConstraints>
-            <ColumnConstraints percentWidth="33.3333"/>
-            <ColumnConstraints percentWidth="33.3333"/>
-            <ColumnConstraints percentWidth="33.3334"/>
-        </columnConstraints>
-        <Label fx:id="headerLabel" text="Choose the game to play:" GridPane.rowIndex="0" GridPane.columnIndex="1"
-               textAlignment="CENTER" GridPane.halignment="CENTER"/>
-        <Button fx:id="profile1Button" text="Empty" prefWidth="200" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                alignment="CENTER" GridPane.halignment="CENTER"/>
-        <RadioButton GridPane.rowIndex="1" GridPane.columnIndex="2" alignment="CENTER" GridPane.halignment="CENTER"/>
-        <Button fx:id="cancelButton" text="Cancel" GridPane.rowIndex="2" GridPane.columnIndex="1"
-                onAction="#handleCancelButton" GridPane.halignment="CENTER"/>
-        </GridPane>-->
+        <HBox fx:id="profile0HBox" spacing="20" alignment="CENTER" id="unselectedProfileRow">
+            <padding>
+                <Insets top="2" right="2" bottom="2" left="2"/>
+            </padding>
+            <Button text="X" alignment="CENTER" id="clearProfileButton" onAction="#testXMLSave"/>
+            <Button fx:id="profile0Button" text="Empty" prefWidth="200" alignment="CENTER"/>
+            <RadioButton fx:id="profile0RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
+                         onAction="#handleRadioButton"/>
+        </HBox>
+        <HBox fx:id="profile1HBox" spacing="20" alignment="CENTER" id="unselectedProfileRow">
+            <padding>
+                <Insets top="2" right="2" bottom="2" left="2"/>
+            </padding>
+            <Button text="X" alignment="CENTER" id="clearProfileButton"/>
+            <Button fx:id="profile1Button" text="Empty" prefWidth="200" alignment="CENTER"/>
+            <RadioButton fx:id="profile1RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
+                         onAction="#handleRadioButton"/>
+        </HBox>
+        <HBox fx:id="profile2HBox" spacing="20" alignment="CENTER" id="unselectedProfileRow">
+            <padding>
+                <Insets top="2" right="2" bottom="2" left="2"/>
+            </padding>
+            <Button text="X" alignment="CENTER" id="clearProfileButton"/>
+            <Button fx:id="profile2Button" text="Empty" prefWidth="200" alignment="CENTER"/>
+            <RadioButton fx:id="profile2RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
+                         onAction="#handleRadioButton"/>
+        </HBox>
+        <HBox fx:id="profile3HBox" spacing="20" alignment="CENTER" id="unselectedProfileRow">
+            <padding>
+                <Insets top="2" right="2" bottom="2" left="2"/>
+            </padding>
+            <Button text="X" alignment="CENTER" id="clearProfileButton"/>
+            <Button fx:id="profile3Button" text="Empty" prefWidth="200" alignment="CENTER"/>
+            <RadioButton fx:id="profile3RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
+                         onAction="#handleRadioButton"/>
+        </HBox>
+        <HBox fx:id="profile4HBox" spacing="20" alignment="CENTER" id="unselectedProfileRow">
+            <padding>
+                <Insets top="2" right="2" bottom="2" left="2"/>
+            </padding>
+            <Button text="X" alignment="CENTER" id="clearProfileButton"/>
+            <Button fx:id="profile4Button" text="Empty" prefWidth="200" alignment="CENTER"/>
+            <RadioButton fx:id="profile4RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
+                         onAction="#handleRadioButton"/>
+        </HBox>
+        <Button fx:id="cancelButton" text="Cancel" onAction="#handleCancelButton"/>
+    </VBox>
+</GridPane>

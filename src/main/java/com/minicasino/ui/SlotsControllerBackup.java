@@ -98,9 +98,9 @@ public class SlotsControllerBackup {
         spinButton.fontProperty().set(new Font("Arial Bold", 20.0));
 
         // list setup:
-        reel0SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsInstance().getSymbolsList());
-        reel1SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsInstance().getSymbolsList());
-        reel2SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsInstance().getSymbolsList());
+        reel0SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsDataInstance().getSymbolsList());
+        reel1SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsDataInstance().getSymbolsList());
+        reel2SymbolList = FXCollections.observableArrayList(SlotsData.getSlotsDataInstance().getSymbolsList());
 
         // symbols binding:
         // reel0

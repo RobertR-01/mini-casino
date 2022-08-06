@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SlotsData {
     private static final SlotsData SLOTS_DATA_INSTANCE = new SlotsData();
-    private List<SlotSymbol> symbolsList;
+    private final List<SlotSymbol> symbolsList;
 
     private SlotsData() {
         symbolsList = new ArrayList<>();
@@ -42,7 +42,7 @@ public class SlotsData {
         addSymbol(new SlotSymbol(19));
     }
 
-    public static SlotsData getSlotsInstance() {
+    public static SlotsData getSlotsDataInstance() {
         return SLOTS_DATA_INSTANCE;
     }
 
@@ -65,7 +65,7 @@ public class SlotsData {
         private final boolean isWild;
         private final boolean isEmpty;
 
-        public SlotSymbol(int index, Image image, int multiplier, boolean isFreeSpin, boolean isWild, boolean isEmpty) {
+        private SlotSymbol(int index, Image image, int multiplier, boolean isFreeSpin, boolean isWild, boolean isEmpty) {
             this.index = index;
             this.image = image;
             this.multiplier = multiplier;
@@ -74,7 +74,7 @@ public class SlotsData {
             this.isEmpty = isEmpty;
         }
 
-        public SlotSymbol(int index) {
+        private SlotSymbol(int index) {
             this(index, new Image("set_two/empty48.png"), 0, false, false, true);
         }
 
@@ -82,6 +82,7 @@ public class SlotsData {
             return index;
         }
 
+        // should return copy?
         public Image getImage() {
             return image;
         }

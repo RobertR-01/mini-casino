@@ -83,9 +83,9 @@ public class SlotsController {
         spinButton.fontProperty().set(new Font("Arial Bold", 20.0));
 
         // symbol lists setup:
-        reel0SymbolList = new ArrayList<>(SlotsData.getSlotsInstance().getSymbolsList());
-        reel1SymbolList = new ArrayList<>(SlotsData.getSlotsInstance().getSymbolsList());
-        reel2SymbolList = new ArrayList<>(SlotsData.getSlotsInstance().getSymbolsList());
+        reel0SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
+        reel1SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
+        reel2SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
 
         // reel0 graphic setup:
         reel0LabelList = new ArrayList<>();
