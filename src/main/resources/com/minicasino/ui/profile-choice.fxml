@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.minicasino.ui.ProfileChoiceController" maxWidth="300"
-          alignment="CENTER">
+          alignment="CENTER" fx:id="topLevelLayout">
     <VBox alignment="CENTER" spacing="20" stylesheets="@styles-profile-choice.css" GridPane.rowIndex="0"
           GridPane.columnIndex="0">
         <padding>
@@ -19,7 +19,7 @@
             <padding>
                 <Insets top="2" right="2" bottom="2" left="2"/>
             </padding>
-            <Button text="X" alignment="CENTER" id="clearProfileButton" onAction="#testXMLSave"/>
+            <Button text="X" alignment="CENTER" id="clearProfileButton"/>
             <Button fx:id="profile0Button" text="Empty" prefWidth="200" alignment="CENTER"/>
             <RadioButton fx:id="profile0RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
                          onAction="#handleRadioButton"/>
@@ -28,7 +28,7 @@
             <padding>
                 <Insets top="2" right="2" bottom="2" left="2"/>
             </padding>
-            <Button text="X" alignment="CENTER" id="clearProfileButton" onAction="#testXMLLoad"/>
+            <Button text="X" alignment="CENTER" id="clearProfileButton"/>
             <Button fx:id="profile1Button" text="Empty" prefWidth="200" alignment="CENTER"/>
             <RadioButton fx:id="profile1RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
                          onAction="#handleRadioButton"/>

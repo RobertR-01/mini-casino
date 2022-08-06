@@ -22,6 +22,8 @@ import java.util.Random;
 
 public class SlotsController {
     @FXML
+    private GridPane topLevelLayout;
+    @FXML
     private GridPane nestedGridPane;
     @FXML
     private Label titleLabel;
@@ -75,6 +77,14 @@ public class SlotsController {
 
     @FXML
     public void initialize() {
+        // removing default focus in this window:
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                topLevelLayout.requestFocus();
+            }
+        });
+
         // title label setup:
         titleLabel.setFont(Font.font("Times New Roman", 20));
 

@@ -1,5 +1,6 @@
 package com.minicasino.ui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,6 +21,14 @@ public class GameChoiceController {
 
     @FXML
     public void initialize() {
+        // removing default focus in this window:
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                topLevelLayout.requestFocus();
+            }
+        });
+
         // header label setup
         headerLabel.setFont(Font.font("Times New Roman", 20));
     }

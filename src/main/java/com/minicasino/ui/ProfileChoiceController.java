@@ -1,16 +1,22 @@
 package com.minicasino.ui;
 
-import com.minicasino.data.ProfileData;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
 
 public class ProfileChoiceController {
+    @FXML
+    private GridPane topLevelLayout;
     @FXML
     private Label headerLabel;
     @FXML
@@ -24,8 +30,19 @@ public class ProfileChoiceController {
 
     @FXML
     public void initialize() {
+        // removing default focus in this window:
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                topLevelLayout.requestFocus();
+            }
+        });
+
         // header label setup:
         headerLabel.setFont(Font.font("Times New Roman", 20));
+
+        // data binding
+
     }
 
     @FXML
@@ -44,13 +61,5 @@ public class ProfileChoiceController {
         previouslySelectedRadioButton = sourceRadioButton;
     }
 
-    @FXML
-    public void testXMLSave() {
-//        ProfileData.getProfileDataInstance().saveProfileData(ProfileData.getProfileDataInstance().getProfileList());
-    }
 
-    @FXML
-    public void testXMLLoad() {
-        System.out.println(ProfileData.getProfileDataInstance().getProfileList());
-    }
 }

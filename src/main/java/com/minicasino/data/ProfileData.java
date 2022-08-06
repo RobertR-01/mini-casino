@@ -1,5 +1,8 @@
 package com.minicasino.data;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Alert;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -16,9 +19,11 @@ import java.util.List;
 public class ProfileData {
     private static final ProfileData PROFILE_DATA_INSTANCE = new ProfileData();
     private final List<Profile> profileList;
+    private Profile activeProfile;
 
     private ProfileData() {
-        profileList = new ArrayList<>();
+//        profileList = new ArrayList<>();
+        profileList = FXCollections.observableArrayList();
     }
 
     public static ProfileData getProfileDataInstance() {
@@ -33,12 +38,12 @@ public class ProfileData {
 
     private void clearProfile(int index) {
         if (profileList.get(index) != null && index < 5) {
-            profileList.set(index, new Profile("Empty"));
+            profileList.set(index, new Profile());
         }
     }
 
     public List<Profile> getProfileList() {
-        return new ArrayList<>(profileList);
+        return profileList;
     }
 
     public void saveProfileData(List<Profile> list) {
@@ -69,6 +74,7 @@ public class ProfileData {
             profile.addContent(new Element("NAME").addContent(list.get(i).name));
             profile.addContent(new Element("BALANCE").addContent(String.valueOf(list.get(i).balance)));
             profile.addContent(new Element("HIGHEST_WIN").addContent(String.valueOf(list.get(i).highestWin)));
+            profile.addContent(new Element("IS_EMPTY").addContent(String.valueOf(list.get(i).isEmpty)));
 
             root.addContent(profile);
         }
@@ -107,7 +113,8 @@ public class ProfileData {
                 Element child = root.getChildren().get(i);
                 Profile profile = new Profile(child.getChild("NAME").getText(),
                                               Double.parseDouble(child.getChild("BALANCE").getText()),
-                                              Double.parseDouble(child.getChild("HIGHEST_WIN").getText()));
+                                              Double.parseDouble(child.getChild("HIGHEST_WIN").getText()),
+                                              Boolean.parseBoolean(child.getChild("IS_EMPTY").getText()));
                 addProfile(profile);
             }
         } catch (IOException | JDOMException e) {
@@ -119,19 +126,38 @@ public class ProfileData {
         private final String name;
         private double balance;
         private double highestWin;
+        private final boolean isEmpty;
 
         // used when creating a new profile from the UI
         public Profile(String name) {
-            this.name = name;
+            while (true) {
+                if (!name.equalsIgnoreCase("Empty")) {
+                    this.name = name;
+                    break;
+                } else {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Warning!");
+                            //alert.setHeaderText("placeholder");
+                            alert.setContentText("The profile name cannot be set to: " + name);
+                            alert.show();
+                        }
+                    });
+                }
+            }
             this.balance = 5000.0;
             this.highestWin = 0.0;
+            this.isEmpty = false;
         }
 
         // used when loaded from XML
-        public Profile(String name, double balance, double highestWin) {
+        public Profile(String name, double balance, double highestWin, boolean isEmpty) {
             this.name = name;
             this.balance = balance;
             this.highestWin = highestWin;
+            this.isEmpty = isEmpty;
         }
 
         // used when generating a placeholder list for regenerated XML file (missing etc.)
@@ -139,6 +165,7 @@ public class ProfileData {
             this.name = "Empty";
             this.balance = 5000.0;
             this.highestWin = 0.0;
+            this.isEmpty = true;
         }
 
         public double getBalance() {

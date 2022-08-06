@@ -19,6 +19,14 @@ public class MainWindowController {
 
     @FXML
     public void initialize() {
+        // removing default focus in this window:
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                topLevelLayout.requestFocus();
+            }
+        });
+
         // title label setup
         titleLabel.setText("Mini Casino");
         titleLabel.setFont(Font.font("Times New Roman", 30));
