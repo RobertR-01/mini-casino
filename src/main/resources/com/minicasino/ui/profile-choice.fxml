@@ -28,7 +28,7 @@
             <padding>
                 <Insets top="2" right="2" bottom="2" left="2"/>
             </padding>
-            <Button text="X" alignment="CENTER" id="clearProfileButton"/>
+            <Button text="X" alignment="CENTER" id="clearProfileButton" onAction="#testXMLLoad"/>
             <Button fx:id="profile1Button" text="Empty" prefWidth="200" alignment="CENTER"/>
             <RadioButton fx:id="profile1RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
                          onAction="#handleRadioButton"/>

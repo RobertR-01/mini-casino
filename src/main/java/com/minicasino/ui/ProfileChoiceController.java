@@ -24,15 +24,8 @@ public class ProfileChoiceController {
 
     @FXML
     public void initialize() {
-        // header label setup
+        // header label setup:
         headerLabel.setFont(Font.font("Times New Roman", 20));
-
-        // testing ProfileData
-//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Ben"));
-//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Cass"));
-//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Clara"));
-//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Tom"));
-//        ProfileData.getProfileDataInstance().addProfile(new ProfileData.Profile("Jimmy"));
     }
 
     @FXML
@@ -53,6 +46,11 @@ public class ProfileChoiceController {
 
     @FXML
     public void testXMLSave() {
-        ProfileData.getProfileDataInstance().saveProfileData();
+//        ProfileData.getProfileDataInstance().saveProfileData(ProfileData.getProfileDataInstance().getProfileList());
+    }
+
+    @FXML
+    public void testXMLLoad() {
+        System.out.println(ProfileData.getProfileDataInstance().getProfileList());
     }
 }

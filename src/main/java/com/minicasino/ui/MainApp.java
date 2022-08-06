@@ -1,5 +1,6 @@
 package com.minicasino.ui;
 
+import com.minicasino.data.ProfileData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,11 +19,18 @@ public class MainApp extends Application {
         stage.setTitle("MiniCasino \u00A9");
         stage.setScene(scene);
         stage.show();
-//
-//        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("main-window.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 800, 500);
-//        stage.setScene(scene);
-//        stage.show();
+    }
+
+    @Override
+    public void stop() {
+        // save profiles (ProfileData) to XML:
+        ProfileData.getProfileDataInstance().saveProfileData(ProfileData.getProfileDataInstance().getProfileList());
+    }
+
+    @Override
+    public void init() {
+        // load profiles (ProfileData) form XML:
+        ProfileData.getProfileDataInstance().loadProfileData();
     }
 
     static void setRoot(String fxml) throws IOException {
