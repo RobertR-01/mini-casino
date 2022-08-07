@@ -18,15 +18,15 @@
                 </padding>
                 <HBox alignment="CENTER_RIGHT">
                     <Label text="Name: "/>
-                    <Label fx:id="nameLabel" text="No profile!"/>
+                    <Label fx:id="nameLabel" text="No profile selected!"/>
                 </HBox>
                 <HBox alignment="CENTER_RIGHT">
                     <Label text="Balance: "/>
-                    <Label fx:id="balanceLabel" text="No profile!"/>
+                    <Label fx:id="balanceLabel" text="No profile selected!"/>
                 </HBox>
                 <HBox alignment="CENTER_RIGHT">
                     <Label text="Highest win: "/>
-                    <Label fx:id="highestWinLabel" text="No profile!"/>
+                    <Label fx:id="highestWinLabel" text="No profile selected!"/>
                 </HBox>
             </VBox>
         </VBox>

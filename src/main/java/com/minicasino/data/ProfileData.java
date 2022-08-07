@@ -2,6 +2,7 @@ package com.minicasino.data;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
@@ -21,7 +22,7 @@ import java.util.Optional;
 
 public class ProfileData {
     private static final ProfileData PROFILE_DATA_INSTANCE = new ProfileData();
-    private final List<Profile> profileList;
+    private final ObservableList<Profile> profileList;
     private Profile activeProfile;
 
     private ProfileData() {
@@ -45,7 +46,18 @@ public class ProfileData {
         }
     }
 
-    public List<Profile> getProfileList() {
+    public Profile getActiveProfile() {
+        for (Profile profile : profileList) {
+            if (profile.isActive) {
+                activeProfile = profile;
+                return profile;
+            }
+        }
+        System.out.println("ProfileData.getActiveProfile() -> no active profile");
+        return null;
+    }
+
+    public ObservableList<Profile> getProfileList() {
         return profileList;
     }
 

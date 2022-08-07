@@ -1,6 +1,8 @@
 package com.minicasino.ui;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,6 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ProfileChoiceController {
     @FXML
@@ -25,6 +30,16 @@ public class ProfileChoiceController {
     private HBox profile0HBox;
     @FXML
     private ToggleGroup profileToggleGroup;
+    @FXML
+    private Button profile0Button;
+    @FXML
+    private Button profile1Button;
+    @FXML
+    private Button profile2Button;
+    @FXML
+    private Button profile3Button;
+    @FXML
+    private Button profile4Button;
 
     private Toggle previouslySelectedRadioButton;
 
@@ -42,7 +57,12 @@ public class ProfileChoiceController {
         headerLabel.setFont(Font.font("Times New Roman", 20));
 
         // data binding
-
+        List<Button> buttonList = new ArrayList<>();
+        Collections.addAll(buttonList, profile0Button, profile1Button, profile2Button, profile3Button, profile4Button);
+        ObservableList<String> listOfProfileNames = FXCollections.observableArrayList();
+        for (int i = 0; i < 5; i++) {
+//            buttonList.get(i).textProperty().bind(Bindings.valueAt(ProfileData.getProfileDataInstance().getProfileList().get(i).getName()));
+        }
     }
 
     @FXML
@@ -59,6 +79,8 @@ public class ProfileChoiceController {
             ((Node) previouslySelectedRadioButton).getParent().setId("unselectedProfileRow");
         }
         previouslySelectedRadioButton = sourceRadioButton;
+
+
     }
 
 
