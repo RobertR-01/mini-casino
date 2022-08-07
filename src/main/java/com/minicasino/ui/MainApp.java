@@ -19,6 +19,14 @@ public class MainApp extends Application {
         stage.setTitle("MiniCasino \u00A9");
         stage.setScene(scene);
         stage.show();
+
+        // moved from init()
+        try {
+            ProfileData.getProfileDataInstance().loadProfileData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ProfileData.getProfileDataInstance().showErrorDialog(scene.getWindow());
+        }
     }
 
     @Override
@@ -27,11 +35,17 @@ public class MainApp extends Application {
         ProfileData.getProfileDataInstance().saveProfileData(ProfileData.getProfileDataInstance().getProfileList());
     }
 
-    @Override
-    public void init() {
-        // load profiles (ProfileData) form XML:
-        ProfileData.getProfileDataInstance().loadProfileData();
-    }
+    // moved to start() for now
+//    @Override
+//    public void init() {
+//        // load profiles (ProfileData) form XML:
+//        try {
+//            ProfileData.getProfileDataInstance().loadProfileData();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            ProfileData.getProfileDataInstance().showErrorDialog(scene.getWindow());
+//        }
+//    }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
