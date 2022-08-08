@@ -50,7 +50,7 @@ public class MainWindowController {
         alert.setTitle("About Mini Casino");
         alert.setHeaderText("Mini Casino: The Game");
         alert.setContentText("v" + MainApp.APP_VERSION + "\n\nCopyright \u00A9 2022 RobertR-01"
-                             + "\nGitHub: https://github.com/RobertR-01/mini-casino");
+                             + "\nSource code: https://github.com/RobertR-01/mini-casino");
         alert.show();
     }
 

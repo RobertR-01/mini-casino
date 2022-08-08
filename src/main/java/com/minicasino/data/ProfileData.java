@@ -24,6 +24,7 @@ public class ProfileData {
     private static final ProfileData PROFILE_DATA_INSTANCE = new ProfileData();
     private final ObservableList<Profile> profileList;
     private Profile activeProfile;
+    private Profile currentlyEditedProfile;
 
     private ProfileData() {
 //        profileList = new ArrayList<>();
@@ -54,6 +55,21 @@ public class ProfileData {
             }
         }
         System.out.println("ProfileData.getActiveProfile() -> no active profile");
+        return null;
+    }
+
+    public void setCurrentlyEditedProfile(Profile currentlyEditedProfile) {
+        this.currentlyEditedProfile = currentlyEditedProfile;
+    }
+
+    public Profile getCurrentlyEditedProfile() {
+        for (Profile profile : profileList) {
+            if (profile.isBeingEdited) {
+                currentlyEditedProfile = profile;
+                return profile;
+            }
+        }
+        System.out.println("ProfileData.getCurrentlyEditedProfile() -> no profile is being edited at the moment");
         return null;
     }
 
@@ -178,6 +194,7 @@ public class ProfileData {
         private double highestWin;
         private final boolean isEmpty;
         private boolean isActive;
+        private boolean isBeingEdited;
 
         // used when creating a new profile from the UI
         public Profile(String name) {
@@ -191,6 +208,7 @@ public class ProfileData {
             this.highestWin = highestWin;
             this.isEmpty = isEmpty;
             this.isActive = isActive;
+            this.isBeingEdited = false;
         }
 
         // used when generating a placeholder list for regenerated XML file (missing etc.)
@@ -232,6 +250,14 @@ public class ProfileData {
 
         public boolean isActive() {
             return isActive;
+        }
+
+        public boolean isBeingEdited() {
+            return isBeingEdited;
+        }
+
+        public void setBeingEdited(boolean beingEdited) {
+            isBeingEdited = beingEdited;
         }
 
         public void setHighestWin(double highestWin) {
