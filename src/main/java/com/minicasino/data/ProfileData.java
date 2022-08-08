@@ -143,22 +143,22 @@ public class ProfileData {
         }
 
         // loads data from XML to ProfileData using JDOM:
-            SAXBuilder builder = new SAXBuilder();
-            Document document = builder.build(new File(profilesFilePath));
-            Element root = document.getRootElement();
+        SAXBuilder builder = new SAXBuilder();
+        Document document = builder.build(new File(profilesFilePath));
+        Element root = document.getRootElement();
 
-            for (int i = 0; i < 5; i++) {
-                Element child = root.getChildren().get(i);
-                Profile profile = new Profile(child.getChild("NAME").getText(),
-                                              Double.parseDouble(child.getChild("BALANCE").getText()),
-                                              Double.parseDouble(child.getChild("HIGHEST_WIN").getText()),
-                                              Boolean.parseBoolean(child.getChild("IS_EMPTY").getText()),
-                                              Boolean.parseBoolean(child.getChild("IS_ACTIVE").getText()));
-                addProfile(profile);
-            }
+        for (int i = 0; i < 5; i++) {
+            Element child = root.getChildren().get(i);
+            Profile profile = new Profile(child.getChild("NAME").getText(),
+                                          Double.parseDouble(child.getChild("BALANCE").getText()),
+                                          Double.parseDouble(child.getChild("HIGHEST_WIN").getText()),
+                                          Boolean.parseBoolean(child.getChild("IS_EMPTY").getText()),
+                                          Boolean.parseBoolean(child.getChild("IS_ACTIVE").getText()));
+            addProfile(profile);
+        }
 
-            // originally: catch IOException | JDOMException e
-            // TODO: usage of Exception is probably too broad
+        // originally: catch IOException | JDOMException e
+        // TODO: usage of Exception is probably too broad
 //            e.printStackTrace();
 //            System.out.println("ProfileData.loadProfileData() problem");
     }
@@ -189,7 +189,7 @@ public class ProfileData {
     }
 
     public static class Profile {
-        private final String name;
+        private String name;
         private double balance;
         private double highestWin;
         private final boolean isEmpty;
@@ -222,6 +222,14 @@ public class ProfileData {
 
         public String getName() {
             return name;
+        }
+
+        public boolean setName(String name) {
+            if ((name.trim().length() != 0) && !name.trim().equalsIgnoreCase("empty")) {
+                this.name = name;
+                return true;
+            }
+            return false;
         }
 
         public void increaseBalance(double amount) {

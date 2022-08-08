@@ -13,10 +13,25 @@ public class NewProfileDialogController {
     @FXML
     private Label highestWinLabel;
 
+    private ProfileData.Profile editedProfile;
+
     public void initialize() {
-        ProfileData.Profile editedProfile = ProfileData.getProfileDataInstance().getCurrentlyEditedProfile();
+        editedProfile = ProfileData.getProfileDataInstance().getCurrentlyEditedProfile();
         profileNameTextField.setText(editedProfile.getName());
         balanceLabel.setText(String.valueOf(editedProfile.getBalance()));
         highestWinLabel.setText(String.valueOf(editedProfile.getHighestWin()));
+    }
+
+    public boolean processTextInput() {
+        // TODO: can possibly get rid of trim()
+        String name = profileNameTextField.getText().trim();
+
+        // parameters validation done in ProfileData
+        // TODO: can possibly get rid of null check for editedProfile
+        return editedProfile.setName(name) && (editedProfile != null);
+    }
+
+    public String getTextFieldValue() {
+        return profileNameTextField.getText();
     }
 }
