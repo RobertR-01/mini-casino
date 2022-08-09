@@ -12,6 +12,7 @@ import java.io.IOException;
 public class MainApp extends Application {
     public final static String APP_VERSION = "0.0.1";
     private static Scene scene;
+    private Exception exception;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -20,12 +21,19 @@ public class MainApp extends Application {
         stage.setScene(scene);
         stage.show();
 
+        if (exception != null) {
+            ProfileData.getProfileDataInstance().showErrorDialog(scene.getWindow());
+        }
+    }
+
+    @Override
+    public void init() throws Exception {
         // moved from init()
         try {
             ProfileData.getProfileDataInstance().loadProfileData();
         } catch (Exception e) {
             e.printStackTrace();
-            ProfileData.getProfileDataInstance().showErrorDialog(scene.getWindow());
+            exception = e;
         }
     }
 

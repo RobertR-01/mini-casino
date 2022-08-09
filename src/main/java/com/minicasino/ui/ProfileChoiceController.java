@@ -13,11 +13,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import org.jdom2.Element;
+import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class ProfileChoiceController {
     @FXML
@@ -69,18 +70,29 @@ public class ProfileChoiceController {
         // HBox map for fetching Buttons, RadioButtons etc.:
         profileHBoxMap = Map.of(0, profile0HBox, 1, profile1HBox, 2, profile2HBox, 3, profile3HBox, 4, profile4HBox);
 
-        // data binding
+        // data binding and buttons' handlers setup:
         ObservableList<ProfileData.Profile> profiles = ProfileData.getProfileDataInstance().getProfileList();
-        for (Map.Entry<Integer, HBox> hBoxEntry : profileHBoxMap.entrySet()) {
-            Button button = (Button) hBoxEntry.getValue().getChildren().get(1);
-            button.setOnAction(new EventHandler<ActionEvent>() {
+        for (Map.Entry<Integer, HBox> entry : profileHBoxMap.entrySet()) {
+            // profile creation buttons setup:
+            Button profileButton = (Button) entry.getValue().getChildren().get(1);
+            profileButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     handleProfileButton(event);
                 }
             });
-            int index = hBoxEntry.getKey();
-            button.textProperty().bind(Bindings.createObjectBinding(() -> profiles.get(index).getName(), profiles));
+            int index = entry.getKey();
+            profileButton.textProperty().bind(Bindings.createObjectBinding(() -> profiles.get(index).getName(),
+                                                                           profiles));
+
+            // clear buttons handlers setup:
+            Button clearButton = (Button) entry.getValue().getChildren().get(0);
+            clearButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    handleClearProfileButton(event);
+                }
+            });
         }
 
         // selecting previously set active profile (row):
@@ -94,9 +106,27 @@ public class ProfileChoiceController {
 
         // deactivating RadioButtons for empty profiles (data binding approach):
         for (Map.Entry<Integer, HBox> entry : profileHBoxMap.entrySet()) {
-            RadioButton toggle = entry.getValue().getChildren().get(2);
+            RadioButton radioButton = (RadioButton) entry.getValue().getChildren().get(2);
+            Button clearButton = (Button) entry.getValue().getChildren().get(0);
             int index = entry.getKey();
-             toggle.pr().bind(Bindings.createObjectBinding(() -> !profiles.get(index).isEmpty()));
+            radioButton.disableProperty().bind(Bindings.createObjectBinding(() -> profiles.get(index).isEmpty(),
+                                                                            profiles));
+            clearButton.disableProperty().bind(Bindings.createObjectBinding(() -> profiles.get(index).isEmpty(),
+                                                                            profiles));
+        }
+
+        // tooltips setup:
+        // TODO: remove all that code duplication - there are like 3 exact same for-each loops
+        for (Map.Entry<Integer, HBox> entry : profileHBoxMap.entrySet()) {
+            Button clearButton = (Button) entry.getValue().getChildren().get(0);
+            Button profileButton = (Button) entry.getValue().getChildren().get(1);
+            RadioButton radioButton = (RadioButton) entry.getValue().getChildren().get(2);
+            clearButton.setTooltip((new Tooltip("Clear the profile data")));
+            clearButton.tooltipProperty().getValue().setShowDelay(Duration.millis(500));
+            profileButton.setTooltip(new Tooltip("Edit the profile data"));
+            profileButton.tooltipProperty().getValue().setShowDelay(Duration.millis(500));
+            radioButton.setTooltip(new Tooltip("Set the profile active"));
+            radioButton.tooltipProperty().getValue().setShowDelay(Duration.millis(500));
         }
     }
 
@@ -123,6 +153,8 @@ public class ProfileChoiceController {
         profileHBoxMap.get(index).setId("selectedProfileRow"); // border
         // setting active profile:
         ProfileData.getProfileDataInstance().getProfileList().get(index).setActive(true);
+        // TODO: do something about this crap:
+//        ProfileData.getProfileDataInstance().forceListChange();
     }
 
     private int findHBoxMapKeyByChild(Map<Integer, HBox> map, Node child) {
@@ -190,9 +222,32 @@ public class ProfileChoiceController {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             controller.processTextInput();
+            // TODO: do something about this god damnit
             ProfileData.getProfileDataInstance().forceListChange();
         }
 
         editedProfile.setBeingEdited(false);
+    }
+
+    @FXML
+    public void handleClearProfileButton(ActionEvent event) {
+        // find the event source (button):
+        Button eventSource = (Button) event.getSource();
+        // TODO: check for -1 from findMapKeyByButton
+        int index = findHBoxMapKeyByChild(profileHBoxMap, eventSource);
+        ProfileData.Profile profileToClear = ProfileData.getProfileDataInstance().getProfileList().get(index);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Profile deletion");
+        alert.setHeaderText("Profile: " + profileToClear.getName());
+        alert.setContentText("Are you sure you want to clear all the data saved to this profile?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+            ProfileData.getProfileDataInstance().clearProfile(index);
+            profileHBoxMap.get(index).setId("unselectedProfileRow");
+            ((Toggle) profileHBoxMap.get(index).getChildren().get(2)).setSelected(false);
+//            ProfileData.getProfileDataInstance().forceListChange();
+        }
     }
 }

@@ -57,7 +57,7 @@ public class ProfileData {
         for (Profile profile : profileList) {
             if (profile.isActive) {
                 activeProfile = profile;
-                return profile;
+                return activeProfile;
             }
         }
         System.out.println("ProfileData.getActiveProfile() -> no active profile");
@@ -68,7 +68,7 @@ public class ProfileData {
         for (Profile profile : profileList) {
             if (profile.isBeingEdited) {
                 currentlyEditedProfile = profile;
-                return profile;
+                return currentlyEditedProfile;
             }
         }
         System.out.println("ProfileData.getCurrentlyEditedProfile() -> no profile is being edited at the moment");

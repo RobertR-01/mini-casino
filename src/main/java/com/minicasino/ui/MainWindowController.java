@@ -1,5 +1,6 @@
 package com.minicasino.ui;
 
+import com.minicasino.data.ProfileData;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,6 +17,12 @@ public class MainWindowController {
     private Label titleLabel;
     @FXML
     private Label subTitleLabel;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private Label balanceLabel;
+    @FXML
+    private Label highestWinLabel;
 
     @FXML
     public void initialize() {
@@ -32,6 +39,18 @@ public class MainWindowController {
         titleLabel.setFont(Font.font("Times New Roman", 30));
         subTitleLabel.setText("The Game");
         subTitleLabel.setFont(Font.font("Times New Roman", 20));
+
+        // active profile labels setup:
+        ProfileData.Profile activeProfile = ProfileData.getProfileDataInstance().getActiveProfile();
+        if (activeProfile != null) {
+            nameLabel.setText(activeProfile.getName());
+            balanceLabel.setText(String.valueOf(activeProfile.getBalance()));
+            highestWinLabel.setText(String.valueOf(activeProfile.getHighestWin()));
+        } else {
+            nameLabel.setText("No active profile selected!");
+            balanceLabel.setText("No active profile selected!");
+            highestWinLabel.setText("No active profile selected!");
+        }
     }
 
     @FXML
