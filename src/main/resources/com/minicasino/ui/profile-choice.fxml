@@ -60,6 +60,6 @@
             <RadioButton fx:id="profile4RadioButton" alignment="CENTER" toggleGroup="$profileToggleGroup"
                          onAction="#handleRadioButton"/>
         </HBox>
-        <Button fx:id="cancelButton" text="Cancel" onAction="#handleCancelButton"/>
+        <Button fx:id="backButton" text="Back" onAction="#handleBackButton"/>
     </VBox>
 </GridPane>

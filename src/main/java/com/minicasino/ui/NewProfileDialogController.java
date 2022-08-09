@@ -22,13 +22,23 @@ public class NewProfileDialogController {
         highestWinLabel.setText(String.valueOf(editedProfile.getHighestWin()));
     }
 
-    public boolean processTextInput() {
-        // TODO: can possibly get rid of trim()
+    public String validateNameArgument() {
         String name = profileNameTextField.getText().trim();
+        if (name.length() != 0 && !name.equalsIgnoreCase("empty")) {
+            return name;
+        }
+        return null;
+    }
 
+    public void processTextInput() {
         // parameters validation done in ProfileData
-        // TODO: can possibly get rid of null check for editedProfile
-        return editedProfile.setName(name) && (editedProfile != null);
+        // TODO: check if editedProfile needs validation first
+        if (validateNameArgument() != null) {
+            editedProfile.setName(validateNameArgument());
+        } else {
+            System.out.println("NewProfileDialogController.processTextInput() -> can't set name;"
+                               + " validateNameArgument returned null");
+        }
     }
 
     public String getTextFieldValue() {

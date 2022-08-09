@@ -27,7 +27,6 @@ public class ProfileData {
     private Profile currentlyEditedProfile;
 
     private ProfileData() {
-//        profileList = new ArrayList<>();
         profileList = FXCollections.observableArrayList();
     }
 
@@ -35,13 +34,20 @@ public class ProfileData {
         return PROFILE_DATA_INSTANCE;
     }
 
-    public void addProfile(Profile profile) {
+    // temporary solution
+    public void forceListChange() {
+        profileList.add(new Profile());
+        profileList.remove(5);
+    }
+
+    // for the internal use only
+    private void addProfile(Profile profile) {
         if ((profile != null) && (profileList.size() < 5)) {
             profileList.add(profile);
         }
     }
 
-    private void clearProfile(int index) {
+    public void clearProfile(int index) {
         if (profileList.get(index) != null && index < 5) {
             profileList.set(index, new Profile());
         }
@@ -56,10 +62,6 @@ public class ProfileData {
         }
         System.out.println("ProfileData.getActiveProfile() -> no active profile");
         return null;
-    }
-
-    public void setCurrentlyEditedProfile(Profile currentlyEditedProfile) {
-        this.currentlyEditedProfile = currentlyEditedProfile;
     }
 
     public Profile getCurrentlyEditedProfile() {
@@ -147,6 +149,7 @@ public class ProfileData {
         Document document = builder.build(new File(profilesFilePath));
         Element root = document.getRootElement();
 
+        // there must always sbe 5 profiles in the list (will be auto generated otherwise)
         for (int i = 0; i < 5; i++) {
             Element child = root.getChildren().get(i);
             Profile profile = new Profile(child.getChild("NAME").getText(),
@@ -192,7 +195,7 @@ public class ProfileData {
         private String name;
         private double balance;
         private double highestWin;
-        private final boolean isEmpty;
+        private boolean isEmpty;
         private boolean isActive;
         private boolean isBeingEdited;
 
@@ -282,7 +285,8 @@ public class ProfileData {
 
         @Override
         public String toString() {
-            return "Profile {" + name + ", " + balance + ", " + highestWin + "}";
+            return "Profile {" + name + ", " + balance + ", " + highestWin + ", active: " + isActive + ", edited: "
+                   + isBeingEdited + "}";
         }
     }
 }

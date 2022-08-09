@@ -17,7 +17,7 @@ public class GameChoiceController {
     @FXML
     private Button slotsButton;
     @FXML
-    private Button cancelButton;
+    private Button backButton;
 
     @FXML
     public void initialize() {
@@ -34,7 +34,7 @@ public class GameChoiceController {
     }
 
     @FXML
-    public void handleCancelButton() throws IOException {
+    public void handleBackButton() throws IOException {
         MainApp.setRoot("main-window");
     }
 

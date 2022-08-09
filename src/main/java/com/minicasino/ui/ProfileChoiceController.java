@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ProfileChoiceController {
     @FXML
@@ -25,7 +26,7 @@ public class ProfileChoiceController {
     @FXML
     private Label headerLabel;
     @FXML
-    private Button cancelButton;
+    private Button backButton;
     @FXML
     private HBox profile0HBox;
     @FXML
@@ -67,14 +68,15 @@ public class ProfileChoiceController {
                     handleProfileButton(event);
                 }
             });
+            int index = i;
             buttonList.get(i).textProperty().bind(Bindings.createObjectBinding(
-                    () -> ProfileData.getProfileDataInstance().getProfileList().get(0).getName(),
+                    () -> ProfileData.getProfileDataInstance().getProfileList().get(index).getName(),
                     ProfileData.getProfileDataInstance().getProfileList()));
         }
     }
 
     @FXML
-    public void handleCancelButton() throws IOException {
+    public void handleBackButton() throws IOException {
         MainApp.setRoot("main-window");
     }
 
@@ -88,7 +90,7 @@ public class ProfileChoiceController {
         }
         previouslySelectedRadioButton = sourceRadioButton;
 
-
+        // more
     }
 
     @FXML
@@ -98,7 +100,8 @@ public class ProfileChoiceController {
         int index = buttonList.indexOf(eventSource);
         ProfileData.Profile editedProfile = ProfileData.getProfileDataInstance().getProfileList().get(index);
         editedProfile.setBeingEdited(true); // TODO: move it to the ProfileData from the Profile class
-        ProfileData.getProfileDataInstance().setCurrentlyEditedProfile(editedProfile);
+        // TODO: obsolete step?
+//        ProfileData.getProfileDataInstance().setCurrentlyEditedProfile(editedProfile);
 
         // set up the new dialog:
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -120,58 +123,34 @@ public class ProfileChoiceController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         NewProfileDialogController controller = fxmlLoader.getController();
-        dialog.show();
 
-//        Optional<ButtonType> result = dialog.showAndWait();
-        System.out.println("after dialog.show");
-
-        dialog.setOnCloseRequest(new EventHandler<DialogEvent>() {
-            @Override
-            public void handle(DialogEvent event) {
-                while (true) {
-                    System.out.println("entering while");
-                    ButtonType result = dialog.getResult();
-
-                    System.out.println("result - " + result);
-                    if ((result != null) && (result == ButtonType.OK)) {
-                        System.out.println("OK clicked");
-                        if (controller.processTextInput()) {
-                            System.out.println("name correct. breaking while");
-                            break;
-                        } else {
-                            System.out.println("name incorrect - showing alert");
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                    alert.setTitle("Warning!");
-                                    alert.setContentText("The profile name cannot be set to: \"" + controller.getTextFieldValue()
-                                                         + "\" or be left empty");
-                                    alert.initOwner(dialog.getDialogPane().getScene().getWindow());
-                                    alert.initModality(Modality.APPLICATION_MODAL);
-                                    System.out.println("before alert.show");
-                                    alert.show();
-                                    System.out.println("after alert.show");
+        // event filter for input validation:
+        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        buttonOK.addEventFilter(ActionEvent.ACTION,
+                                actionEvent -> {
+                                    // Check whether some conditions are fulfilled
+                                    if (controller.validateNameArgument() == null) {
+                                        // the TextField contents are prohibited, so we consume th event
+                                        // to prevent the dialog from closing
+                                        actionEvent.consume();
+                                        // warning alert:
+                                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                                        alert.setTitle("Profile edition error");
+                                        alert.setHeaderText("Invalid profile name!");
+                                        alert.setContentText("The profile name cannot be set to: \"Empty\" "
+                                                             + "or left void.");
+                                        alert.showAndWait();
+                                    }
                                 }
-                            });
-                        }
-                    } else {
-                        System.out.println("cancel clicked");
-                        break;
-                    }
-                }
+        );
 
-                System.out.println("setting editable to false");
-                System.out.println("name set to : " + editedProfile.getName());
-                editedProfile.setBeingEdited(false);
-                System.out.println("done");
-            }
-        });
+        // dialog result processing:
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.processTextInput();
+            ProfileData.getProfileDataInstance().forceListChange();
+        }
 
-
-//        System.out.println("setting editable to false");
-//        System.out.println("name set to : " + editedProfile.getName());
-//        editedProfile.setBeingEdited(false);
-//        System.out.println("done");
+        editedProfile.setBeingEdited(false);
     }
 }
