@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROFILES>
   <PROFILE0>
-    <NAME>alfons</NAME>
+    <NAME>profile1</NAME>
     <BALANCE>5000.0</BALANCE>
     <HIGHEST_WIN>0.0</HIGHEST_WIN>
     <IS_EMPTY>true</IS_EMPTY>
-    <IS_ACTIVE>false</IS_ACTIVE>
+    <IS_ACTIVE>true</IS_ACTIVE>
   </PROFILE0>
   <PROFILE1>
-    <NAME>ss</NAME>
+    <NAME>profile2</NAME>
     <BALANCE>5000.0</BALANCE>
     <HIGHEST_WIN>0.0</HIGHEST_WIN>
     <IS_EMPTY>true</IS_EMPTY>
