@@ -3,6 +3,7 @@ package com.minicasino.ui;
 import com.minicasino.data.ProfileData;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -69,6 +70,7 @@ public class ProfileChoiceController {
         profileHBoxMap = Map.of(0, profile0HBox, 1, profile1HBox, 2, profile2HBox, 3, profile3HBox, 4, profile4HBox);
 
         // data binding
+        ObservableList<ProfileData.Profile> profiles = ProfileData.getProfileDataInstance().getProfileList();
         for (Map.Entry<Integer, HBox> hBoxEntry : profileHBoxMap.entrySet()) {
             Button button = (Button) hBoxEntry.getValue().getChildren().get(1);
             button.setOnAction(new EventHandler<ActionEvent>() {
@@ -78,12 +80,11 @@ public class ProfileChoiceController {
                 }
             });
             int index = hBoxEntry.getKey();
-            button.textProperty().bind(Bindings.createObjectBinding(
-                    () -> ProfileData.getProfileDataInstance().getProfileList().get(index).getName(),
-                    ProfileData.getProfileDataInstance().getProfileList()));
+            button.textProperty().bind(Bindings.createObjectBinding(() -> profiles.get(index).getName(), profiles));
         }
 
         // selecting previously set active profile (row):
+        // TODO: consider data binding for this (styleProperty -> is active in profile (list))
         ProfileData.Profile activeProfile = ProfileData.getProfileDataInstance().getActiveProfile();
         if (activeProfile != null) {
             int index = ProfileData.getProfileDataInstance().getProfileList().indexOf(activeProfile);
@@ -91,21 +92,12 @@ public class ProfileChoiceController {
             ((Toggle) profileHBoxMap.get(index).getChildren().get(2)).setSelected(true);
         }
 
-/*        // old
-        buttonList = new ArrayList<>();
-        Collections.addAll(buttonList, profile0Button, profile1Button, profile2Button, profile3Button, profile4Button);
-        for (int i = 0; i < 5; i++) {
-            buttonList.get(i).setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    handleProfileButton(event);
-                }
-            });
-            int index = i;
-            buttonList.get(i).textProperty().bind(Bindings.createObjectBinding(
-                    () -> ProfileData.getProfileDataInstance().getProfileList().get(index).getName(),
-                    ProfileData.getProfileDataInstance().getProfileList()));
-        }*/
+        // deactivating RadioButtons for empty profiles (data binding approach):
+        for (Map.Entry<Integer, HBox> entry : profileHBoxMap.entrySet()) {
+            RadioButton toggle = entry.getValue().getChildren().get(2);
+            int index = entry.getKey();
+             toggle.pr().bind(Bindings.createObjectBinding(() -> !profiles.get(index).isEmpty()));
+        }
     }
 
     @FXML
@@ -131,28 +123,6 @@ public class ProfileChoiceController {
         profileHBoxMap.get(index).setId("selectedProfileRow"); // border
         // setting active profile:
         ProfileData.getProfileDataInstance().getProfileList().get(index).setActive(true);
-
-
-/*
-
-        // old - using current and previously active profile:
-        // TODO: consider data binding for style property -> isActive of the profile in the profile list
-        // selecting the current row:
-        Toggle sourceRadioButton = (Toggle) event.getSource();
-        int index = findHBoxMapKeyByChild(profileHBoxMap, (Node) sourceRadioButton);
-        profileHBoxMap.get(index).setId("selectedProfileRow"); // border
-        // setting active profile:
-        ProfileData.getProfileDataInstance().getProfileList().get(index).setActive(true);
-
-        // skipped if there was no active profile before:
-        if (previouslySelectedRadioButton != null) {
-            int previouslySelectedIndex = findHBoxMapKeyByChild(profileHBoxMap, (Node) previouslySelectedRadioButton);
-            // setting previous profile as inactive:
-            ProfileData.getProfileDataInstance().getProfileList().get(previouslySelectedIndex).setActive(false);
-            // unselecting the previously selected row:
-            ((Node) previouslySelectedRadioButton).getParent().setId("unselectedProfileRow"); // no border
-        }
-        previouslySelectedRadioButton = sourceRadioButton;*/
     }
 
     private int findHBoxMapKeyByChild(Map<Integer, HBox> map, Node child) {
@@ -166,16 +136,6 @@ public class ProfileChoiceController {
         System.out.println("ProfileChoiceController.findHBoxMapKeyByChild() -> no such key");
         return -1;
     }
-
-//    private int findMapKeyByButton(Map<Integer, HBox> map, Button button) {
-//        for (Map.Entry<Integer, HBox> entry : map.entrySet()) {
-//            if (entry.getValue().getChildren().get(1).equals(button)) {
-//                return entry.getKey();
-//            }
-//        }
-//        System.out.println("ProfileChoiceController.findMapKeyByButton() -> no such key");
-//        return -1;
-//    }
 
     @FXML
     public void handleProfileButton(ActionEvent event) {
@@ -211,23 +171,20 @@ public class ProfileChoiceController {
 
         // event filter for input validation:
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-        buttonOK.addEventFilter(ActionEvent.ACTION,
-                                actionEvent -> {
-                                    // Check whether some conditions are fulfilled
-                                    if (controller.validateNameArgument() == null) {
-                                        // the TextField contents are prohibited, so we consume th event
-                                        // to prevent the dialog from closing
-                                        actionEvent.consume();
-                                        // warning alert:
-                                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                                        alert.setTitle("Profile edition error");
-                                        alert.setHeaderText("Invalid profile name!");
-                                        alert.setContentText("The profile name cannot be set to: \"Empty\" "
-                                                             + "or left void.");
-                                        alert.showAndWait();
-                                    }
-                                }
-        );
+        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
+            // Check whether some conditions are fulfilled
+            if (controller.validateNameArgument() == null) {
+                // the TextField contents are prohibited, so we consume th event
+                // to prevent the dialog from closing
+                actionEvent.consume();
+                // warning alert:
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Profile edition error");
+                alert.setHeaderText("Invalid profile name!");
+                alert.setContentText("The profile name cannot be set to: \"Empty\" or left void.");
+                alert.showAndWait();
+            }
+        });
 
         // dialog result processing:
         Optional<ButtonType> result = dialog.showAndWait();

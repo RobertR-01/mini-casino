@@ -259,6 +259,10 @@ public class ProfileData {
             return isEmpty;
         }
 
+        public void setEmpty(boolean empty) {
+            isEmpty = empty;
+        }
+
         public boolean isActive() {
             return isActive;
         }

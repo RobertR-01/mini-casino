@@ -35,6 +35,7 @@ public class NewProfileDialogController {
         // TODO: check if editedProfile needs validation first
         if (validateNameArgument() != null) {
             editedProfile.setName(validateNameArgument());
+            editedProfile.setEmpty(false);
         } else {
             System.out.println("NewProfileDialogController.processTextInput() -> can't set name;"
                                + " validateNameArgument returned null");
