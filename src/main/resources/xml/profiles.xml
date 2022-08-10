@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROFILES>
   <PROFILE0>
-    <NAME>Player1</NAME>
-    <BALANCE>0.0</BALANCE>
-    <HIGHEST_WIN>15000.0</HIGHEST_WIN>
-    <IS_EMPTY>false</IS_EMPTY>
-    <IS_ACTIVE>true</IS_ACTIVE>
+    <NAME>Empty</NAME>
+    <BALANCE>5000.0</BALANCE>
+    <HIGHEST_WIN>0.0</HIGHEST_WIN>
+    <IS_EMPTY>true</IS_EMPTY>
+    <IS_ACTIVE>false</IS_ACTIVE>
   </PROFILE0>
   <PROFILE1>
     <NAME>Player2</NAME>
-    <BALANCE>5000.0</BALANCE>
-    <HIGHEST_WIN>0.0</HIGHEST_WIN>
+    <BALANCE>4500.0</BALANCE>
+    <HIGHEST_WIN>500.0</HIGHEST_WIN>
     <IS_EMPTY>false</IS_EMPTY>
-    <IS_ACTIVE>false</IS_ACTIVE>
+    <IS_ACTIVE>true</IS_ACTIVE>
   </PROFILE1>
   <PROFILE2>
     <NAME>Empty</NAME>

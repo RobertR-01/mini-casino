@@ -55,7 +55,17 @@ public class MainWindowController {
 
     @FXML
     public void handlePlayButton() throws IOException {
-        MainApp.setRoot("game-choice");
+        ProfileData.Profile activeProfile = ProfileData.getProfileDataInstance().getActiveProfile();
+        if (activeProfile == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("No active profile selected!");
+            alert.setContentText("Select one of the previously created profiles as active before continuing. "
+                                 + "(Main Menu -> Player Profile)");
+            alert.showAndWait();
+        } else {
+            MainApp.setRoot("game-choice");
+        }
     }
 
     @FXML
