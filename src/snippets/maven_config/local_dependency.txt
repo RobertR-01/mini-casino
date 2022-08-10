@@ -1,0 +1,77 @@
+There are many ways to add local jar files to a Maven project:
+
+1.Install manually the JAR into a local Maven repository
+
+Use this plugin:
+
+mvn install:install-file -Dfile=<path-to-file>
+
+Example:
+
+mvn install:install-file –Dfile=C:\dev\app.jar -DgroupId=com.roufid.tutorials -DartifactId=example-app -Dversion=1.0
+
+Now, add the dependency to your Maven project by adding these lines to your pom.xml file:
+
+<dependency>
+
+    <groupId>com.roufid.tutorials</groupId>
+
+    <artifactId>example-app</artifactId>
+
+    <version>1.0</version>
+
+</dependency>
+
+2. Adding directly the dependency as system scope:
+
+Consider that the JAR is located in <PROJECT_ROOT_FOLDER>/lib.
+
+After this add the dependency in your pom.xml file as following:
+
+<dependency>
+
+    <groupId>com.roufid.tutorials</groupId>
+
+    <artifactId>example-app</artifactId>
+
+    <version>1.0</version>
+
+    <scope>system</scope>
+
+    <systemPath>${basedir}/lib/yourJar.jar</systemPath>
+
+</dependency>
+
+3. Creating a different local Maven repository:
+
+This one is quite similar to the first one, the only difference lies in the fact that the JARs will be installed in a different local Maven repository.
+
+First, deploy the local JARs in the new local maven repository as below:
+
+mvn deploy:deploy-file -Dfile=<path-to-file> -DgroupId=<group-id>
+
+After deploying the JARs you need to add the repository in your pom.xml file:
+
+<repositories>
+
+    <repository>
+
+        <id>maven-repository</id>
+
+        <url>file:///${project.basedir}/maven-repository</url>
+
+    </repository>
+
+</repositories>
+
+After this add the dependency into your pom.xml
+
+<dependency>
+
+    <groupId>com.roufid.tutorials</groupId>
+
+    <artifactId>example-app</artifactId>
+
+    <version>1.0</version>
+
+</dependency>

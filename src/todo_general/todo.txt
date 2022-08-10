@@ -8,3 +8,6 @@
 - free spins mechanics for reels
 - buy in for all games (separate dialog with slider; probably requires some changes regarding the current session init)
 - remaining buttons for the slots window
+
+- fix maven dependencies (possible duplicates, e.g. javafx-graphics)
+

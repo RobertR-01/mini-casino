@@ -118,7 +118,10 @@ public class ProfileData {
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
         try {
-            out.output(document, new FileWriter(new File("src/main/resources/xml/", "profiles.xml")));
+            // IDE:
+//            out.output(document, new FileWriter(new File("src/main/resources/", "xml/profiles.xml")));
+            // packaging:
+            out.output(document, new FileWriter(new File("./user_config/profiles.xml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,7 +140,10 @@ public class ProfileData {
     /* TODO: write some proper validation for the XML file to be loaded - currently the method only checks if the file
         exists; loading an XML with a wrong structure is possible and is going to result in errors */
     public void loadProfileData() throws Exception {
-        String profilesFilePath = "src/main/resources/xml/profiles.xml";
+        // IDE:
+//        String profilesFilePath = "src/main/resources/xml/profiles.xml";
+        // packaging:
+        String profilesFilePath = "./user_config/profiles.xml";
         // check if XML exists; otherwise generate one based on a list of empty profiles:
         File tempFile = new File(profilesFilePath);
         if (!tempFile.exists()) {

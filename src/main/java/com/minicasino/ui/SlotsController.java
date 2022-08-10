@@ -186,9 +186,9 @@ public class SlotsController {
                     spinConditionList.set(i, true);
                 }
                 spinReel(reel0SymbolList, reel0LabelList, 0);
-//                sleepCurrentThread();
+                sleepCurrentThread();
                 spinReel(reel1SymbolList, reel1LabelList, 1);
-//                sleepCurrentThread();
+                sleepCurrentThread();
                 spinReel(reel2SymbolList, reel2LabelList, 2);
                 return null;
             }
@@ -200,8 +200,8 @@ public class SlotsController {
     private void sleepCurrentThread() {
         try {
             Random random = new Random();
-//            Thread.sleep(random.nextInt(173, 391));
-            Thread.sleep(0);
+            Thread.sleep(random.nextInt(173, 391));
+//            Thread.sleep(0);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -272,7 +272,7 @@ public class SlotsController {
             protected Void call() throws Exception {
                 for (int i = 0; i < 3; i++) {
                     spinConditionList.set(i, false);
-//                    sleepCurrentThread();
+                    sleepCurrentThread();
                 }
                 return null;
             }
