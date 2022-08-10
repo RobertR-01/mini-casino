@@ -1,5 +1,6 @@
 package com.minicasino.logic;
 
+import com.minicasino.data.ProfileData;
 import com.minicasino.data.SlotsData;
 
 import java.util.ArrayList;
@@ -8,10 +9,12 @@ import java.util.List;
 public class SlotsLogic {
     private List<SlotsData.SlotSymbol> recentResultsList;
     private double currentBet;
+    private ProfileData.Profile activeProfile;
 
     public SlotsLogic(double currentBet) {
         this.recentResultsList = new ArrayList<>();
         this.currentBet = currentBet;
+        this.activeProfile = ProfileData.getProfileDataInstance().getActiveProfile();
     }
 
     /**
@@ -21,6 +24,7 @@ public class SlotsLogic {
      * @return The winnings amount. Returns 0 if the recently rolled line is not a valid winning combo.
      */
     public double calculateWinnings() {
+        // TODO: add index parameters to the signature instead of hardcoding them in code
         double winnings = 0;
         if (recentResultsList.get(2).getIndex() == recentResultsList.get(7).getIndex()
             && recentResultsList.get(7).getIndex() == recentResultsList.get(12).getIndex()) {
