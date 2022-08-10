@@ -12,10 +12,30 @@
         <VBox BorderPane.alignment="CENTER" alignment="CENTER">
             <Label fx:id="titleLabel" textAlignment="CENTER"/>
             <Label fx:id="subTitleLabel" textAlignment="CENTER"/>
+            <VBox alignment="CENTER">
+                <padding>
+                    <Insets top="40" right="20"/>
+                </padding>
+                <HBox alignment="CENTER_RIGHT">
+                    <Label text="Name: "/>
+                    <Label fx:id="nameLabel" text="No profile selected!"/>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT">
+                    <Label text="Balance: "/>
+                    <Label fx:id="balanceLabel" text="No profile selected!"/>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT">
+                    <Label text="Highest win: "/>
+                    <Label fx:id="highestWinLabel" text="No profile selected!"/>
+                </HBox>
+            </VBox>
         </VBox>
     </top>
     <center>
-        <VBox spacing="20" alignment="CENTER">
+        <VBox spacing="20" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="40"/>
+            </padding>
             <Button fx:id="playButton" text="Play" prefWidth="100" onAction="#handlePlayButton"/>
             <Button fx:id="profileButton" text="Player Profile" prefWidth="100" onAction="#handleProfileButton"/>
             <Button fx:id="optionsButton" text="Options" prefWidth="100" onAction="#handleOptionsButton"/>

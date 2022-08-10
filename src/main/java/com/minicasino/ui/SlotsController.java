@@ -1,16 +1,21 @@
 package com.minicasino.ui;
 
+import com.minicasino.data.ProfileData;
 import com.minicasino.data.SlotsData;
 import com.minicasino.logic.SlotsLogic;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
@@ -21,6 +26,8 @@ import java.util.List;
 import java.util.Random;
 
 public class SlotsController {
+    @FXML
+    private BorderPane topLevelLayout;
     @FXML
     private GridPane nestedGridPane;
     @FXML
@@ -63,6 +70,8 @@ public class SlotsController {
     private Spinner<Integer> betAmountSpinner;
     @FXML
     private Label lastWinValueLabel;
+    @FXML
+    private Label balanceValueLabel;
 
     private List<SlotsData.SlotSymbol> reel0SymbolList;
     private List<SlotsData.SlotSymbol> reel1SymbolList;
@@ -70,11 +79,30 @@ public class SlotsController {
     private List<Label> reel0LabelList;
     private List<Label> reel1LabelList;
     private List<Label> reel2LabelList;
-    private List<Boolean> spinConditionsList;
+    private List<Boolean> spinConditionList; // which reels should spin/stop
     private SlotsLogic currentSession;
+    private ProfileData.Profile activeProfile;
 
     @FXML
     public void initialize() {
+        // removing default focus in this window:
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                topLevelLayout.requestFocus();
+            }
+        });
+
+        // active profile setup:
+        // TODO: instead of loading full balance load a fraction (with a popup and a slider); update balance on quitting
+        activeProfile = ProfileData.getProfileDataInstance().getActiveProfile();
+        ObservableList<ProfileData.Profile> profileList = ProfileData.getProfileDataInstance().getProfileList();
+        // TODO: make active profile observable in ProfileData or something; same for edited one
+        int i = ProfileData.getProfileDataInstance().getProfileList().indexOf(activeProfile);
+        // TODO: potential problem with binding due to lack of list update
+        ProfileData.Profile profile = profileList.get(i); // TODO: remove it in favor of profileList.get(i)?
+        balanceValueLabel.textProperty().bind(Bindings.createObjectBinding(() -> String.valueOf(profile.getBalance()), profileList));
+
         // title label setup:
         titleLabel.setFont(Font.font("Times New Roman", 20));
 
@@ -101,19 +129,19 @@ public class SlotsController {
         initializeReel(reel2SymbolList, reel2LabelList);
 
         // conditions list setup:
-        spinConditionsList = new ArrayList<>();
-        Collections.addAll(spinConditionsList, false, false, false);
+        spinConditionList = new ArrayList<>();
+        Collections.addAll(spinConditionList, false, false, false);
     }
 
     private void initializeReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
         // ImageView prep:
-            for (int i = 0; i < 5; i++) {
-                ImageView imageView = new ImageView();
-                imageView.setFitWidth(50.0);
-                imageView.setFitHeight(50.0);
-                imageView.imageProperty().set(symbolList.get(i).getImage());
-                labelList.get(i).graphicProperty().set(imageView);
-            }
+        for (int i = 0; i < 5; i++) {
+            ImageView imageView = new ImageView();
+            imageView.setFitWidth(50.0);
+            imageView.setFitHeight(50.0);
+            imageView.imageProperty().set(symbolList.get(i).getImage());
+            labelList.get(i).graphicProperty().set(imageView);
+        }
     }
 
     private void shiftSymbolsList(List<SlotsData.SlotSymbol> list) {
@@ -122,6 +150,23 @@ public class SlotsController {
 
     @FXML
     public void handleSpinButton() {
+        // init current session SlotsLogic:
+        double bet = betAmountSpinner.getValue();
+        if (bet > activeProfile.getBalance()) {
+            // TODO: create warning alert
+            // warning alert:
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText("You don't have enough cash for this! :(");
+            alert.setContentText("Take out a second mortgage on your house or something.");
+            alert.showAndWait();
+            return;
+        }
+        currentSession = new SlotsLogic(betAmountSpinner.getValue());
+        activeProfile.decreaseBalance(bet);
+        // TODO: remove it
+        ProfileData.getProfileDataInstance().forceListChange();
+
         spinButton.setText("STOP");
         spinButton.idProperty().set("stopButtonStyle"); // to ref CSS stylesheet id
         spinButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -137,16 +182,13 @@ public class SlotsController {
         Task<Void> spinReelsTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                // init current session SlotsLogic:
-                currentSession = new SlotsLogic(betAmountSpinner.getValue());
-
                 for (int i = 0; i < 3; i++) {
-                    spinConditionsList.set(i, true);
+                    spinConditionList.set(i, true);
                 }
                 spinReel(reel0SymbolList, reel0LabelList, 0);
-                sleepCurrentThread();
+//                sleepCurrentThread();
                 spinReel(reel1SymbolList, reel1LabelList, 1);
-                sleepCurrentThread();
+//                sleepCurrentThread();
                 spinReel(reel2SymbolList, reel2LabelList, 2);
                 return null;
             }
@@ -170,7 +212,7 @@ public class SlotsController {
         Task<Void> reelTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                while (spinConditionsList.get(conditionIndex)) {
+                while (spinConditionList.get(conditionIndex)) {
                     shiftSymbolsList(symbolList);
                     Platform.runLater(new Runnable() {
                         @Override
@@ -204,6 +246,24 @@ public class SlotsController {
             }
         });
         stopSpinning();
+
+        // resolving the current game session (calculations etc.):
+        currentSession.setRecentResultsList(reel0SymbolList, reel1SymbolList, reel2SymbolList);
+        double winnings = currentSession.calculateWinnings();
+        if (winnings != 0) {
+            activeProfile.increaseBalance(winnings);
+            activeProfile.setHighestWin(winnings); // internal validation
+            // TODO: remove it
+            ProfileData.getProfileDataInstance().forceListChange();
+
+            // update last win label:
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    lastWinValueLabel.setText(String.valueOf(winnings));
+                }
+            });
+        }
     }
 
     private void stopSpinning() {
@@ -211,19 +271,9 @@ public class SlotsController {
             @Override
             protected Void call() throws Exception {
                 for (int i = 0; i < 3; i++) {
-                    spinConditionsList.set(i, false);
-                    sleepCurrentThread();
+                    spinConditionList.set(i, false);
+//                    sleepCurrentThread();
                 }
-                currentSession.setRecentResultsList(reel0SymbolList, reel1SymbolList, reel2SymbolList);
-                double winnings = currentSession.calculateWinnings();
-
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        lastWinValueLabel.setText(String.valueOf(winnings));
-                    }
-                });
-
                 return null;
             }
         };

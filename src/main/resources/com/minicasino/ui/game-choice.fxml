@@ -24,6 +24,6 @@
             <Button text="..." prefWidth="200"/>
         </VBox>
     </VBox>
-    <Button fx:id="cancelButton" text="Cancel" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
-            onAction="#handleCancelButton" GridPane.halignment="CENTER"/>
+    <Button fx:id="backButton" text="Back" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+            onAction="#handleBackButton" GridPane.halignment="CENTER"/>
 </GridPane>
