@@ -164,7 +164,7 @@ public class SlotsController {
         }
         currentSession = new SlotsLogic(betAmountSpinner.getValue());
         activeProfile.decreaseBalance(bet);
-        // TODO: remove it
+        // TODO: remove it, bad solution:
         ProfileData.getProfileDataInstance().forceListChange();
 
         spinButton.setText("STOP");
@@ -248,9 +248,81 @@ public class SlotsController {
         stopSpinning();
 
         // resolving the current game session (calculations etc.):
-        currentSession.setRecentResultsList(reel0SymbolList, reel1SymbolList, reel2SymbolList);
-        double winnings = currentSession.calculateWinnings();
+        currentSession.loadRecentResults(reel0SymbolList, reel1SymbolList, reel2SymbolList);
+//        double winnings = currentSession.calculateWinnings();
+        SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
+                                                                           reel1SymbolList,
+                                                                           reel2SymbolList);
+        double winnings = result.getWinnings();
         if (winnings != 0) {
+            // UI update
+            // ----test----
+//            sleepCurrentThread();// sleep
+//            Task<Void> nudgeTask = new Task<>() {
+//                @Override
+//                protected Void call() throws Exception {
+//                    Collections.rotate(reel0SymbolList, result.getShiftReel0());
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            for (int i = 0; i < 5; i++) {
+//                                ImageView imageView = new ImageView();
+//                                imageView.setFitWidth(50.0);
+//                                imageView.setFitHeight(50.0);
+//                                imageView.imageProperty().set(reel0SymbolList.get(i).getImage());
+//                                reel0LabelList.get(i).graphicProperty().set(imageView);
+//                            }
+//                        }
+//                    });
+//                    return null;
+//                }
+//            };
+//
+//            new Thread(nudgeTask).start();
+//            Task<Void> nudge1Task = new Task<>() {
+//                @Override
+//                protected Void call() throws Exception {
+//                    Collections.rotate(reel1SymbolList, result.getShiftReel1());
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            for (int i = 0; i < 5; i++) {
+//                                ImageView imageView = new ImageView();
+//                                imageView.setFitWidth(50.0);
+//                                imageView.setFitHeight(50.0);
+//                                imageView.imageProperty().set(reel1SymbolList.get(i).getImage());
+//                                reel1LabelList.get(i).graphicProperty().set(imageView);
+//                            }
+//                        }
+//                    });
+//                    return null;
+//                }
+//            };
+//
+//            new Thread(nudge1Task).start();
+//            Task<Void> nudge2Task = new Task<>() {
+//                @Override
+//                protected Void call() throws Exception {
+//                    Collections.rotate(reel2SymbolList, result.getShiftReel2());
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            for (int i = 0; i < 5; i++) {
+//                                ImageView imageView = new ImageView();
+//                                imageView.setFitWidth(50.0);
+//                                imageView.setFitHeight(50.0);
+//                                imageView.imageProperty().set(reel2SymbolList.get(i).getImage());
+//                                reel2LabelList.get(i).graphicProperty().set(imageView);
+//                            }
+//                        }
+//                    });
+//                    return null;
+//                }
+//            };
+//
+//            new Thread(nudge2Task).start();
+            // ----test----
+
             activeProfile.increaseBalance(winnings);
             activeProfile.setHighestWin(winnings); // internal validation
             // TODO: remove it
@@ -279,6 +351,10 @@ public class SlotsController {
         };
 
         new Thread(stopReelsTask).start();
+    }
+
+    public void performNudge() {
+
     }
 
     @FXML

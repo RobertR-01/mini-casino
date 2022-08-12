@@ -8,6 +8,8 @@
 - free spins mechanics for reels
 - buy in for all games (separate dialog with slider; probably requires some changes regarding the current session init)
 - remaining buttons for the slots window
+- add directory verification (if doesn't exist create it) to the data save/load methods
 
 - fix maven dependencies (possible duplicates, e.g. javafx-graphics)
 
+- override equals and hashcode for SlotSymbol and Profile
