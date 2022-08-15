@@ -51,7 +51,9 @@ public class SlotsLogic {
 
     public ResultsContainer processResults(List<SlotsData.SlotSymbol> reel0, List<SlotsData.SlotSymbol> reel1,
                                            List<SlotsData.SlotSymbol> reel2) {
-//        loadRecentResults(reel0, reel1, reel2); // external load
+
+
+        loadRecentResults(reel0, reel1, reel2); // external load
 
         reel0PayPos = recentResultsReel0.get(2);
         reel1PayPos = recentResultsReel1.get(2);
@@ -431,6 +433,13 @@ public class SlotsLogic {
      */
     public void loadRecentResults(List<SlotsData.SlotSymbol> reel0Results, List<SlotsData.SlotSymbol> reel1Results,
                                   List<SlotsData.SlotSymbol> reel2Results) {
+        System.out.println("waiting...");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("go...");
         System.out.println("------------load params------------");
         System.out.println(reel0Results);
         System.out.println(reel1Results);
