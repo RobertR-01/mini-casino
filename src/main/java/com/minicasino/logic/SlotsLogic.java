@@ -71,7 +71,8 @@ public class SlotsLogic {
 
         // check for basic win
         if (calculateWinnings() != 0) {
-            return new ResultsContainer(calculateWinnings(), 0, 0, 0);
+            int multi = checkForValidLine(reel0PayPos, reel1PayPos, reel2PayPos);
+            return new ResultsContainer(calculateWinnings(), multi, 0, 0, 0);
         }
 
         // check for reels to nudge
@@ -122,7 +123,7 @@ public class SlotsLogic {
         // perform nudge
         if (nudgeCounter == 3 && isFreeSpin) {
             // triple nudge
-            double currentWin = 0;
+            double lastCheckedMultiplier = 0;
             int shiftReel0 = 0;
             int shiftReel1 = 0;
             int shiftReel2 = 0;
@@ -132,75 +133,76 @@ public class SlotsLogic {
             // 4 5 6
 
             // 1 + 2 + 3
-            int currentCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = 1;
                 shiftReel2 = 1;
             }
             // 1 + 2 + 6
-            currentCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = 1;
                 shiftReel2 = -1;
             }
             // 1 + 5 + 3
-            currentCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = -1;
                 shiftReel2 = 1;
             }
             // 1 + 5 + 6
-            currentCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = -1;
                 shiftReel2 = -1;
             }
             // 4 + 2 + 3
-            currentCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = 1;
                 shiftReel2 = 1;
             }
             // 4 + 2 + 6
-            currentCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = 1;
                 shiftReel2 = -1;
             }
             // 4 + 5 + 3
-            currentCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = -1;
                 shiftReel2 = 1;
             }
             // 4 + 5 + 6
-            currentCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = -1;
                 shiftReel2 = -1;
             }
 
-            return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
+            double winnings = lastCheckedMultiplier * currentBet;
+            return new ResultsContainer(winnings, lastCheckedMultiplier, shiftReel0, shiftReel1, shiftReel2);
 
         } else if (nudgeCounter == 2 && !compareTwoSymbols(reel1PayPos, emptySymbol)) {
             // double nudge middle full
-            double currentWin = 0;
+            double lastCheckedMultiplier = 0;
             int shiftReel0 = 0;
             int shiftReel1 = 0;
             int shiftReel2 = 0;
@@ -210,43 +212,44 @@ public class SlotsLogic {
             // 4 - 6
 
             // 1 + X + 3
-            int currentCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = 0;
                 shiftReel2 = 1;
             }
             // 1 + X + 6
-            currentCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = 0;
                 shiftReel2 = -1;
             }
             // 4 + X + 3
-            currentCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = 0;
                 shiftReel2 = 1;
             }
             // 4 + X + 6
-            currentCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = 0;
                 shiftReel2 = -1;
             }
 
-            return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
+            double winnings = lastCheckedMultiplier * currentBet;
+            return new ResultsContainer(winnings, lastCheckedMultiplier, shiftReel0, shiftReel1, shiftReel2);
 
         } else if (nudgeCounter == 2 && !compareTwoSymbols(reel0PayPos, emptySymbol)) {
             // double nudge left full
-            double currentWin = 0;
+            double lastCheckedMultiplier = 0;
             int shiftReel0 = 0;
             int shiftReel1 = 0;
             int shiftReel2 = 0;
@@ -256,42 +259,43 @@ public class SlotsLogic {
             // - 5 6
 
             // X + 2 + 3
-            int currentCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            int currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = 1;
                 shiftReel2 = 1;
             }
             // X + 2 + 6
-            currentCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = 1;
                 shiftReel2 = -1;
             }
             // X + 5 + 3
-            currentCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = -1;
                 shiftReel2 = 1;
             }
             // X + 5 + 6
-            currentCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = -1;
                 shiftReel2 = -1;
             }
 
-            return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
+            double winnings = lastCheckedMultiplier * currentBet;
+            return new ResultsContainer(winnings, lastCheckedMultiplier, shiftReel0, shiftReel1, shiftReel2);
         } else if (nudgeCounter == 2 && !compareTwoSymbols(reel2PayPos, emptySymbol)) {
             // double nudge right full
-            double currentWin = 0;
+            double lastCheckedMultiplier = 0;
             int shiftReel0 = 0;
             int shiftReel1 = 0;
             int shiftReel2 = 0;
@@ -301,42 +305,43 @@ public class SlotsLogic {
             // 4 5 -
 
             // 1 + 2 + X
-            int currentCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = 1;
                 shiftReel2 = 0;
             }
             // 1 + 5 + X
-            currentCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = -1;
                 shiftReel2 = 0;
             }
             // 4 + 2 + X
-            currentCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = 1;
                 shiftReel2 = 0;
             }
             // 4 + 5 + X
-            currentCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = -1;
                 shiftReel2 = 0;
             }
 
-            return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
+            double winnings = lastCheckedMultiplier * currentBet;
+            return new ResultsContainer(winnings, lastCheckedMultiplier, shiftReel0, shiftReel1, shiftReel2);
         } else if (nudgeCounter == 1 && compareTwoSymbols(reel0PayPos, emptySymbol)) {
             // single nudge left empty
-            double currentWin = 0;
+            double lastCheckedMultiplier = 0;
             int shiftReel0 = 0;
             int shiftReel1 = 0;
             int shiftReel2 = 0;
@@ -346,26 +351,27 @@ public class SlotsLogic {
             // 4 - -
 
             // 1 + X + X
-            int currentCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
                 shiftReel1 = 0;
                 shiftReel2 = 0;
             }
             // 4 + X + X
-            currentCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
                 shiftReel1 = 0;
                 shiftReel2 = 0;
             }
 
-            return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
+            double winnings = lastCheckedMultiplier * currentBet;
+            return new ResultsContainer(winnings, lastCheckedMultiplier, shiftReel0, shiftReel1, shiftReel2);
         } else if (nudgeCounter == 1 && compareTwoSymbols(reel1PayPos, emptySymbol)) {
             // single nudge middle empty
-            double currentWin = 0;
+            double lastCheckedMultiplier = 0;
             int shiftReel0 = 0;
             int shiftReel1 = 0;
             int shiftReel2 = 0;
@@ -375,26 +381,27 @@ public class SlotsLogic {
             // - 5 -
 
             // X + 2 + X
-            int currentCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            int currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = 1;
                 shiftReel2 = 0;
             }
             // X + 5 + X
-            currentCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PayPos);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PayPos);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = -1;
                 shiftReel2 = 0;
             }
 
-            return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
+            double winnings = lastCheckedMultiplier * currentBet;
+            return new ResultsContainer(winnings, lastCheckedMultiplier, shiftReel0, shiftReel1, shiftReel2);
         } else if (nudgeCounter == 1 && compareTwoSymbols(reel2PayPos, emptySymbol)) {
             // single nudge middle empty
-            double currentWin = 0;
+            double lastCheckedMultiplier = 0;
             int shiftReel0 = 0;
             int shiftReel1 = 0;
             int shiftReel2 = 0;
@@ -404,23 +411,24 @@ public class SlotsLogic {
             // - - 6
 
             // X + X + 3
-            int currentCheck = checkForValidLine(reel0PayPos, reel1PayPos, reel2PreWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            int currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PayPos, reel2PreWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = 0;
                 shiftReel2 = 1;
             }
             // X + X + 6
-            currentCheck = checkForValidLine(reel0PayPos, reel1PayPos, reel2PostWin);
-            if (currentCheck > currentWin) {
-                currentWin = currentCheck;
+            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PayPos, reel2PostWin);
+            if (currentMultiplierCheck > lastCheckedMultiplier) {
+                lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
                 shiftReel1 = 0;
                 shiftReel2 = -1;
             }
 
-            return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
+            double winnings = lastCheckedMultiplier * currentBet;
+            return new ResultsContainer(winnings, lastCheckedMultiplier, shiftReel0, shiftReel1, shiftReel2);
         }
         return null;
     }
@@ -600,12 +608,14 @@ public class SlotsLogic {
 
     public static class ResultsContainer {
         private final double winnings;
+        private final double multiplier;
         private final int shiftReel0;
         private final int shiftReel1;
         private final int shiftReel2;
 
-        private ResultsContainer(double winnings, int shiftReel0, int shiftReel1, int shiftReel2) {
+        private ResultsContainer(double winnings, double multiplier, int shiftReel0, int shiftReel1, int shiftReel2) {
             this.winnings = winnings;
+            this.multiplier = multiplier;
             this.shiftReel0 = shiftReel0;
             this.shiftReel1 = shiftReel1;
             this.shiftReel2 = shiftReel2;
@@ -613,6 +623,10 @@ public class SlotsLogic {
 
         public double getWinnings() {
             return winnings;
+        }
+
+        public double getMultiplier() {
+            return multiplier;
         }
 
         public int getShiftReel0() {

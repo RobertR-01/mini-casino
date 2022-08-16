@@ -274,6 +274,17 @@ public class SlotsController {
         new Thread(reelTask).start();
     }
 
+    private void nudgeReelFXThread(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int distance) {
+        shiftSymbolsList(symbolList, distance);
+        for (int i = 0; i < 5; i++) {
+            ImageView imageView = new ImageView();
+            imageView.setFitWidth(50.0);
+            imageView.setFitHeight(50.0);
+            imageView.imageProperty().set(symbolList.get(i).getImage());
+            labelList.get(i).graphicProperty().set(imageView);
+        }
+    }
+
     @FXML
     public void handleStopButton() {
         spinButton.setText("SPIN");
@@ -316,9 +327,9 @@ public class SlotsController {
                         double winnings = 0;
 
                         if (result != null) {
-                            winnings = result.getWinnings() * currentSession.getCurrentBet();
+                            winnings = result.getWinnings();
                             System.out.println("there was non-null result produced");
-                            System.out.println("ultimate multi: " + result.getWinnings());
+                            System.out.println("ultimate multi: " + result.getMultiplier());
                         } else {
                             System.out.println("null pointer exception - result probably == null (no nudge found)");
                         }
@@ -338,7 +349,8 @@ public class SlotsController {
                             int distance2 = result.getShiftReel2();
 
                             if (distance0 != 0) {
-                                nudgeReel(reel0SymbolList, reel0LabelList, distance0);
+//                                nudgeReel(reel0SymbolList, reel0LabelList, distance0);
+                                nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
                                 System.out.println("nudging reel0");
                                 sleepCurrentThread();
                             } else {
@@ -346,7 +358,8 @@ public class SlotsController {
                             }
 
                             if (distance1 != 0) {
-                                nudgeReel(reel1SymbolList, reel1LabelList, distance1);
+//                                nudgeReel(reel1SymbolList, reel1LabelList, distance1);
+                                nudgeReelFXThread(reel1SymbolList, reel1LabelList, distance1);
                                 System.out.println("nudging reel1");
                                 sleepCurrentThread();
                             } else {
@@ -354,7 +367,8 @@ public class SlotsController {
                             }
 
                             if (distance2 != 0) {
-                                nudgeReel(reel2SymbolList, reel2LabelList, distance2);
+//                                nudgeReel(reel2SymbolList, reel2LabelList, distance2);
+                                nudgeReelFXThread(reel2SymbolList, reel2LabelList, distance2);
                                 System.out.println("nudging reel2");
                                 sleepCurrentThread();
                             } else {
