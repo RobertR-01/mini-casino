@@ -99,71 +99,71 @@
                 <ColumnConstraints percentWidth="100"/>
             </columnConstraints>
             <Label id="infoIcons" text="x4" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/meat48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
             <Label id="infoIcons" text="x3" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/hotdog48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
             <Label id="infoIcons" text="x3" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/cheese48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
             <Label id="infoIcons" text="x2" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/icecream48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
             <Label id="infoIcons" text="x2" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/mustard48.png"/>
                     </ImageView>
                 </graphic>
@@ -185,72 +185,72 @@
             <columnConstraints>
                 <ColumnConstraints percentWidth="100"/>
             </columnConstraints>
-            <Label id="infoIcons" text="x25" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+            <Label fx:id="wildInfoLabel" id="infoIcons" text="x25" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   prefWidth="Infinity" alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/drink48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
             <Label id="infoIcons" text="x15" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/coffee48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
             <Label id="infoIcons" text="x7" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/water48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
             <Label id="infoIcons" text="x1" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/pear48.png"/>
                     </ImageView>
                 </graphic>
             </Label>
-            <Label id="infoIcons" text="15" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
-                   alignment="CENTER">
+            <Label id="infoIcons" text="FREE" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
+                   alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>
                 </padding>
                 <font>
-                    <Font name="Arial bold" size="20"/>
+                    <Font name="Arial bold" size="15"/>
                 </font>
                 <graphic>
-                    <ImageView fitWidth="40" fitHeight="40">
+                    <ImageView fitWidth="30" fitHeight="30">
                         <Image url="set_two/cherries48.png"/>
                     </ImageView>
                 </graphic>

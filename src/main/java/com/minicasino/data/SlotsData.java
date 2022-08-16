@@ -11,19 +11,34 @@ public class SlotsData {
 
     private SlotsData() {
         symbolsList = new ArrayList<>();
-        addSymbol(new SlotSymbol(0, new Image("set_two/meat48.png"), 4, false, false, false));
+//        addSymbol(new SlotSymbol(0, new Image("set_two/meat48.png"), 4, false, false, false));
+//        addSymbol(new SlotSymbol(1));
+//
+//        addSymbol(new SlotSymbol(2, new Image("set_two/hotdog48.png"), 3, false, false, false));
+//        addSymbol(new SlotSymbol(3));
+//
+//        addSymbol(new SlotSymbol(4, new Image("set_two/cheese48.png"), 3, false, false, false));
+//        addSymbol(new SlotSymbol(5));
+//
+//        addSymbol(new SlotSymbol(6, new Image("set_two/icecream48.png"), 2, false, false, false));
+//        addSymbol(new SlotSymbol(7));
+//
+//        addSymbol(new SlotSymbol(8, new Image("set_two/mustard48.png"), 2, false, false, false));
+//        addSymbol(new SlotSymbol(9));
+
+        addSymbol(new SlotSymbol(0, new Image("set_two/drink48.png"), 25, false, true, false));
         addSymbol(new SlotSymbol(1));
 
-        addSymbol(new SlotSymbol(2, new Image("set_two/hotdog48.png"), 3, false, false, false));
+        addSymbol(new SlotSymbol(2, new Image("set_two/coffee48.png"), 15, false, false, false));
         addSymbol(new SlotSymbol(3));
 
-        addSymbol(new SlotSymbol(4, new Image("set_two/cheese48.png"), 3, false, false, false));
+        addSymbol(new SlotSymbol(4, new Image("set_two/water48.png"), 7, false, false, false));
         addSymbol(new SlotSymbol(5));
 
-        addSymbol(new SlotSymbol(6, new Image("set_two/icecream48.png"), 2, false, false, false));
+        addSymbol(new SlotSymbol(6, new Image("set_two/pear48.png"), 1, false, false, false));
         addSymbol(new SlotSymbol(7));
 
-        addSymbol(new SlotSymbol(8, new Image("set_two/mustard48.png"), 2, false, false, false));
+        addSymbol(new SlotSymbol(8, new Image("set_two/cherries48.png"), 15, true, false, false));
         addSymbol(new SlotSymbol(9));
 
         addSymbol(new SlotSymbol(10, new Image("set_two/drink48.png"), 25, false, true, false));

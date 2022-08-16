@@ -2,6 +2,7 @@ package com.minicasino.logic;
 
 import com.minicasino.data.ProfileData;
 import com.minicasino.data.SlotsData;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,19 +41,20 @@ public class SlotsLogic {
         // TODO: add index parameters to the signature instead of hardcoding them in the body
         // TODO: replace indexes with objects' equals() and see if it works
         double winnings = 0;
-        if (reel0PayPos.equals(reel1PayPos) && reel1PayPos.equals(reel2PayPos)) {
-            int multiplier = reel0PayPos.getMultiplier();
-            winnings = currentBet * multiplier;
+
+        int multi = checkForValidLine(reel0PayPos, reel1PayPos, reel2PayPos);
+
+        if (multi != 0) {
+            winnings = currentBet * multi;
         } else {
             winnings = 0;
         }
+
         return winnings;
     }
 
     public ResultsContainer processResults(List<SlotsData.SlotSymbol> reel0, List<SlotsData.SlotSymbol> reel1,
                                            List<SlotsData.SlotSymbol> reel2) {
-
-
         loadRecentResults(reel0, reel1, reel2); // external load
 
         reel0PayPos = recentResultsReel0.get(2);
@@ -65,7 +67,7 @@ public class SlotsLogic {
 
         // TODO: can't be done in here
         // check for free spins
-        isFreeSpin = reel0PayPos.equals(freeSymbol) && reel1PayPos.equals(freeSymbol) && reel2PayPos.equals(freeSymbol);
+//        isFreeSpin = reel0PayPos.equals(freeSymbol) && reel1PayPos.equals(freeSymbol) && reel2PayPos.equals(freeSymbol);
 
         // check for basic win
         if (calculateWinnings() != 0) {
@@ -78,17 +80,27 @@ public class SlotsLogic {
         boolean isReel0ToNudge;
         boolean isReel1ToNudge;
         boolean isReel2ToNudge;
-        if (reel0PayPos.equals(emptySymbol)) {
+
+//        System.out.println("payline:");
+//        System.out.println(reel0PayPos);
+//        System.out.println(reel1PayPos);
+//        System.out.println(reel2PayPos);
+        System.out.println("results:");
+        System.out.println(recentResultsReel0);
+        System.out.println(recentResultsReel1);
+        System.out.println(recentResultsReel2);
+
+        if (compareTwoSymbols(reel0PayPos, emptySymbol)) {
             isReel0ToNudge = true;
             reelsToNudge.add(recentResultsReel0);
             nudgeCounter++;
         }
-        if (reel1PayPos.equals(emptySymbol)) {
+        if (compareTwoSymbols(reel1PayPos, emptySymbol)) {
             isReel1ToNudge = true;
             reelsToNudge.add(recentResultsReel1);
             nudgeCounter++;
         }
-        if (reel2PayPos.equals(emptySymbol)) {
+        if (compareTwoSymbols(reel2PayPos, emptySymbol)) {
             isReel2ToNudge = true;
             reelsToNudge.add(recentResultsReel2);
             nudgeCounter++;
@@ -101,10 +113,11 @@ public class SlotsLogic {
         SlotsData.SlotSymbol reel2PreWin = recentResultsReel2.get(1);
         SlotsData.SlotSymbol reel2PostWin = recentResultsReel2.get(3);
         System.out.println("nudge counter: " + nudgeCounter);
-        System.out.println("results");
-        System.out.println(reel0PreWin + " " + reel0PayPos + " " + reel0PostWin);
-        System.out.println(reel2PreWin + " " + reel1PayPos + " " + reel1PostWin);
-        System.out.println(reel2PreWin + " " + reel2PayPos + " " + reel2PostWin);
+        System.out.println("is free spin: " + isFreeSpin);
+//        System.out.println("results");
+//        System.out.println(reel0PreWin + " " + reel0PayPos + " " + reel0PostWin);
+//        System.out.println(reel1PreWin + " " + reel1PayPos + " " + reel1PostWin);
+//        System.out.println(reel2PreWin + " " + reel2PayPos + " " + reel2PostWin);
 
         // perform nudge
         if (nudgeCounter == 3 && isFreeSpin) {
@@ -185,7 +198,7 @@ public class SlotsLogic {
 
             return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
 
-        } else if (nudgeCounter == 2 && !reel1PayPos.equals(emptySymbol)) {
+        } else if (nudgeCounter == 2 && !compareTwoSymbols(reel1PayPos, emptySymbol)) {
             // double nudge middle full
             double currentWin = 0;
             int shiftReel0 = 0;
@@ -231,7 +244,7 @@ public class SlotsLogic {
 
             return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
 
-        } else if (nudgeCounter == 2 && !reel0PayPos.equals(emptySymbol)) {
+        } else if (nudgeCounter == 2 && !compareTwoSymbols(reel0PayPos, emptySymbol)) {
             // double nudge left full
             double currentWin = 0;
             int shiftReel0 = 0;
@@ -276,7 +289,7 @@ public class SlotsLogic {
             }
 
             return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
-        } else if (nudgeCounter == 2 && !reel2PayPos.equals(emptySymbol)) {
+        } else if (nudgeCounter == 2 && !compareTwoSymbols(reel2PayPos, emptySymbol)) {
             // double nudge right full
             double currentWin = 0;
             int shiftReel0 = 0;
@@ -321,7 +334,7 @@ public class SlotsLogic {
             }
 
             return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
-        } else if (nudgeCounter == 1 && reel0PayPos.equals(emptySymbol)) {
+        } else if (nudgeCounter == 1 && compareTwoSymbols(reel0PayPos, emptySymbol)) {
             // single nudge left empty
             double currentWin = 0;
             int shiftReel0 = 0;
@@ -350,7 +363,7 @@ public class SlotsLogic {
             }
 
             return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
-        } else if (nudgeCounter == 1 && reel1PayPos.equals(emptySymbol)) {
+        } else if (nudgeCounter == 1 && compareTwoSymbols(reel1PayPos, emptySymbol)) {
             // single nudge middle empty
             double currentWin = 0;
             int shiftReel0 = 0;
@@ -379,7 +392,7 @@ public class SlotsLogic {
             }
 
             return new ResultsContainer(currentWin, shiftReel0, shiftReel1, shiftReel2);
-        } else if (nudgeCounter == 1 && reel2PayPos.equals(emptySymbol)) {
+        } else if (nudgeCounter == 1 && compareTwoSymbols(reel2PayPos, emptySymbol)) {
             // single nudge middle empty
             double currentWin = 0;
             int shiftReel0 = 0;
@@ -416,9 +429,46 @@ public class SlotsLogic {
     public int checkForValidLine(SlotsData.SlotSymbol symbol0,
                                  SlotsData.SlotSymbol symbol1,
                                  SlotsData.SlotSymbol symbol2) {
-        if (symbol0 != null && symbol0.equals(symbol1) && symbol0.equals(symbol2)) {
+        if (symbol0 == null || symbol1 == null || symbol2 == null) {
+            System.out.println("SlotsLogic.checkForValidLine -> null symbol");
+            return 0; // TODO multiple exit points
+        }
+
+        List<SlotsData.SlotSymbol> symbols = new ArrayList<>();
+        Collections.addAll(symbols, symbol0, symbol1, symbol2);
+
+        // standard combo (including 3x wild)
+        if (compareTwoSymbols(symbol0, symbol1) && compareTwoSymbols(symbol0, symbol2)) {
             return symbol0.getMultiplier();
         }
+
+        // 2x wild combo
+        if (symbol0.isWild() && symbol1.isWild()
+            || symbol0.isWild() && symbol2.isWild()
+            || symbol1.isWild() && symbol2.isWild()) {
+            SlotsData.SlotSymbol nonWildSymbol;
+            for (SlotsData.SlotSymbol symbol : symbols) {
+                if (!symbol.isWild()) {
+                    nonWildSymbol = symbol;
+                    return nonWildSymbol.getMultiplier(); // TODO: multiple exit points
+                }
+            }
+        }
+
+        // combo with 1 wild
+        if (symbol0.isWild() || symbol1.isWild() || symbol2.isWild()) {
+            List<SlotsData.SlotSymbol> nonWildSymbols = new ArrayList<>();
+            for (SlotsData.SlotSymbol symbol : symbols) {
+                if (!symbol.isWild()) {
+                    nonWildSymbols.add(symbol);
+                }
+            }
+            // checking the 2 non-wild symbols
+            if (compareTwoSymbols(nonWildSymbols.get(0), nonWildSymbols.get(1))) {
+                return nonWildSymbols.get(0).getMultiplier();
+            }
+        }
+
         return 0;
     }
 
@@ -433,18 +483,11 @@ public class SlotsLogic {
      */
     public void loadRecentResults(List<SlotsData.SlotSymbol> reel0Results, List<SlotsData.SlotSymbol> reel1Results,
                                   List<SlotsData.SlotSymbol> reel2Results) {
-        System.out.println("waiting...");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("go...");
-        System.out.println("------------load params------------");
-        System.out.println(reel0Results);
-        System.out.println(reel1Results);
-        System.out.println(reel2Results);
-        System.out.println("------------load params------------");
+//        System.out.println("------------load params------------");
+//        System.out.println(reel0Results);
+//        System.out.println(reel1Results);
+//        System.out.println(reel2Results);
+//        System.out.println("------------load params------------");
         // TODO: add validation?
         for (int i = 0; i < 5; i++) {
             recentResultsReel0.add(reel0Results.get(i));
@@ -452,11 +495,11 @@ public class SlotsLogic {
             recentResultsReel2.add(reel2Results.get(i));
         }
         Collections.addAll(listOfCurrentReels, recentResultsReel0, recentResultsReel1, recentResultsReel2);
-        System.out.println("------------load results------------");
-        System.out.println(recentResultsReel0);
-        System.out.println(recentResultsReel1);
-        System.out.println(recentResultsReel2);
-        System.out.println("------------load results------------");
+//        System.out.println("------------load results------------");
+//        System.out.println(recentResultsReel0);
+//        System.out.println(recentResultsReel1);
+//        System.out.println(recentResultsReel2);
+//        System.out.println("------------load results------------");
     }
 
     // implement process results method()
@@ -488,7 +531,7 @@ public class SlotsLogic {
         Collections.addAll(listOfReels, recentResultsReel0, recentResultsReel1, recentResultsReel2);
         List<List<SlotsData.SlotSymbol>> reelsToNudge = new ArrayList<>();
         for (List<SlotsData.SlotSymbol> reel : listOfReels) {
-            if (reel.get(2).equals(emptySymbol) && (reelsToNudge.size() < 3)) {
+            if (compareTwoSymbols(reel.get(2), emptySymbol) && (reelsToNudge.size() < 3)) {
                 reelsToNudge.add(reel);
             }
         }
@@ -511,9 +554,9 @@ public class SlotsLogic {
 
         // double nudge check:
         // - max 1 reel not empty; at least 2 empty and 1 not empty
-        if ((!reel0pos2.equals(emptySymbol) && !reel1pos2.equals(emptySymbol) && reel2pos2.equals(emptySymbol))
-            || (reel0pos2.equals(emptySymbol) && !reel1pos2.equals(emptySymbol) && !reel2pos2.equals(emptySymbol))
-            || (!reel0pos2.equals(emptySymbol) && reel1pos2.equals(emptySymbol) && !reel2pos2.equals(emptySymbol))) {
+        if ((!compareTwoSymbols(reel0pos2, emptySymbol) && !compareTwoSymbols(reel1pos2, emptySymbol) && compareTwoSymbols(reel2pos2, emptySymbol))
+            || (compareTwoSymbols(reel0pos2, emptySymbol) && !compareTwoSymbols(reel1pos2, emptySymbol) && !compareTwoSymbols(reel2pos2, emptySymbol))
+            || (!compareTwoSymbols(reel0pos2, emptySymbol) && compareTwoSymbols(reel1pos2, emptySymbol) && !compareTwoSymbols(reel2pos2, emptySymbol))) {
             // single reel nudge
 
             // R0 R1 R2
@@ -530,13 +573,29 @@ public class SlotsLogic {
         // TODO: possibly merge with the above as 'else'
         // single reel check:
         // - at least 2 reels not empty and 1 empty;  max 1 empty
-        if ((!reel0pos2.equals(emptySymbol) && reel1pos2.equals(emptySymbol) && reel2pos2.equals(emptySymbol))
-            || (reel0pos2.equals(emptySymbol) && !reel1pos2.equals(emptySymbol) && reel2pos2.equals(emptySymbol))
-            || (reel0pos2.equals(emptySymbol) && reel1pos2.equals(emptySymbol) && !reel2pos2.equals(emptySymbol))) {
+        if ((!compareTwoSymbols(reel0pos2, emptySymbol) && compareTwoSymbols(reel1pos2, emptySymbol) && compareTwoSymbols(reel2pos2, emptySymbol))
+            || (compareTwoSymbols(reel0pos2, emptySymbol) && !compareTwoSymbols(reel1pos2, emptySymbol) && compareTwoSymbols(reel2pos2, emptySymbol))
+            || (compareTwoSymbols(reel0pos2, emptySymbol)) && compareTwoSymbols(reel1pos2, emptySymbol) && !compareTwoSymbols(reel2pos2, emptySymbol)) {
             // double reel nudge
 
             return;
         }
+    }
+
+    private boolean compareTwoSymbols(SlotsData.SlotSymbol symbol1, SlotsData.SlotSymbol symbol2) {
+        if (symbol1 != null && symbol2 != null) {
+            String image1URL = symbol1.getImage().getUrl();
+            String image2URL = symbol2.getImage().getUrl();
+            if (image1URL.equals(image2URL)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public double getCurrentBet() {
+        return currentBet;
     }
 
     public static class ResultsContainer {

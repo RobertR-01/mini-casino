@@ -72,6 +72,8 @@ public class SlotsController {
     private Label lastWinValueLabel;
     @FXML
     private Label balanceValueLabel;
+    @FXML
+    private Label wildInfoLabel;
 
     private List<SlotsData.SlotSymbol> reel0SymbolList;
     private List<SlotsData.SlotSymbol> reel1SymbolList;
@@ -131,6 +133,9 @@ public class SlotsController {
         // conditions list setup:
         spinConditionList = new ArrayList<>();
         Collections.addAll(spinConditionList, false, false, false);
+
+        // infographics - wild symbol label update
+        wildInfoLabel.setText("x25 (WILD)");
     }
 
     private void initializeReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
@@ -146,6 +151,10 @@ public class SlotsController {
 
     private void shiftSymbolsList(List<SlotsData.SlotSymbol> list) {
         Collections.rotate(list, 1);
+    }
+
+    private void shiftSymbolsList(List<SlotsData.SlotSymbol> list, int distance) {
+        Collections.rotate(list, distance);
     }
 
     @FXML
@@ -200,7 +209,12 @@ public class SlotsController {
     private void sleepCurrentThread() {
         try {
             Random random = new Random();
-            Thread.sleep(random.nextInt(173, 391));
+            int min = random.nextInt(171, 479);
+            random = new Random();
+            int max = random.nextInt(475, 822);
+
+            random = new Random();
+            Thread.sleep(random.nextInt(min, max));
 //            Thread.sleep(0);
 
         } catch (InterruptedException e) {
@@ -235,6 +249,31 @@ public class SlotsController {
         new Thread(reelTask).start();
     }
 
+    private void nudgeReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int distance) {
+        Task<Void> reelTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                shiftSymbolsList(symbolList, distance);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 5; i++) {
+                            ImageView imageView = new ImageView();
+                            imageView.setFitWidth(50.0);
+                            imageView.setFitHeight(50.0);
+                            imageView.imageProperty().set(symbolList.get(i).getImage());
+                            labelList.get(i).graphicProperty().set(imageView);
+                        }
+                    }
+                });
+                Thread.sleep(20);
+                return null;
+            }
+        };
+
+        new Thread(reelTask).start();
+    }
+
     @FXML
     public void handleStopButton() {
         spinButton.setText("SPIN");
@@ -246,22 +285,6 @@ public class SlotsController {
             }
         });
         stopSpinning();
-
-        double winnings;
-
-            activeProfile.increaseBalance(winnings);
-            activeProfile.setHighestWin(winnings); // internal validation
-            // TODO: remove it
-            ProfileData.getProfileDataInstance().forceListChange();
-
-            // update last win label:
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    lastWinValueLabel.setText(String.valueOf(winnings));
-                }
-            });
-        }
     }
 
     private void stopSpinning() {
@@ -272,6 +295,87 @@ public class SlotsController {
                     spinConditionList.set(i, false);
                     sleepCurrentThread();
                 }
+
+                // to prevent any desync, probably crappy way of doing it
+                while (spinConditionList.get(0) || spinConditionList.get(1) || spinConditionList.get(2)) {
+                    Thread.sleep(500);
+                }
+
+                // update last win label:
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        //------------
+                        // moved to runLater from directly inside the Task
+//                        double winnings = 500;
+
+                        SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
+                                                                                           reel1SymbolList,
+                                                                                           reel2SymbolList);
+
+                        double winnings = 0;
+
+                        if (result != null) {
+                            winnings = result.getWinnings() * currentSession.getCurrentBet();
+                            System.out.println("there was non-null result produced");
+                            System.out.println("ultimate multi: " + result.getWinnings());
+                        } else {
+                            System.out.println("null pointer exception - result probably == null (no nudge found)");
+                        }
+
+                        // test
+//                        winnings = currentSession.calculateWinnings();
+                        System.out.println("calculated winnings: " + winnings);
+
+                        if (winnings > 0) {
+                            System.out.println("winnings good - updating UI");
+
+                            sleepCurrentThread();
+                            // shifting
+
+                            int distance0 = result.getShiftReel0();
+                            int distance1 = result.getShiftReel1();
+                            int distance2 = result.getShiftReel2();
+
+                            if (distance0 != 0) {
+                                nudgeReel(reel0SymbolList, reel0LabelList, distance0);
+                                System.out.println("nudging reel0");
+                                sleepCurrentThread();
+                            } else {
+                                System.out.println("not nudging reel0");
+                            }
+
+                            if (distance1 != 0) {
+                                nudgeReel(reel1SymbolList, reel1LabelList, distance1);
+                                System.out.println("nudging reel1");
+                                sleepCurrentThread();
+                            } else {
+                                System.out.println("not nudging reel1");
+                            }
+
+                            if (distance2 != 0) {
+                                nudgeReel(reel2SymbolList, reel2LabelList, distance2);
+                                System.out.println("nudging reel2");
+                                sleepCurrentThread();
+                            } else {
+                                System.out.println("not nudging reel2");
+                            }
+
+                            activeProfile.increaseBalance(winnings);
+                            activeProfile.setHighestWin(winnings); // internal validation
+                            // TODO: remove it
+                            ProfileData.getProfileDataInstance().forceListChange();
+                            // ----------
+                            lastWinValueLabel.setText(String.valueOf(winnings));
+                        } else {
+                            System.out.println("winnings busted - not updating UI");
+                        }
+
+                        System.out.println("fin.");
+                    }
+                });
+
+
                 return null;
             }
         };
