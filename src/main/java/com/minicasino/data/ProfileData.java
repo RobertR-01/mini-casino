@@ -207,7 +207,7 @@ public class ProfileData {
 
         // used when creating a new profile from the UI
         public Profile(String name) {
-            this(name, 5000.0, 0.0, false, false);
+            this(name, 10000.0, 0.0, false, false);
         }
 
         // used when loaded from XML
@@ -222,7 +222,7 @@ public class ProfileData {
 
         // used when generating a placeholder list for regenerated XML file (missing etc.)
         public Profile() {
-            this("Empty", 5000.0, 0.0, true, false);
+            this("Empty", 10000.0, 0.0, true, false);
         }
 
         public double getBalance() {

@@ -71,6 +71,14 @@ public class SlotsController {
     private Label balanceValueLabel;
     @FXML
     private Label wildInfoLabel;
+    @FXML
+    private Button mainMenuButton;
+    @FXML
+    private Button maxBetButton;
+    @FXML
+    private ToggleButton turboButton;
+    @FXML
+    private ToggleButton autoSpinButton;
 
     private List<SlotsData.SlotSymbol> reel0SymbolList;
     private List<SlotsData.SlotSymbol> reel1SymbolList;
@@ -139,7 +147,7 @@ public class SlotsController {
         Collections.addAll(spinConditionList, false, false, false);
     }
 
-    // updateReel + Task
+    // updateReel() in Task; to prevent endless loop in initialize():
     private void initializeReels(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
         Task<Void> initializeReelTask = new Task<Void>() {
             @Override
@@ -152,12 +160,9 @@ public class SlotsController {
         new Thread(initializeReelTask).start();
     }
 
-    // used to redraw reels while spinning/nudging
+    // used to redraw reels while spinning/nudging:
     private void updateReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
         // ImageView prep:
-//        Task<Void> task = new Task<Void>() {
-//            @Override
-//            protected Void call() throws Exception {
         final boolean[] isIterationDone = {true}; // loop waits for the UI update
         for (int i = 0; i < 5; i++) {
             while (!isIterationDone[0]) {
@@ -177,21 +182,10 @@ public class SlotsController {
                 }
             });
         }
-//                return null;
-//            }
-//        };
-//        new Thread(task).start();
     }
 
     private void shiftSymbolsList(List<SlotsData.SlotSymbol> list, int distance) {
-//        Task<Void> task = new Task<Void>() {
-//            @Override
-//            protected Void call() throws Exception {
         Collections.rotate(list, distance);
-//                return null;
-//            }
-//        };
-//        new Thread(task).start();
     }
 
     @FXML
@@ -221,6 +215,8 @@ public class SlotsController {
                 handleStopButton();
             }
         });
+        spinButton.disableProperty().set(true);
+        setDisablePropertyForButtons(true);
         startSpinning();
     }
 
@@ -236,6 +232,9 @@ public class SlotsController {
                 spinReel(reel1SymbolList, reel1LabelList, 1);
                 sleepCurrentThread();
                 spinReel(reel2SymbolList, reel2LabelList, 2);
+                sleepCurrentThread(1000);
+                // TODO: put into runLater?
+                spinButton.disableProperty().set(false);
                 return null;
             }
         };
@@ -243,7 +242,7 @@ public class SlotsController {
         new Thread(startSpinningTask).start();
     }
 
-    // the "RNG" one
+    // the "RNG" one:
     private void sleepCurrentThread() {
         // TODO: check if there is actual need for re-instantiation
         Random random = new Random();
@@ -293,6 +292,7 @@ public class SlotsController {
                 handleSpinButton();
             }
         });
+        spinButton.disableProperty().set(true);
         stopSpinning();
     }
 
@@ -305,24 +305,10 @@ public class SlotsController {
                     sleepCurrentThread();
                 }
 
-                // to prevent any desync, probably crappy way of doing it
+                // to prevent any desync, probably crappy way of doing it:
                 while (spinConditionList.get(0) || spinConditionList.get(1) || spinConditionList.get(2)) {
                     sleepCurrentThread(500);
                 }
-
-                // new part:
-
-
-                // old part:
-                // update last win label:
-
-//                Platform.runLater(new Runnable() {
-//                    @Override
-//                    public void run() {
-
-                //------------
-                // moved to runLater from directly inside the Task
-//                        double winnings = 500;
 
                 SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
                                                                                    reel1SymbolList,
@@ -338,67 +324,37 @@ public class SlotsController {
                     System.out.println("null pointer exception - result probably == null (no nudge found)");
                 }
 
-                // test
-//                        winnings = currentSession.calculateWinnings();
                 System.out.println("calculated winnings: " + winnings);
 
                 if (winnings > 0) {
                     System.out.println("winnings good - updating UI");
 
                     sleepCurrentThread();
-                    // shifting
-
+                    // shifting:
                     int distance0 = result.getShiftReel0();
                     int distance1 = result.getShiftReel1();
                     int distance2 = result.getShiftReel2();
 
                     if (distance0 != 0) {
-//                                PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
-//                                pause.setOnFinished(event -> {
-//                                    nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
-//                                    System.out.println("nudging reel0");
-//                                });
-//                                pause.play();
-
-//                                delayTask(1000, () -> {
                         sleepCurrentThread(1000);
                         nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
                         System.out.println("nudging reel0");
-//                                });
                     } else {
                         System.out.println("not nudging reel0");
                     }
 
                     if (distance1 != 0) {
-//                                PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
-//                                pause.setOnFinished(event -> {
-//                                    nudgeReelFXThread(reel1SymbolList, reel1LabelList, distance1);
-//                                    System.out.println("nudging reel1");
-//                                });
-//                                pause.play();
-
-//                                delayTask(2000, () -> {
                         sleepCurrentThread(1000);
                         nudgeReelFXThread(reel1SymbolList, reel1LabelList, distance1);
                         System.out.println("nudging reel1");
-//                                });
                     } else {
                         System.out.println("not nudging reel1");
                     }
 
                     if (distance2 != 0) {
-//                                PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
-//                                pause.setOnFinished(event -> {
-//                                    nudgeReelFXThread(reel2SymbolList, reel2LabelList, distance2);
-//                                    System.out.println("nudging reel2");
-//                                });
-//                                pause.play();
-
-//                                delayTask(3000, () -> {
                         sleepCurrentThread(1000);
                         nudgeReelFXThread(reel2SymbolList, reel2LabelList, distance2);
                         System.out.println("nudging reel2");
-//                                });
                     } else {
                         System.out.println("not nudging reel2");
                     }
@@ -415,17 +371,16 @@ public class SlotsController {
                             lastWinValueLabel.setText(String.valueOf(finalWinnings));
                             // TODO: remove it
                             ProfileData.getProfileDataInstance().forceListChange(); // moved inside run later due to ex.
-                            // ----------
                         }
                     });
                 } else {
                     System.out.println("winnings busted - not updating UI");
                 }
 
+                sleepCurrentThread(1000);
+                spinButton.disableProperty().set(false);
+                setDisablePropertyForButtons(false);
                 System.out.println("fin.");
-//                    }
-//                });
-
 
                 return null;
             }
@@ -447,16 +402,17 @@ public class SlotsController {
         valueFactory.setValue(maxValue);
     }
 
-    // unused
-    private void delayTask(int milliseconds, Runnable continuation) {
-        Task<Void> sleeper = new Task<Void>() {
+    private void setDisablePropertyForButtons(boolean isDisabled) {
+        Platform.runLater(new Runnable() {
             @Override
-            protected Void call() throws Exception {
-                sleepCurrentThread(1000);
-                return null;
+            public void run() {
+                mainMenuButton.disableProperty().set(isDisabled);
+                infoButton.disableProperty().set(isDisabled);
+                betAmountSpinner.disableProperty().set(isDisabled);
+                maxBetButton.disableProperty().set(isDisabled);
+                turboButton.disableProperty().set(isDisabled);
+                autoSpinButton.disableProperty().set(isDisabled);
             }
-        };
-        sleeper.setOnSucceeded(event -> continuation.run());
-        new Thread(sleeper).start();
+        });
     }
 }
