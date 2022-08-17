@@ -185,7 +185,7 @@
             <columnConstraints>
                 <ColumnConstraints percentWidth="100"/>
             </columnConstraints>
-            <Label fx:id="wildInfoLabel" id="infoIcons" text="x25" GridPane.rowIndex="0" GridPane.columnIndex="0"
+            <Label fx:id="wildInfoLabel" id="infoIcons" text="x25 (WILD)" GridPane.rowIndex="0" GridPane.columnIndex="0"
                    prefWidth="Infinity" alignment="CENTER" contentDisplay="TOP">
                 <padding>
                     <Insets top="5" bottom="5" left="5" right="5"/>

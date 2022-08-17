@@ -93,20 +93,24 @@ public class SlotsController {
         });
 
         // active profile setup:
-        // TODO: instead of loading full balance load a fraction (with a popup and a slider); update balance on quitting
+        // TODO: instead of loading full balance, load a fraction (with a popup and a slider); update balance on
+        //  quitting
         activeProfile = ProfileData.getProfileDataInstance().getActiveProfile();
         ObservableList<ProfileData.Profile> profileList = ProfileData.getProfileDataInstance().getProfileList();
         // TODO: make active profile observable in ProfileData or something; same for edited one
-        int i = ProfileData.getProfileDataInstance().getProfileList().indexOf(activeProfile);
+        int index = ProfileData.getProfileDataInstance().getProfileList().indexOf(activeProfile);
         // TODO: potential problem with binding due to lack of list update
-        ProfileData.Profile profile = profileList.get(i); // TODO: remove it in favor of profileList.get(i)?
+        ProfileData.Profile profile = profileList.get(index); // TODO: remove it in favor of profileList.get(i)?
         balanceValueLabel.textProperty().bind(Bindings.createObjectBinding(() -> String.valueOf(profile.getBalance()), profileList));
 
         // title label setup:
         titleLabel.setFont(Font.font("Times New Roman", 20));
 
         // spinner setup
-        betAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(500, 5000, 500));
+        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(500, 5000, 500);
+        valueFactory.amountToStepByProperty().set(500);
+        betAmountSpinner.setValueFactory(valueFactory);
 
         // spin button setup:
         spinButton.idProperty().set("spinButtonStyle");
@@ -120,41 +124,74 @@ public class SlotsController {
         // reel0 graphic setup:
         reel0LabelList = new ArrayList<>();
         Collections.addAll(reel0LabelList, reel0pos0, reel0pos1, reel0pos2, reel0pos3, reel0pos4);
-        initializeReel(reel0SymbolList, reel0LabelList);
+        initializeReels(reel0SymbolList, reel0LabelList);
         // reel1 graphic setup:
         reel1LabelList = new ArrayList<>();
         Collections.addAll(reel1LabelList, reel1pos0, reel1pos1, reel1pos2, reel1pos3, reel1pos4);
-        initializeReel(reel1SymbolList, reel1LabelList);
+        initializeReels(reel1SymbolList, reel1LabelList);
         // reel2 graphic setup:
         reel2LabelList = new ArrayList<>();
         Collections.addAll(reel2LabelList, reel2pos0, reel2pos1, reel2pos2, reel2pos3, reel2pos4);
-        initializeReel(reel2SymbolList, reel2LabelList);
+        initializeReels(reel2SymbolList, reel2LabelList);
 
         // conditions list setup:
         spinConditionList = new ArrayList<>();
         Collections.addAll(spinConditionList, false, false, false);
-
-        // infographics - wild symbol label update
-        wildInfoLabel.setText("x25 (WILD)");
     }
 
-    private void initializeReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
+    // updateReel + Task
+    private void initializeReels(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
+        Task<Void> initializeReelTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                updateReel(symbolList, labelList);
+                return null;
+            }
+        };
+
+        new Thread(initializeReelTask).start();
+    }
+
+    // used to redraw reels while spinning/nudging
+    private void updateReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
         // ImageView prep:
+//        Task<Void> task = new Task<Void>() {
+//            @Override
+//            protected Void call() throws Exception {
+        final boolean[] isIterationDone = {true}; // loop waits for the UI update
         for (int i = 0; i < 5; i++) {
+            while (!isIterationDone[0]) {
+                sleepCurrentThread(10);
+            }
+            isIterationDone[0] = false;
             ImageView imageView = new ImageView();
             imageView.setFitWidth(50.0);
             imageView.setFitHeight(50.0);
             imageView.imageProperty().set(symbolList.get(i).getImage());
-            labelList.get(i).graphicProperty().set(imageView);
+            int index = i;
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    labelList.get(index).graphicProperty().set(imageView);
+                    isIterationDone[0] = true;
+                }
+            });
         }
-    }
-
-    private void shiftSymbolsList(List<SlotsData.SlotSymbol> list) {
-        Collections.rotate(list, 1);
+//                return null;
+//            }
+//        };
+//        new Thread(task).start();
     }
 
     private void shiftSymbolsList(List<SlotsData.SlotSymbol> list, int distance) {
+//        Task<Void> task = new Task<Void>() {
+//            @Override
+//            protected Void call() throws Exception {
         Collections.rotate(list, distance);
+//                return null;
+//            }
+//        };
+//        new Thread(task).start();
     }
 
     @FXML
@@ -188,7 +225,7 @@ public class SlotsController {
     }
 
     private void startSpinning() {
-        Task<Void> spinReelsTask = new Task<Void>() {
+        Task<Void> startSpinningTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 for (int i = 0; i < 3; i++) {
@@ -203,86 +240,47 @@ public class SlotsController {
             }
         };
 
-        new Thread(spinReelsTask).start();
+        new Thread(startSpinningTask).start();
     }
 
+    // the "RNG" one
     private void sleepCurrentThread() {
+        // TODO: check if there is actual need for re-instantiation
+        Random random = new Random();
+        int min = random.nextInt(171, 479);
+        random = new Random();
+        int max = random.nextInt(475, 822);
+        random = new Random();
+        sleepCurrentThread(random.nextInt(min, max));
+    }
+
+    private void sleepCurrentThread(int milliseconds) {
         try {
-            Random random = new Random();
-            int min = random.nextInt(171, 479);
-            random = new Random();
-            int max = random.nextInt(475, 822);
-
-            random = new Random();
-            Thread.sleep(random.nextInt(min, max));
-//            Thread.sleep(0);
-
+            Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private void spinReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int conditionIndex) {
-        Task<Void> reelTask = new Task<>() {
+        Task<Void> singleReelSpinTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 while (spinConditionList.get(conditionIndex)) {
-                    shiftSymbolsList(symbolList);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (int i = 0; i < 5; i++) {
-                                ImageView imageView = new ImageView();
-                                imageView.setFitWidth(50.0);
-                                imageView.setFitHeight(50.0);
-                                imageView.imageProperty().set(symbolList.get(i).getImage());
-                                labelList.get(i).graphicProperty().set(imageView);
-                            }
-                        }
-                    });
-                    Thread.sleep(20);
+                    shiftSymbolsList(symbolList, 1);
+                    updateReel(symbolList, labelList);
+                    sleepCurrentThread(20);
                 }
                 return null;
             }
         };
 
-        new Thread(reelTask).start();
-    }
-
-    private void nudgeReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int distance) {
-        Task<Void> reelTask = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                shiftSymbolsList(symbolList, distance);
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 5; i++) {
-                            ImageView imageView = new ImageView();
-                            imageView.setFitWidth(50.0);
-                            imageView.setFitHeight(50.0);
-                            imageView.imageProperty().set(symbolList.get(i).getImage());
-                            labelList.get(i).graphicProperty().set(imageView);
-                        }
-                    }
-                });
-                Thread.sleep(20);
-                return null;
-            }
-        };
-
-        new Thread(reelTask).start();
+        new Thread(singleReelSpinTask).start();
     }
 
     private void nudgeReelFXThread(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int distance) {
         shiftSymbolsList(symbolList, distance);
-        for (int i = 0; i < 5; i++) {
-            ImageView imageView = new ImageView();
-            imageView.setFitWidth(50.0);
-            imageView.setFitHeight(50.0);
-            imageView.imageProperty().set(symbolList.get(i).getImage());
-            labelList.get(i).graphicProperty().set(imageView);
-        }
+        updateReel(symbolList, labelList);
     }
 
     @FXML
@@ -309,85 +307,124 @@ public class SlotsController {
 
                 // to prevent any desync, probably crappy way of doing it
                 while (spinConditionList.get(0) || spinConditionList.get(1) || spinConditionList.get(2)) {
-                    Thread.sleep(500);
+                    sleepCurrentThread(500);
                 }
 
+                // new part:
+
+
+                // old part:
                 // update last win label:
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        //------------
-                        // moved to runLater from directly inside the Task
+
+//                Platform.runLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+
+                //------------
+                // moved to runLater from directly inside the Task
 //                        double winnings = 500;
 
-                        SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
-                                                                                           reel1SymbolList,
-                                                                                           reel2SymbolList);
+                SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
+                                                                                   reel1SymbolList,
+                                                                                   reel2SymbolList);
 
-                        double winnings = 0;
+                double winnings = 0;
 
-                        if (result != null) {
-                            winnings = result.getWinnings();
-                            System.out.println("there was non-null result produced");
-                            System.out.println("ultimate multi: " + result.getMultiplier());
-                        } else {
-                            System.out.println("null pointer exception - result probably == null (no nudge found)");
-                        }
+                if (result != null) {
+                    winnings = result.getWinnings();
+                    System.out.println("there was non-null result produced");
+                    System.out.println("ultimate multi: " + result.getMultiplier());
+                } else {
+                    System.out.println("null pointer exception - result probably == null (no nudge found)");
+                }
 
-                        // test
+                // test
 //                        winnings = currentSession.calculateWinnings();
-                        System.out.println("calculated winnings: " + winnings);
+                System.out.println("calculated winnings: " + winnings);
 
-                        if (winnings > 0) {
-                            System.out.println("winnings good - updating UI");
+                if (winnings > 0) {
+                    System.out.println("winnings good - updating UI");
 
-                            sleepCurrentThread();
-                            // shifting
+                    sleepCurrentThread();
+                    // shifting
 
-                            int distance0 = result.getShiftReel0();
-                            int distance1 = result.getShiftReel1();
-                            int distance2 = result.getShiftReel2();
+                    int distance0 = result.getShiftReel0();
+                    int distance1 = result.getShiftReel1();
+                    int distance2 = result.getShiftReel2();
 
-                            if (distance0 != 0) {
-//                                nudgeReel(reel0SymbolList, reel0LabelList, distance0);
-                                nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
-                                System.out.println("nudging reel0");
-                                sleepCurrentThread();
-                            } else {
-                                System.out.println("not nudging reel0");
-                            }
+                    if (distance0 != 0) {
+//                                PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
+//                                pause.setOnFinished(event -> {
+//                                    nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
+//                                    System.out.println("nudging reel0");
+//                                });
+//                                pause.play();
 
-                            if (distance1 != 0) {
-//                                nudgeReel(reel1SymbolList, reel1LabelList, distance1);
-                                nudgeReelFXThread(reel1SymbolList, reel1LabelList, distance1);
-                                System.out.println("nudging reel1");
-                                sleepCurrentThread();
-                            } else {
-                                System.out.println("not nudging reel1");
-                            }
-
-                            if (distance2 != 0) {
-//                                nudgeReel(reel2SymbolList, reel2LabelList, distance2);
-                                nudgeReelFXThread(reel2SymbolList, reel2LabelList, distance2);
-                                System.out.println("nudging reel2");
-                                sleepCurrentThread();
-                            } else {
-                                System.out.println("not nudging reel2");
-                            }
-
-                            activeProfile.increaseBalance(winnings);
-                            activeProfile.setHighestWin(winnings); // internal validation
-                            // TODO: remove it
-                            ProfileData.getProfileDataInstance().forceListChange();
-                            // ----------
-                            lastWinValueLabel.setText(String.valueOf(winnings));
-                        } else {
-                            System.out.println("winnings busted - not updating UI");
-                        }
-
-                        System.out.println("fin.");
+//                                delayTask(1000, () -> {
+                        sleepCurrentThread(1000);
+                        nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
+                        System.out.println("nudging reel0");
+//                                });
+                    } else {
+                        System.out.println("not nudging reel0");
                     }
-                });
+
+                    if (distance1 != 0) {
+//                                PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
+//                                pause.setOnFinished(event -> {
+//                                    nudgeReelFXThread(reel1SymbolList, reel1LabelList, distance1);
+//                                    System.out.println("nudging reel1");
+//                                });
+//                                pause.play();
+
+//                                delayTask(2000, () -> {
+                        sleepCurrentThread(1000);
+                        nudgeReelFXThread(reel1SymbolList, reel1LabelList, distance1);
+                        System.out.println("nudging reel1");
+//                                });
+                    } else {
+                        System.out.println("not nudging reel1");
+                    }
+
+                    if (distance2 != 0) {
+//                                PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
+//                                pause.setOnFinished(event -> {
+//                                    nudgeReelFXThread(reel2SymbolList, reel2LabelList, distance2);
+//                                    System.out.println("nudging reel2");
+//                                });
+//                                pause.play();
+
+//                                delayTask(3000, () -> {
+                        sleepCurrentThread(1000);
+                        nudgeReelFXThread(reel2SymbolList, reel2LabelList, distance2);
+                        System.out.println("nudging reel2");
+//                                });
+                    } else {
+                        System.out.println("not nudging reel2");
+                    }
+
+                    sleepCurrentThread();
+
+                    activeProfile.increaseBalance(winnings);
+                    activeProfile.setHighestWin(winnings); // internal validation
+
+                    double finalWinnings = winnings;
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            lastWinValueLabel.setText(String.valueOf(finalWinnings));
+                            // TODO: remove it
+                            ProfileData.getProfileDataInstance().forceListChange(); // moved inside run later due to ex.
+                            // ----------
+                        }
+                    });
+                } else {
+                    System.out.println("winnings busted - not updating UI");
+                }
+
+                System.out.println("fin.");
+//                    }
+//                });
 
 
                 return null;
@@ -395,10 +432,6 @@ public class SlotsController {
         };
 
         new Thread(stopReelsTask).start();
-    }
-
-    public void performNudge() {
-
     }
 
     @FXML
@@ -412,5 +445,18 @@ public class SlotsController {
                 (SpinnerValueFactory.IntegerSpinnerValueFactory) betAmountSpinner.getValueFactory();
         int maxValue = valueFactory.getMax();
         valueFactory.setValue(maxValue);
+    }
+
+    // unused
+    private void delayTask(int milliseconds, Runnable continuation) {
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                sleepCurrentThread(1000);
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(event -> continuation.run());
+        new Thread(sleeper).start();
     }
 }
