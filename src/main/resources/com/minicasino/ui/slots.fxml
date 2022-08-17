@@ -41,11 +41,17 @@
                     <RowConstraints percentHeight="20"/>
                     <RowConstraints percentHeight="20"/>
                 </rowConstraints>
-                <Label fx:id="reel0pos0" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+                <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                    <Label fx:id="reel0pos0"/>
+                    <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                </StackPane>
                 <Label fx:id="reel0pos1" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
                 <Label fx:id="reel0pos2" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
                 <Label fx:id="reel0pos3" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
-                <Label fx:id="reel0pos4" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+                <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                    <Label fx:id="reel0pos4"/>
+                    <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                </StackPane>
             </GridPane>
             <GridPane fx:id="reel1" id="reel1Outline" prefWidth="100.0">
                 <columnConstraints>
@@ -58,11 +64,17 @@
                     <RowConstraints percentHeight="20"/>
                     <RowConstraints percentHeight="20"/>
                 </rowConstraints>
-                <Label fx:id="reel1pos0" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+                <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                    <Label fx:id="reel1pos0"/>
+                    <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                </StackPane>
                 <Label fx:id="reel1pos1" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
                 <Label fx:id="reel1pos2" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
                 <Label fx:id="reel1pos3" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
-                <Label fx:id="reel1pos4" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+                <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                    <Label fx:id="reel1pos4"/>
+                    <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                </StackPane>
             </GridPane>
             <GridPane fx:id="reel2" id="reel2Outline" prefWidth="100">
                 <columnConstraints>
@@ -75,11 +87,17 @@
                     <RowConstraints percentHeight="20"/>
                     <RowConstraints percentHeight="20"/>
                 </rowConstraints>
-                <Label fx:id="reel2pos0" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+                <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                    <Label fx:id="reel2pos0"/>
+                    <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                </StackPane>
                 <Label fx:id="reel2pos1" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
                 <Label fx:id="reel2pos2" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
                 <Label fx:id="reel2pos3" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
-                <Label fx:id="reel2pos4" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+                <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                    <Label fx:id="reel2pos4"/>
+                    <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                </StackPane>
             </GridPane>
         </HBox>
     </center>
