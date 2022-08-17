@@ -89,6 +89,7 @@ public class SlotsController {
     private List<Boolean> spinConditionList; // which reels should spin/stop
     private SlotsLogic currentSession;
     private ProfileData.Profile activeProfile;
+    private boolean isAutoOn;
 
     @FXML
     public void initialize() {
@@ -99,6 +100,9 @@ public class SlotsController {
                 topLevelLayout.requestFocus();
             }
         });
+
+        // auto-spin initially off:
+        isAutoOn = false;
 
         // active profile setup:
         // TODO: instead of loading full balance, load a fraction (with a popup and a slider); update balance on
@@ -414,5 +418,44 @@ public class SlotsController {
                 autoSpinButton.disableProperty().set(isDisabled);
             }
         });
+    }
+
+    @FXML
+    public void autoSpinButtonHandler() {
+        isAutoOn = true;
+    }
+
+    @FXML
+    public void handleSpinButtonAuto() {
+        while (isAutoOn) {
+            // init current session SlotsLogic:
+            double bet = betAmountSpinner.getValue();
+            if (bet > activeProfile.getBalance()) {
+                // TODO: create warning alert
+                // warning alert:
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText("You don't have enough cash for this! :(");
+                alert.setContentText("Take out a second mortgage on your house or something.");
+                alert.showAndWait();
+                return;
+            }
+            currentSession = new SlotsLogic(betAmountSpinner.getValue());
+            activeProfile.decreaseBalance(bet);
+            // TODO: remove it, bad solution:
+            ProfileData.getProfileDataInstance().forceListChange();
+
+            spinButton.setText("STOP");
+            spinButton.idProperty().set("stopButtonStyle"); // to ref CSS stylesheet id
+            spinButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    handleStopButton();
+                }
+            });
+            spinButton.disableProperty().set(true);
+            setDisablePropertyForButtons(true);
+            startSpinning();
+        }
     }
 }

@@ -362,7 +362,7 @@
                 </graphic>
             </ToggleButton>
             <ToggleButton fx:id="autoSpinButton" text="Auto Spin" GridPane.rowIndex="0" GridPane.columnIndex="5"
-                          prefWidth="Infinity" prefHeight="Infinity"/>
+                          prefWidth="Infinity" prefHeight="Infinity" onAction="#autoSpinButtonHandler"/>
             <Button fx:id="spinButton" text="SPIN" GridPane.rowIndex="0" GridPane.columnIndex="6" prefWidth="Infinity"
                     prefHeight="Infinity" onAction="#handleSpinButton"/>
         </GridPane>
