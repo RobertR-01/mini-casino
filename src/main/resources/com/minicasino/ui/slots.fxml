@@ -326,7 +326,7 @@
                         <Insets top="5" bottom="5" left="5" right="5"/>
                     </padding>
                 </Label>
-                <Label fx:id="lastWinValueLabel" text="0 000 000" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                <Label fx:id="lastWinValueLabel" text="0.0" GridPane.rowIndex="1" GridPane.columnIndex="0"
                        prefWidth="Infinity" prefHeight="Infinity" alignment="CENTER">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -334,7 +334,7 @@
                 </Label>
             </GridPane>
             <Button fx:id="maxBetButton" text="MAX BET" GridPane.rowIndex="0" GridPane.columnIndex="3"
-                    prefWidth="Infinity" prefHeight="Infinity"/>
+                    prefWidth="Infinity" prefHeight="Infinity" onAction="#maxBetHandler"/>
             <ToggleButton fx:id="turboButton" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="Infinity"
                           prefHeight="Infinity">
                 <graphic>

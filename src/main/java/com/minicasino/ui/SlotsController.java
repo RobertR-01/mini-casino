@@ -10,10 +10,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -107,6 +104,9 @@ public class SlotsController {
 
         // title label setup:
         titleLabel.setFont(Font.font("Times New Roman", 20));
+
+        // spinner setup
+        betAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(500, 5000, 500));
 
         // spin button setup:
         spinButton.idProperty().set("spinButtonStyle");
@@ -404,5 +404,13 @@ public class SlotsController {
     @FXML
     public void handleMainMenuButton() throws IOException {
         MainApp.setRoot("main-window");
+    }
+
+    @FXML
+    public void maxBetHandler() {
+        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
+                (SpinnerValueFactory.IntegerSpinnerValueFactory) betAmountSpinner.getValueFactory();
+        int maxValue = valueFactory.getMax();
+        valueFactory.setValue(maxValue);
     }
 }
