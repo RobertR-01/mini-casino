@@ -90,6 +90,10 @@ public class SlotsController {
     private SlotsLogic currentSession;
     private ProfileData.Profile activeProfile;
     private boolean isAutoOn;
+    private boolean isAutoSpinDone;
+    private boolean isAutoSessionDone;
+    private boolean forceAutoStop;
+    private boolean autoSpinSessionInProgress;
 
     @FXML
     public void initialize() {
@@ -103,6 +107,9 @@ public class SlotsController {
 
         // auto-spin initially off:
         isAutoOn = false;
+        isAutoSpinDone = false;
+        isAutoSessionDone = false;
+        autoSpinSessionInProgress = false;
 
         // active profile setup:
         // TODO: instead of loading full balance, load a fraction (with a popup and a slider); update balance on
@@ -238,7 +245,23 @@ public class SlotsController {
                 spinReel(reel2SymbolList, reel2LabelList, 2);
                 sleepCurrentThread(1000);
                 // TODO: put into runLater?
-                spinButton.disableProperty().set(false);
+                if (!isAutoOn) {
+                    spinButton.disableProperty().set(false);
+                }
+
+                if (isAutoOn) {
+                    int secondCounter = 0;
+                    while (true) {
+                        sleepCurrentThread(1000);
+                        secondCounter++;
+                        System.out.println("Waiting for the spin (" + secondCounter + "s...)");
+                        if (secondCounter == 4) {
+                            isAutoSpinDone = true;
+                            break;
+                        }
+                    }
+                }
+
                 return null;
             }
         };
@@ -382,9 +405,15 @@ public class SlotsController {
                 }
 
                 sleepCurrentThread(1000);
-                spinButton.disableProperty().set(false);
-                setDisablePropertyForButtons(false);
+                if (!isAutoOn) {
+                    spinButton.disableProperty().set(false);
+                    setDisablePropertyForButtons(false);
+                }
+
                 System.out.println("fin.");
+                if (isAutoOn) {
+                    isAutoSessionDone = true;
+                }
 
                 return null;
             }
@@ -415,47 +444,122 @@ public class SlotsController {
                 betAmountSpinner.disableProperty().set(isDisabled);
                 maxBetButton.disableProperty().set(isDisabled);
                 turboButton.disableProperty().set(isDisabled);
-                autoSpinButton.disableProperty().set(isDisabled);
+                if (!isAutoOn || !isDisabled) {
+                    autoSpinButton.disableProperty().set(isDisabled);
+                }
             }
         });
     }
 
     @FXML
     public void autoSpinButtonHandler() {
-        isAutoOn = true;
-    }
+        boolean isToggled = autoSpinButton.isSelected();
+        System.out.println("selected:" + isToggled);
 
-    @FXML
-    public void handleSpinButtonAuto() {
-        while (isAutoOn) {
-            // init current session SlotsLogic:
-            double bet = betAmountSpinner.getValue();
-            if (bet > activeProfile.getBalance()) {
-                // TODO: create warning alert
-                // warning alert:
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error");
-                alert.setHeaderText("You don't have enough cash for this! :(");
-                alert.setContentText("Take out a second mortgage on your house or something.");
-                alert.showAndWait();
-                return;
-            }
-            currentSession = new SlotsLogic(betAmountSpinner.getValue());
-            activeProfile.decreaseBalance(bet);
-            // TODO: remove it, bad solution:
-            ProfileData.getProfileDataInstance().forceListChange();
+        if (autoSpinSessionInProgress) {
+            System.out.println("condition: " + autoSpinSessionInProgress);
+            System.out.println("returning");
+            autoSpinButton.selectedProperty().set(false);
+            return;
+        }
 
-            spinButton.setText("STOP");
-            spinButton.idProperty().set("stopButtonStyle"); // to ref CSS stylesheet id
-            spinButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    handleStopButton();
-                }
-            });
-            spinButton.disableProperty().set(true);
+        if (isToggled) {
+            isAutoOn = true;
+            forceAutoStop = false;
+        } else {
+            forceAutoStop = true;
+        }
+        System.out.println("Auto: " + isAutoOn);
+
+        System.out.println("condition: " + autoSpinSessionInProgress);
+
+        if (isToggled) {
+            System.out.println("condition: " + autoSpinSessionInProgress);
+            System.out.println("condition false -> proceeding");
+
             setDisablePropertyForButtons(true);
-            startSpinning();
+            spinButton.disableProperty().set(true);
+            // the auto loop (in Task):
+            Task<Void> autoSpinTask = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    while (true) {
+                        autoSpinSessionInProgress = true;
+                        System.out.println("condition: " + autoSpinSessionInProgress);
+                        isAutoSessionDone = false;
+                        isAutoSpinDone = false;
+                        if (forceAutoStop) {
+                            break;
+                        }
+                        double bet = betAmountSpinner.getValue();
+                        if (bet > activeProfile.getBalance()) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    alert.setTitle("Error");
+                                    alert.setHeaderText("You don't have enough cash for auto-spinning! :(");
+                                    alert.setContentText("Take out a second mortgage on your house or something.");
+                                    alert.showAndWait();
+                                }
+                            });
+                            forceAutoStop = true;
+                        } else {
+                            currentSession = new SlotsLogic(betAmountSpinner.getValue());
+                            activeProfile.decreaseBalance(bet);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // TODO: remove it, bad solution:
+                                    ProfileData.getProfileDataInstance().forceListChange();
+                                }
+                            });
+//                            spinButton.disableProperty().set(true); // from run later
+//                            setDisablePropertyForButtons(true); // from run later
+
+                            startSpinning();
+
+                            //waiting for the 4-second spin:
+                            // TODO: use sentinel variable instead
+                            System.out.println("start waiting");
+                            while (true) {
+                                sleepCurrentThread(100);
+                                if (isAutoSpinDone) {
+                                    break;
+                                }
+                            }
+
+                            System.out.println("finished waiting and run stopSpinning");
+                            stopSpinning();
+
+                            // waiting for resolving of the previous session:
+                            while (!isAutoSessionDone) {
+                                sleepCurrentThread(100);
+                            }
+
+                            System.out.println("waiting 2s for the next while iteration");
+                            sleepCurrentThread(2000);
+                        }
+                    }
+                    autoSpinSessionInProgress = false;
+                    System.out.println("condition: " + autoSpinSessionInProgress);
+
+                    // end of auto spin task
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+                            setDisablePropertyForButtons(false);
+                            spinButton.disableProperty().set(false);
+//                        }
+//                    });
+
+                    isAutoOn = false;
+
+                    return null;
+                }
+            };
+
+            new Thread(autoSpinTask).start();
         }
     }
 }
