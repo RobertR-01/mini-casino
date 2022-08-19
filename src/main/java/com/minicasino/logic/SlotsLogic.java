@@ -428,16 +428,14 @@ public class SlotsLogic {
             List<SlotsData.SlotSymbol> symbols = new ArrayList<>();
             Collections.addAll(symbols, symbol0, symbol1, symbol2);
 
-            // standard 3-symbol combo (including 3x wild):
             if (compareTwoSymbols(symbol0, symbol1) && compareTwoSymbols(symbol0, symbol2)) {
+                // standard 3-symbol combo (including 3x wild):
                 multiplier = symbol0.getMultiplier();
-            }
-
-            // TODO: inspect those warnings
-            // 2x wild combo:
-            if (symbol0.isWild() && symbol1.isWild()
-                || symbol0.isWild() && symbol2.isWild()
-                || symbol1.isWild() && symbol2.isWild()) {
+            } else if (symbol0.isWild() && symbol1.isWild()
+                       || symbol0.isWild() && symbol2.isWild()
+                       || symbol1.isWild() && symbol2.isWild()) {
+                // TODO: inspect those warnings
+                // 2x wild combo:
                 SlotsData.SlotSymbol nonWildSymbol;
                 for (SlotsData.SlotSymbol symbol : symbols) {
                     if (!symbol.isWild()) {
@@ -445,10 +443,8 @@ public class SlotsLogic {
                         multiplier = nonWildSymbol.getMultiplier();
                     }
                 }
-            }
-
-            // combo with single wild:
-            if (symbol0.isWild() || symbol1.isWild() || symbol2.isWild()) {
+            } else if (symbol0.isWild() || symbol1.isWild() || symbol2.isWild()) {
+                // combo with single wild:
                 List<SlotsData.SlotSymbol> nonWildSymbols = new ArrayList<>();
                 for (SlotsData.SlotSymbol symbol : symbols) {
                     if (!symbol.isWild()) {

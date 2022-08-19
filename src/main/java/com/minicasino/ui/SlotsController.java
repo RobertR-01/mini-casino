@@ -270,7 +270,7 @@ public class SlotsController {
                     while (true) {
                         sleepCurrentThread(1000);
                         secondCounter++;
-                        if (secondCounter == 3) {
+                        if (secondCounter == 2) {
                             isAutoSpinDone = true;
                             break;
                         }
@@ -314,7 +314,7 @@ public class SlotsController {
             protected Void call() throws Exception {
                 while (spinConditionList.get(conditionIndex)) {
                     nudgeReelOnce(symbolList, labelList, 1);
-                    sleepCurrentThread(10);
+                    sleepCurrentThread(20);
                 }
                 return null;
             }
