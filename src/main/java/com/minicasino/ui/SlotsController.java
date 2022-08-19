@@ -91,6 +91,8 @@ public class SlotsController {
     private boolean isAutoSpinDone;
     private boolean isAutoSessionDone;
     private boolean forceAutoStop;
+    private boolean isTurboOn;
+    private int turboModeDelay;
 
     @FXML
     public void initialize() {
@@ -106,6 +108,10 @@ public class SlotsController {
         isAutoOn = false;
         isAutoSpinDone = false;
         isAutoSessionDone = false;
+
+        // turbo-mode initially off:
+        turboModeDelay = 20;
+        isTurboOn = false;
 
         // active profile setup:
         // TODO: instead of loading full balance, load a fraction (with a popup and a slider); update balance on
@@ -238,9 +244,17 @@ public class SlotsController {
                     spinConditionList.set(i, true);
                 }
                 spinReelContinuously(reel0SymbolList, reel0LabelList, 0);
-                sleepCurrentThread();
+                if (isTurboOn) {
+                    sleepCurrentThread(turboModeDelay);
+                } else {
+                    sleepCurrentThread();
+                }
                 spinReelContinuously(reel1SymbolList, reel1LabelList, 1);
-                sleepCurrentThread();
+                if (isTurboOn) {
+                    sleepCurrentThread(turboModeDelay);
+                } else {
+                    sleepCurrentThread();
+                }
                 spinReelContinuously(reel2SymbolList, reel2LabelList, 2);
                 // wait 1s before unlocking stop button:
                 sleepCurrentThread(1000);
@@ -300,7 +314,7 @@ public class SlotsController {
             protected Void call() throws Exception {
                 while (spinConditionList.get(conditionIndex)) {
                     nudgeReelOnce(symbolList, labelList, 1);
-                    sleepCurrentThread(20);
+                    sleepCurrentThread(10);
                 }
                 return null;
             }
@@ -337,7 +351,11 @@ public class SlotsController {
                 // stops the reels, one by one:
                 for (int i = 0; i < 3; i++) {
                     spinConditionList.set(i, false);
-                    sleepCurrentThread();
+                    if (isTurboOn) {
+                        sleepCurrentThread(turboModeDelay);
+                    } else {
+                        sleepCurrentThread();
+                    }
                 }
 
                 // to prevent any desync, probably crappy way of doing it:
@@ -359,7 +377,11 @@ public class SlotsController {
                 }
 
                 if (winnings > 0) {
-                    sleepCurrentThread();
+                    if (isTurboOn) {
+                        sleepCurrentThread(turboModeDelay);
+                    } else {
+                        sleepCurrentThread();
+                    }
                     // which reels to shift:
                     int distance0 = result.getShiftReel0();
                     int distance1 = result.getShiftReel1();
@@ -381,7 +403,11 @@ public class SlotsController {
                         nudgeReelOnce(reel2SymbolList, reel2LabelList, distance2);
                     }
 
-                    sleepCurrentThread();
+                    if (isTurboOn) {
+                        sleepCurrentThread(turboModeDelay);
+                    } else {
+                        sleepCurrentThread();
+                    }
 
                     activeProfile.increaseBalance(winnings);
                     activeProfile.setHighestWin(winnings); // internal validation present
@@ -505,7 +531,7 @@ public class SlotsController {
                             // allowing the reels to spin for a while (timer in the startSpinning()):
                             // TODO: use sentinel variable instead
                             while (true) {
-                                sleepCurrentThread(100);
+                                sleepCurrentThread(10);
                                 if (isAutoSpinDone) {
                                     break;
                                 }
@@ -515,7 +541,7 @@ public class SlotsController {
 
                             // waiting for the current session to resolve (var set in the stopSpinning()):
                             while (!isAutoSessionDone) {
-                                sleepCurrentThread(100);
+                                sleepCurrentThread(10);
                             }
 
                             // some additional grace period, possibly unnecessary:
@@ -537,5 +563,10 @@ public class SlotsController {
 
             new Thread(autoSpinTask).start();
         }
+    }
+
+    @FXML
+    public void turboButtonHandler() {
+        isTurboOn = turboButton.isSelected();
     }
 }

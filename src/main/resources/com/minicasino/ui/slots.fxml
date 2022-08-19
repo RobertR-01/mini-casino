@@ -354,7 +354,7 @@
             <Button fx:id="maxBetButton" text="MAX BET" GridPane.rowIndex="0" GridPane.columnIndex="3"
                     prefWidth="Infinity" prefHeight="Infinity" onAction="#maxBetHandler"/>
             <ToggleButton fx:id="turboButton" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="Infinity"
-                          prefHeight="Infinity">
+                          prefHeight="Infinity" onAction="#turboButtonHandler">
                 <graphic>
                     <ImageView>
                         <Image url="@/toolbarButtonGraphics/general/Stop24.gif"/>
