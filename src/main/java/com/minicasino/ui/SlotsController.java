@@ -142,6 +142,7 @@ public class SlotsController {
         reel1SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
         reel2SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
 
+        // TODO: consider synchronization for the reels' init
         // reel0 graphic setup:
         reel0LabelList = new ArrayList<>();
         Collections.addAll(reel0LabelList, reel0pos0, reel0pos1, reel0pos2, reel0pos3, reel0pos4);
@@ -175,13 +176,8 @@ public class SlotsController {
 
     // used to redraw reels while spinning/nudging:
     private void updateReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
-        // loop waits for the UI update before proceeding
-        // TODO: check if this step is actually required
-        final boolean[] isIterationDone = {true};
+        final boolean[] isIterationDone = new boolean[1];
         for (int i = 0; i < 5; i++) {
-            while (!isIterationDone[0]) {
-                sleepCurrentThread(10); // TODO: try messing with that timer
-            }
             isIterationDone[0] = false;
             // ImageView prep:
             ImageView imageView = new ImageView();
@@ -197,6 +193,12 @@ public class SlotsController {
                     isIterationDone[0] = true;
                 }
             });
+
+            // TODO: check if this step is actually required
+            // loop waits for the UI update before proceeding
+            while (!isIterationDone[0]) {
+                sleepCurrentThread(1); // TODO: try messing with that timer
+            }
         }
     }
 
@@ -244,15 +246,11 @@ public class SlotsController {
                     spinConditionList.set(i, true);
                 }
                 spinReelContinuously(reel0SymbolList, reel0LabelList, 0);
-                if (isTurboOn) {
-                    sleepCurrentThread(turboModeDelay);
-                } else {
+                if (!isTurboOn) {
                     sleepCurrentThread();
                 }
                 spinReelContinuously(reel1SymbolList, reel1LabelList, 1);
-                if (isTurboOn) {
-                    sleepCurrentThread(turboModeDelay);
-                } else {
+                if (!isTurboOn) {
                     sleepCurrentThread();
                 }
                 spinReelContinuously(reel2SymbolList, reel2LabelList, 2);
@@ -266,11 +264,11 @@ public class SlotsController {
 
                 // gives the reels 3s of spinning in auto mode:
                 if (isAutoOn) {
-                    int secondCounter = 0;
+                    int secondsCounter = 0;
                     while (true) {
                         sleepCurrentThread(1000);
-                        secondCounter++;
-                        if (secondCounter == 2) {
+                        secondsCounter++;
+                        if (secondsCounter == 2) {
                             isAutoSpinDone = true;
                             break;
                         }
@@ -324,6 +322,7 @@ public class SlotsController {
     }
 
     // used both as a nudge functionality and as a part of the spinReelContinuously method (single step):
+    // (both instructions run on the same thread)
     private void nudgeReelOnce(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int distance) {
         shiftSymbolsList(symbolList, distance);
         updateReel(symbolList, labelList);
@@ -360,7 +359,7 @@ public class SlotsController {
 
                 // to prevent any desync, probably crappy way of doing it:
                 while (spinConditionList.get(0) || spinConditionList.get(1) || spinConditionList.get(2)) {
-                    sleepCurrentThread(500);
+                    sleepCurrentThread(1);
                 }
 
                 // gets info on possible nudges, acquired multiplier and winnings:
@@ -389,17 +388,17 @@ public class SlotsController {
 
                     // the 3 statements below perform any possible nudges:
                     if (distance0 != 0) {
-                        sleepCurrentThread(1000);
+                        sleepCurrentThread(500);
                         nudgeReelOnce(reel0SymbolList, reel0LabelList, distance0);
                     }
 
                     if (distance1 != 0) {
-                        sleepCurrentThread(1000);
+                        sleepCurrentThread(500);
                         nudgeReelOnce(reel1SymbolList, reel1LabelList, distance1);
                     }
 
                     if (distance2 != 0) {
-                        sleepCurrentThread(1000);
+                        sleepCurrentThread(500);
                         nudgeReelOnce(reel2SymbolList, reel2LabelList, distance2);
                     }
 
@@ -413,17 +412,24 @@ public class SlotsController {
                     activeProfile.setHighestWin(winnings); // internal validation present
 
                     double finalWinnings = winnings;
+                    final boolean[] isUIUpdateDone = new boolean[1];
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             lastWinValueLabel.setText(String.valueOf(finalWinnings));
                             // TODO: remove it, possibly a bad way of updating the data bound objects
                             ProfileData.getProfileDataInstance().forceListChange();
+                            isUIUpdateDone[0] = true;
                         }
                     });
+
+                    // wait for the UI update:
+                    while (!isUIUpdateDone[0]) {
+                        sleepCurrentThread(1);
+                    }
                 }
 
-                sleepCurrentThread(1000);
+                sleepCurrentThread(500);
                 // re-enables all buttons (if not in auto-mode):
                 if (!isAutoOn) {
                     spinButton.disableProperty().set(false);
@@ -518,23 +524,26 @@ public class SlotsController {
                         } else {
                             currentSession = new SlotsLogic(betAmountSpinner.getValue());
                             activeProfile.decreaseBalance(bet);
+                            final boolean[] isUIUpdateDone = new boolean[1];
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     // TODO: remove it, bad solution:
                                     ProfileData.getProfileDataInstance().forceListChange();
+                                    isUIUpdateDone[0] = true;
                                 }
                             });
+
+                            // wait for the UI update:
+                            while (!isUIUpdateDone[0]) {
+                                sleepCurrentThread(1);
+                            }
 
                             startSpinning();
 
                             // allowing the reels to spin for a while (timer in the startSpinning()):
-                            // TODO: use sentinel variable instead
-                            while (true) {
-                                sleepCurrentThread(10);
-                                if (isAutoSpinDone) {
-                                    break;
-                                }
+                            while (!isAutoSpinDone) {
+                                sleepCurrentThread(1);
                             }
 
                             stopSpinning();
@@ -544,8 +553,8 @@ public class SlotsController {
                                 sleepCurrentThread(10);
                             }
 
-                            // some additional grace period, possibly unnecessary:
-                            sleepCurrentThread(1000);
+                            // some additional grace period, for visual fluency only:
+                            sleepCurrentThread(500);
                         }
                     }
 
