@@ -70,8 +70,6 @@ public class SlotsController {
     @FXML
     private Label balanceValueLabel;
     @FXML
-    private Label wildInfoLabel;
-    @FXML
     private Button mainMenuButton;
     @FXML
     private Button maxBetButton;
@@ -93,7 +91,6 @@ public class SlotsController {
     private boolean isAutoSpinDone;
     private boolean isAutoSessionDone;
     private boolean forceAutoStop;
-    private boolean autoSpinSessionInProgress;
 
     @FXML
     public void initialize() {
@@ -109,7 +106,6 @@ public class SlotsController {
         isAutoOn = false;
         isAutoSpinDone = false;
         isAutoSessionDone = false;
-        autoSpinSessionInProgress = false;
 
         // active profile setup:
         // TODO: instead of loading full balance, load a fraction (with a popup and a slider); update balance on
@@ -125,7 +121,7 @@ public class SlotsController {
         // title label setup:
         titleLabel.setFont(Font.font("Times New Roman", 20));
 
-        // spinner setup
+        // spinner setup:
         SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(500, 5000, 500);
         valueFactory.amountToStepByProperty().set(500);
@@ -153,7 +149,7 @@ public class SlotsController {
         Collections.addAll(reel2LabelList, reel2pos0, reel2pos1, reel2pos2, reel2pos3, reel2pos4);
         initializeReels(reel2SymbolList, reel2LabelList);
 
-        // conditions list setup:
+        // conditions list setup (initially off):
         spinConditionList = new ArrayList<>();
         Collections.addAll(spinConditionList, false, false, false);
     }
@@ -173,18 +169,21 @@ public class SlotsController {
 
     // used to redraw reels while spinning/nudging:
     private void updateReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList) {
-        // ImageView prep:
-        final boolean[] isIterationDone = {true}; // loop waits for the UI update
+        // loop waits for the UI update before proceeding
+        // TODO: check if this step is actually required
+        final boolean[] isIterationDone = {true};
         for (int i = 0; i < 5; i++) {
             while (!isIterationDone[0]) {
-                sleepCurrentThread(10);
+                sleepCurrentThread(10); // TODO: try messing with that timer
             }
             isIterationDone[0] = false;
+            // ImageView prep:
             ImageView imageView = new ImageView();
             imageView.setFitWidth(50.0);
             imageView.setFitHeight(50.0);
             imageView.imageProperty().set(symbolList.get(i).getImage());
             int index = i;
+            // label update in the UI:
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -201,11 +200,9 @@ public class SlotsController {
 
     @FXML
     public void handleSpinButton() {
-        // init current session SlotsLogic:
+        // bet check:
         double bet = betAmountSpinner.getValue();
         if (bet > activeProfile.getBalance()) {
-            // TODO: create warning alert
-            // warning alert:
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText("You don't have enough cash for this! :(");
@@ -213,19 +210,21 @@ public class SlotsController {
             alert.showAndWait();
             return;
         }
+        // init current session SlotsLogic:
         currentSession = new SlotsLogic(betAmountSpinner.getValue());
         activeProfile.decreaseBalance(bet);
         // TODO: remove it, bad solution:
-        ProfileData.getProfileDataInstance().forceListChange();
+        ProfileData.getProfileDataInstance().forceListChange(); // UI Thread
 
         spinButton.setText("STOP");
-        spinButton.idProperty().set("stopButtonStyle"); // to ref CSS stylesheet id
+        spinButton.idProperty().set("stopButtonStyle");
         spinButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 handleStopButton();
             }
         });
+        // disable all buttons to prevent the user from messing with the UI while the session is in progress:
         spinButton.disableProperty().set(true);
         setDisablePropertyForButtons(true);
         startSpinning();
@@ -238,30 +237,31 @@ public class SlotsController {
                 for (int i = 0; i < 3; i++) {
                     spinConditionList.set(i, true);
                 }
-                spinReel(reel0SymbolList, reel0LabelList, 0);
+                spinReelContinuously(reel0SymbolList, reel0LabelList, 0);
                 sleepCurrentThread();
-                spinReel(reel1SymbolList, reel1LabelList, 1);
+                spinReelContinuously(reel1SymbolList, reel1LabelList, 1);
                 sleepCurrentThread();
-                spinReel(reel2SymbolList, reel2LabelList, 2);
+                spinReelContinuously(reel2SymbolList, reel2LabelList, 2);
+                // wait 1s before unlocking stop button:
                 sleepCurrentThread(1000);
                 // TODO: put into runLater?
+                // unlocks stop button to allow stopping the reels (only in the manual mode):
                 if (!isAutoOn) {
                     spinButton.disableProperty().set(false);
                 }
 
+                // gives the reels 3s of spinning in auto mode:
                 if (isAutoOn) {
                     int secondCounter = 0;
                     while (true) {
                         sleepCurrentThread(1000);
                         secondCounter++;
-                        System.out.println("Waiting for the spin (" + secondCounter + "s...)");
-                        if (secondCounter == 4) {
+                        if (secondCounter == 3) {
                             isAutoSpinDone = true;
                             break;
                         }
                     }
                 }
-
                 return null;
             }
         };
@@ -271,15 +271,17 @@ public class SlotsController {
 
     // the "RNG" one:
     private void sleepCurrentThread() {
-        // TODO: check if there is actual need for re-instantiation
+        // re-instantiation to get a new seed for each step:
+        // TODO: find a better way of randomization
         Random random = new Random();
-        int min = random.nextInt(171, 479);
+        int min = random.nextInt(381, 578);
         random = new Random();
-        int max = random.nextInt(475, 822);
+        int max = random.nextInt(721, 1210);
         random = new Random();
         sleepCurrentThread(random.nextInt(min, max));
     }
 
+    // the fixed delay version:
     private void sleepCurrentThread(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
@@ -288,13 +290,16 @@ public class SlotsController {
         }
     }
 
-    private void spinReel(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int conditionIndex) {
+    // performs both continuous list shifting and UI (reel graphics) updates:
+    // (the process is manually synchronized for now)
+    // TODO: find a better way of synchronizing it
+    private void spinReelContinuously(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList,
+                                      int conditionIndex) {
         Task<Void> singleReelSpinTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 while (spinConditionList.get(conditionIndex)) {
-                    shiftSymbolsList(symbolList, 1);
-                    updateReel(symbolList, labelList);
+                    nudgeReelOnce(symbolList, labelList, 1);
                     sleepCurrentThread(20);
                 }
                 return null;
@@ -304,7 +309,8 @@ public class SlotsController {
         new Thread(singleReelSpinTask).start();
     }
 
-    private void nudgeReelFXThread(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int distance) {
+    // used both as a nudge functionality and as a part of the spinReelContinuously method (single step):
+    private void nudgeReelOnce(List<SlotsData.SlotSymbol> symbolList, List<Label> labelList, int distance) {
         shiftSymbolsList(symbolList, distance);
         updateReel(symbolList, labelList);
     }
@@ -312,13 +318,14 @@ public class SlotsController {
     @FXML
     public void handleStopButton() {
         spinButton.setText("SPIN");
-        spinButton.idProperty().set("spinButtonStyle"); // to ref CSS stylesheet id
+        spinButton.idProperty().set("spinButtonStyle");
         spinButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 handleSpinButton();
             }
         });
+        // disable spin button to prevent re-spinning too early:
         spinButton.disableProperty().set(true);
         stopSpinning();
     }
@@ -327,6 +334,7 @@ public class SlotsController {
         Task<Void> stopReelsTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                // stops the reels, one by one:
                 for (int i = 0; i < 3; i++) {
                     spinConditionList.set(i, false);
                     sleepCurrentThread();
@@ -337,6 +345,7 @@ public class SlotsController {
                     sleepCurrentThread(500);
                 }
 
+                // gets info on possible nudges, acquired multiplier and winnings:
                 SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
                                                                                    reel1SymbolList,
                                                                                    reel2SymbolList);
@@ -345,72 +354,57 @@ public class SlotsController {
 
                 if (result != null) {
                     winnings = result.getWinnings();
-                    System.out.println("there was non-null result produced");
-                    System.out.println("ultimate multi: " + result.getMultiplier());
                 } else {
                     System.out.println("null pointer exception - result probably == null (no nudge found)");
                 }
 
-                System.out.println("calculated winnings: " + winnings);
-
                 if (winnings > 0) {
-                    System.out.println("winnings good - updating UI");
-
                     sleepCurrentThread();
-                    // shifting:
+                    // which reels to shift:
                     int distance0 = result.getShiftReel0();
                     int distance1 = result.getShiftReel1();
                     int distance2 = result.getShiftReel2();
 
+                    // the 3 statements below perform any possible nudges:
                     if (distance0 != 0) {
                         sleepCurrentThread(1000);
-                        nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
-                        System.out.println("nudging reel0");
-                    } else {
-                        System.out.println("not nudging reel0");
+                        nudgeReelOnce(reel0SymbolList, reel0LabelList, distance0);
                     }
 
                     if (distance1 != 0) {
                         sleepCurrentThread(1000);
-                        nudgeReelFXThread(reel1SymbolList, reel1LabelList, distance1);
-                        System.out.println("nudging reel1");
-                    } else {
-                        System.out.println("not nudging reel1");
+                        nudgeReelOnce(reel1SymbolList, reel1LabelList, distance1);
                     }
 
                     if (distance2 != 0) {
                         sleepCurrentThread(1000);
-                        nudgeReelFXThread(reel2SymbolList, reel2LabelList, distance2);
-                        System.out.println("nudging reel2");
-                    } else {
-                        System.out.println("not nudging reel2");
+                        nudgeReelOnce(reel2SymbolList, reel2LabelList, distance2);
                     }
 
                     sleepCurrentThread();
 
                     activeProfile.increaseBalance(winnings);
-                    activeProfile.setHighestWin(winnings); // internal validation
+                    activeProfile.setHighestWin(winnings); // internal validation present
 
                     double finalWinnings = winnings;
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             lastWinValueLabel.setText(String.valueOf(finalWinnings));
-                            // TODO: remove it
-                            ProfileData.getProfileDataInstance().forceListChange(); // moved inside run later due to ex.
+                            // TODO: remove it, possibly a bad way of updating the data bound objects
+                            ProfileData.getProfileDataInstance().forceListChange();
                         }
                     });
-                } else {
-                    System.out.println("winnings busted - not updating UI");
                 }
 
                 sleepCurrentThread(1000);
+                // re-enables all buttons (if not in auto-mode):
                 if (!isAutoOn) {
                     spinButton.disableProperty().set(false);
                     setDisablePropertyForButtons(false);
                 }
 
-                System.out.println("fin.");
+                // flag for auto mode:
                 if (isAutoOn) {
                     isAutoSessionDone = true;
                 }
@@ -427,6 +421,7 @@ public class SlotsController {
         MainApp.setRoot("main-window");
     }
 
+    // sets spinner to the max value:
     @FXML
     public void maxBetHandler() {
         SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
@@ -435,7 +430,9 @@ public class SlotsController {
         valueFactory.setValue(maxValue);
     }
 
+    // disables/enables all buttons but the spin/stop one:
     private void setDisablePropertyForButtons(boolean isDisabled) {
+        // TODO: check if this really has to be done over UI Thread
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -444,6 +441,7 @@ public class SlotsController {
                 betAmountSpinner.disableProperty().set(isDisabled);
                 maxBetButton.disableProperty().set(isDisabled);
                 turboButton.disableProperty().set(isDisabled);
+                // to keep auto button enabled in auto mode (so it can turn the mode off):
                 if (!isAutoOn || !isDisabled) {
                     autoSpinButton.disableProperty().set(isDisabled);
                 }
@@ -454,29 +452,16 @@ public class SlotsController {
     @FXML
     public void autoSpinButtonHandler() {
         boolean isToggled = autoSpinButton.isSelected();
-        System.out.println("selected:" + isToggled);
-
-        if (autoSpinSessionInProgress) {
-            System.out.println("condition: " + autoSpinSessionInProgress);
-            System.out.println("returning");
-            autoSpinButton.selectedProperty().set(false);
-            return;
-        }
 
         if (isToggled) {
             isAutoOn = true;
             forceAutoStop = false;
         } else {
             forceAutoStop = true;
+            autoSpinButton.disableProperty().set(true);
         }
-        System.out.println("Auto: " + isAutoOn);
-
-        System.out.println("condition: " + autoSpinSessionInProgress);
 
         if (isToggled) {
-            System.out.println("condition: " + autoSpinSessionInProgress);
-            System.out.println("condition false -> proceeding");
-
             setDisablePropertyForButtons(true);
             spinButton.disableProperty().set(true);
             // the auto loop (in Task):
@@ -484,13 +469,13 @@ public class SlotsController {
                 @Override
                 protected Void call() throws Exception {
                     while (true) {
-                        autoSpinSessionInProgress = true;
-                        System.out.println("condition: " + autoSpinSessionInProgress);
                         isAutoSessionDone = false;
                         isAutoSpinDone = false;
+
                         if (forceAutoStop) {
                             break;
                         }
+
                         double bet = betAmountSpinner.getValue();
                         if (bet > activeProfile.getBalance()) {
                             Platform.runLater(new Runnable() {
@@ -514,14 +499,11 @@ public class SlotsController {
                                     ProfileData.getProfileDataInstance().forceListChange();
                                 }
                             });
-//                            spinButton.disableProperty().set(true); // from run later
-//                            setDisablePropertyForButtons(true); // from run later
 
                             startSpinning();
 
-                            //waiting for the 4-second spin:
+                            // allowing the reels to spin for a while (timer in the startSpinning()):
                             // TODO: use sentinel variable instead
-                            System.out.println("start waiting");
                             while (true) {
                                 sleepCurrentThread(100);
                                 if (isAutoSpinDone) {
@@ -529,31 +511,25 @@ public class SlotsController {
                                 }
                             }
 
-                            System.out.println("finished waiting and run stopSpinning");
                             stopSpinning();
 
-                            // waiting for resolving of the previous session:
+                            // waiting for the current session to resolve (var set in the stopSpinning()):
                             while (!isAutoSessionDone) {
                                 sleepCurrentThread(100);
                             }
 
-                            System.out.println("waiting 2s for the next while iteration");
-                            sleepCurrentThread(2000);
+                            // some additional grace period, possibly unnecessary:
+                            sleepCurrentThread(1000);
                         }
                     }
-                    autoSpinSessionInProgress = false;
-                    System.out.println("condition: " + autoSpinSessionInProgress);
 
-                    // end of auto spin task
-//                    Platform.runLater(new Runnable() {
-//                        @Override
-//                        public void run() {
-                            setDisablePropertyForButtons(false);
-                            spinButton.disableProperty().set(false);
-//                        }
-//                    });
+                    // re-enabling buttons:
+                    setDisablePropertyForButtons(false);
+                    spinButton.disableProperty().set(false);
 
+                    // TODO: inspect that bit (autoSpinButton is set in setDisablePropertyForButtons)
                     isAutoOn = false;
+                    autoSpinButton.disableProperty().set(false);
 
                     return null;
                 }
