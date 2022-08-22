@@ -38,9 +38,8 @@ public class SlotsLogic {
      */
     public double calculateWinnings() {
         // TODO: add index parameters to the signature instead of hardcoding them in the body
-        // TODO: replace indexes with objects' equals() and see if it works
         double winnings = 0;
-        int multi = checkForValidLine(reel0PayPos, reel1PayPos, reel2PayPos);
+        int multi = getPayLineMultiplier(reel0PayPos, reel1PayPos, reel2PayPos);
 
         if (multi != 0) {
             winnings = currentBet * multi;
@@ -51,25 +50,187 @@ public class SlotsLogic {
         return winnings;
     }
 
-    public ResultsContainer processResults(List<SlotsData.SlotSymbol> reel0, List<SlotsData.SlotSymbol> reel1,
-                                           List<SlotsData.SlotSymbol> reel2) {
-        loadRecentResults(reel0, reel1, reel2); // external load
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public ResultsContainer processResults2(List<SlotsData.SlotSymbol> reel0, List<SlotsData.SlotSymbol> reel1,
+                                            List<SlotsData.SlotSymbol> reel2) {
+        // 3 symbols per reel (middle ones):
+        loadRecentResults2(reel0, reel1, reel2);
 
-        reel0PayPos = recentResultsReel0.get(2);
-        reel1PayPos = recentResultsReel1.get(2);
-        reel2PayPos = recentResultsReel2.get(2);
+        List<List<SlotsData.SlotSymbol>> allReelsResults = new ArrayList<>();
+        Collections.addAll(allReelsResults, recentResultsReel0, recentResultsReel1, recentResultsReel2);
 
-        SlotsData.SlotSymbol emptySymbol = SlotsData.getSlotsDataInstance().getSymbolsList().get(1);
-        SlotsData.SlotSymbol freeSymbol = SlotsData.getSlotsDataInstance().getSymbolsList().get(18);
-        SlotsData.SlotSymbol wildSymbol = SlotsData.getSlotsDataInstance().getSymbolsList().get(10);
+        SlotsData.SlotSymbol emptySymbol = SlotsData.getSlotsDataInstance().getEmptySymbol();
+        // TODO: write actual methods in SlotsData to replace that bs (see above):
+//        SlotsData.SlotSymbol freeSymbol = SlotsData.getSlotsDataInstance().getSymbolsList().get(18);
+//        SlotsData.SlotSymbol wildSymbol = SlotsData.getSlotsDataInstance().getSymbolsList().get(10);
 
-        // TODO: can't be done in here
+        // TODO: write free spin check
         // check for free spins
 //        isFreeSpin = reel0PayPos.equals(freeSymbol) && reel1PayPos.equals(freeSymbol) && reel2PayPos.equals(freeSymbol);
 
         // check for basic win:
         if (calculateWinnings() != 0) {
-            int multi = checkForValidLine(reel0PayPos, reel1PayPos, reel2PayPos);
+            int multi = getPayLineMultiplier(recentResultsReel0.get(1),
+                                             recentResultsReel1.get(1),
+                                             recentResultsReel2.get(1));
+            return new ResultsContainer(calculateWinnings(), multi, 0, 0, 0);
+        }
+
+        // check for the reels to nudge:
+        int nudgeCounter = 0;
+        for (List<SlotsData.SlotSymbol> reelResults : allReelsResults) {
+            nudgeCounter = (compareTwoSymbols(reelResults.get(1), emptySymbol)) ? nudgeCounter + 1 : nudgeCounter;
+        }
+
+        int highestMultiplier = 0;
+        int reel0ShiftDistance = 0;
+        int reel1ShiftDistance = 0;
+        int reel2ShiftDistance = 0;
+        List<List<SlotsData.SlotSymbol>> possibleWinningCombinations = new ArrayList<>();
+        // any nudge
+        for (SlotsData.SlotSymbol reel0Symbol : recentResultsReel0) {
+            for (SlotsData.SlotSymbol reel1Symbol : recentResultsReel1) {
+                for (SlotsData.SlotSymbol reel2Symbol : recentResultsReel2) {
+                    int currentMultiplier = getPayLineMultiplier(reel0Symbol, reel1Symbol, reel2Symbol);
+                    List<SlotsData.SlotSymbol> currentWinningCombination;
+                    if (currentMultiplier > highestMultiplier) {
+                        currentWinningCombination = new ArrayList<>();
+                        Collections.addAll(currentWinningCombination, reel0Symbol, reel1Symbol, reel2Symbol);
+                        // "resets" the list of all possible combinations with the same multiplier:
+                        possibleWinningCombinations = new ArrayList<>();
+                        possibleWinningCombinations.add(currentWinningCombination);
+                        highestMultiplier = currentMultiplier;
+                    } else if (currentMultiplier == highestMultiplier) {
+                        currentWinningCombination = new ArrayList<>();
+                        Collections.addAll(currentWinningCombination, reel0Symbol, reel1Symbol, reel2Symbol);
+                        // adds this combination to the existing list:
+                        possibleWinningCombinations.add(currentWinningCombination);
+                    }
+                }
+            }
+        }
+
+        for (List<SlotsData.SlotSymbol> combination : possibleWinningCombinations) {
+            // check for 3 same symbols (e.g. multi)
+            // if not check for the highest multi
+        }
+
+        if (recentResultsReel0.indexOf(reel0Symbol) == 0) {
+            reel0ShiftDistance = 1;
+        } else if (recentResultsReel0.indexOf(reel0Symbol) == 1) {
+            reel0ShiftDistance = 0;
+        } else {
+            reel0ShiftDistance = -1;
+        }
+
+        if (recentResultsReel1.indexOf(reel1Symbol) == 0) {
+            reel1ShiftDistance = 1;
+        } else if (recentResultsReel1.indexOf(reel1Symbol) == 1) {
+            reel1ShiftDistance = 0;
+        } else {
+            reel1ShiftDistance = -1;
+        }
+
+        if (recentResultsReel2.indexOf(reel2Symbol) == 0) {
+            reel2ShiftDistance = 1;
+        } else if (recentResultsReel2.indexOf(reel2Symbol) == 1) {
+            reel2ShiftDistance = 0;
+        } else {
+            reel2ShiftDistance = -1;
+        }
+
+
+        // TODO: for triple nudge - if none of shifts is 0 and not a free spin return "zero" results
+        return createResult(highestMultiplier, reel0ShiftDistance, reel1ShiftDistance, reel2ShiftDistance);
+
+/*        if (nudgeCounter == 3 && isFreeSpin) {
+            // 3x empty
+            for (SlotsData.SlotSymbol symbol0 : recentResultsReel0) {
+                for (SlotsData.SlotSymbol symbol1 : recentResultsReel1) {
+                    for (SlotsData.SlotSymbol symbol2 : recentResultsReel2) {
+                        int currentMultiplier = getPayLineMultiplier(symbol0, symbol1, symbol2);
+                        if (currentMultiplier > highestMultiplier) {
+                            highestMultiplier = currentMultiplier;
+                            reel0ShiftDistance = (recentResultsReel0.indexOf(symbol0) == 0) ? 1 : -1;
+                            reel1ShiftDistance = (recentResultsReel1.indexOf(symbol1) == 0) ? 1 : -1;
+                            reel2ShiftDistance = (recentResultsReel2.indexOf(symbol2) == 0) ? 1 : -1;
+                        }
+                    }
+                }
+            }
+            return createResult(highestMultiplier, reel0ShiftDistance, reel1ShiftDistance, reel2ShiftDistance);
+        } else if (nudgeCounter == 2) {
+            // 2x empty
+            List<List<SlotsData.SlotSymbol>> emptyReels = new ArrayList<>();
+            List<Integer> emptyReelsIndexes = new ArrayList<>();
+            SlotsData.SlotSymbol nonEmptySymbol;
+            for (List<SlotsData.SlotSymbol> reel : allReelsResults) {
+                if (compareTwoSymbols(reel.get(0), emptySymbol)) {
+                    emptyReels.add(reel);
+                    emptyReelsIndexes.add(allReelsResults.indexOf(reel));
+                } else {
+
+                }
+            }*/
+
+//            List<SlotsData.SlotSymbol> emptyReel0 = new ArrayList<>();
+//            List<SlotsData.SlotSymbol> emptyReel1 = new ArrayList<>();
+
+/*        for (SlotsData.SlotSymbol symbol0 : reel0results) {
+            for (SlotsData.SlotSymbol symbol1 : reel1results) {
+                for (SlotsData.SlotSymbol symbol2 : reel2results) {
+                    int currentMultiplier = getPayLineMultiplier(symbol0, symbol1, symbol2);
+                    if (currentMultiplier > highestMultiplier) {
+                        highestMultiplier = currentMultiplier;
+                        reel0ShiftDistance = (reel0results.indexOf(symbol0) == 0) ? 1 : -1;
+                        reel1ShiftDistance = (reel1results.indexOf(symbol1) == 0) ? 1 : -1;
+                        reel2ShiftDistance = (reel2results.indexOf(symbol2) == 0) ? 1 : -1;
+                    }
+                }
+            }
+        }*/
+
+
+/*    } else if(nudgeCounter ==1)
+
+    {
+        // 1x empty
+
+    }*/
+
+
+    // TODO: too many exit points
+//        return
+
+//    createResult(0,0,0,0);
+}
+
+    private ResultsContainer createResult(int multiplier, int reel0ShiftDistance, int reel1ShiftDistance,
+                                          int reel2ShiftDistance) {
+        double winnings = multiplier * currentBet;
+        return new ResultsContainer(winnings, multiplier, reel0ShiftDistance, reel1ShiftDistance, reel2ShiftDistance);
+    }
+
+    public ResultsContainer processResults(List<SlotsData.SlotSymbol> reel0, List<SlotsData.SlotSymbol> reel1,
+                                           List<SlotsData.SlotSymbol> reel2) {
+        loadRecentResults(reel0, reel1, reel2);
+
+        reel0PayPos = recentResultsReel0.get(2);
+        reel1PayPos = recentResultsReel1.get(2);
+        reel2PayPos = recentResultsReel2.get(2);
+
+        SlotsData.SlotSymbol emptySymbol = SlotsData.getSlotsDataInstance().getEmptySymbol();
+        // TODO: write actual methods in SlotsData to replace that bs (see above):
+        SlotsData.SlotSymbol freeSymbol = SlotsData.getSlotsDataInstance().getSymbolsList().get(18);
+        SlotsData.SlotSymbol wildSymbol = SlotsData.getSlotsDataInstance().getSymbolsList().get(10);
+
+        // TODO: write free spin check
+        // check for free spins
+//        isFreeSpin = reel0PayPos.equals(freeSymbol) && reel1PayPos.equals(freeSymbol) && reel2PayPos.equals(freeSymbol);
+
+        // check for basic win:
+        if (calculateWinnings() != 0) {
+            int multi = getPayLineMultiplier(reel0PayPos, reel1PayPos, reel2PayPos);
             return new ResultsContainer(calculateWinnings(), multi, 0, 0, 0);
         }
 
@@ -119,7 +280,7 @@ public class SlotsLogic {
             // 4 5 6
 
             // 1 + 2 + 3
-            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PreWin);
+            int currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PreWin, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -127,7 +288,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // 1 + 2 + 6
-            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PreWin, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -135,7 +296,7 @@ public class SlotsLogic {
                 shiftReel2 = -1;
             }
             // 1 + 5 + 3
-            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PreWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PostWin, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -143,7 +304,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // 1 + 5 + 6
-            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PostWin, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -151,7 +312,7 @@ public class SlotsLogic {
                 shiftReel2 = -1;
             }
             // 4 + 2 + 3
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PreWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PreWin, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -159,7 +320,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // 4 + 2 + 6
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PreWin, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -167,7 +328,7 @@ public class SlotsLogic {
                 shiftReel2 = -1;
             }
             // 4 + 5 + 3
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PreWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PostWin, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -175,7 +336,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // 4 + 5 + 6
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PostWin, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -198,7 +359,7 @@ public class SlotsLogic {
             // 4 - 6
 
             // 1 + X + 3
-            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PreWin);
+            int currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PayPos, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -206,7 +367,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // 1 + X + 6
-            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PayPos, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -214,7 +375,7 @@ public class SlotsLogic {
                 shiftReel2 = -1;
             }
             // 4 + X + 3
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PreWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PayPos, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -222,7 +383,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // 4 + X + 6
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PayPos, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -245,7 +406,7 @@ public class SlotsLogic {
             // - 5 6
 
             // X + 2 + 3
-            int currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PreWin);
+            int currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PreWin, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -253,7 +414,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // X + 2 + 6
-            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PreWin, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -261,7 +422,7 @@ public class SlotsLogic {
                 shiftReel2 = -1;
             }
             // X + 5 + 3
-            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PreWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PostWin, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -269,7 +430,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // X + 5 + 6
-            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PostWin, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -291,7 +452,7 @@ public class SlotsLogic {
             // 4 5 -
 
             // 1 + 2 + X
-            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PreWin, reel2PayPos);
+            int currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PreWin, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -299,7 +460,7 @@ public class SlotsLogic {
                 shiftReel2 = 0;
             }
             // 1 + 5 + X
-            currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PostWin, reel2PayPos);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PostWin, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -307,7 +468,7 @@ public class SlotsLogic {
                 shiftReel2 = 0;
             }
             // 4 + 2 + X
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PreWin, reel2PayPos);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PreWin, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -315,7 +476,7 @@ public class SlotsLogic {
                 shiftReel2 = 0;
             }
             // 4 + 5 + X
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PostWin, reel2PayPos);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PostWin, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -337,7 +498,7 @@ public class SlotsLogic {
             // 4 - -
 
             // 1 + X + X
-            int currentMultiplierCheck = checkForValidLine(reel0PreWin, reel1PayPos, reel2PayPos);
+            int currentMultiplierCheck = getPayLineMultiplier(reel0PreWin, reel1PayPos, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 1;
@@ -345,7 +506,7 @@ public class SlotsLogic {
                 shiftReel2 = 0;
             }
             // 4 + X + X
-            currentMultiplierCheck = checkForValidLine(reel0PostWin, reel1PayPos, reel2PayPos);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PostWin, reel1PayPos, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = -1;
@@ -367,7 +528,7 @@ public class SlotsLogic {
             // - 5 -
 
             // X + 2 + X
-            int currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PreWin, reel2PayPos);
+            int currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PreWin, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -375,7 +536,7 @@ public class SlotsLogic {
                 shiftReel2 = 0;
             }
             // X + 5 + X
-            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PostWin, reel2PayPos);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PostWin, reel2PayPos);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -397,7 +558,7 @@ public class SlotsLogic {
             // - - 6
 
             // X + X + 3
-            int currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PayPos, reel2PreWin);
+            int currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PayPos, reel2PreWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -405,7 +566,7 @@ public class SlotsLogic {
                 shiftReel2 = 1;
             }
             // X + X + 6
-            currentMultiplierCheck = checkForValidLine(reel0PayPos, reel1PayPos, reel2PostWin);
+            currentMultiplierCheck = getPayLineMultiplier(reel0PayPos, reel1PayPos, reel2PostWin);
             if (currentMultiplierCheck > lastCheckedMultiplier) {
                 lastCheckedMultiplier = currentMultiplierCheck;
                 shiftReel0 = 0;
@@ -419,10 +580,9 @@ public class SlotsLogic {
         return null;
     }
 
-    // returns multiplier:
-    public int checkForValidLine(SlotsData.SlotSymbol symbol0,
-                                 SlotsData.SlotSymbol symbol1,
-                                 SlotsData.SlotSymbol symbol2) {
+    public int getPayLineMultiplier(SlotsData.SlotSymbol symbol0,
+                                    SlotsData.SlotSymbol symbol1,
+                                    SlotsData.SlotSymbol symbol2) {
         int multiplier = 0;
         if (symbol0 != null || symbol1 != null || symbol2 != null) {
             List<SlotsData.SlotSymbol> symbols = new ArrayList<>();
@@ -481,6 +641,17 @@ public class SlotsLogic {
         Collections.addAll(listOfCurrentReels, recentResultsReel0, recentResultsReel1, recentResultsReel2);
     }
 
+    public void loadRecentResults2(List<SlotsData.SlotSymbol> reel0Results, List<SlotsData.SlotSymbol> reel1Results,
+                                   List<SlotsData.SlotSymbol> reel2Results) {
+        // TODO: add validation?
+        for (int i = 1; i < 4; i++) {
+            recentResultsReel0.add(reel0Results.get(i));
+            recentResultsReel1.add(reel1Results.get(i));
+            recentResultsReel2.add(reel2Results.get(i));
+        }
+        Collections.addAll(listOfCurrentReels, recentResultsReel0, recentResultsReel1, recentResultsReel2);
+    }
+
     private boolean compareTwoSymbols(SlotsData.SlotSymbol symbol1, SlotsData.SlotSymbol symbol2) {
         if (symbol1 != null && symbol2 != null) {
             String image1URL = symbol1.getImage().getUrl();
@@ -495,39 +666,39 @@ public class SlotsLogic {
         return currentBet;
     }
 
-    public static class ResultsContainer {
-        private final double winnings;
-        private final double multiplier;
-        private final int shiftReel0;
-        private final int shiftReel1;
-        private final int shiftReel2;
+public static class ResultsContainer {
+    private final double winnings;
+    private final double multiplier;
+    private final int shiftReel0;
+    private final int shiftReel1;
+    private final int shiftReel2;
 
-        private ResultsContainer(double winnings, double multiplier, int shiftReel0, int shiftReel1, int shiftReel2) {
-            this.winnings = winnings;
-            this.multiplier = multiplier;
-            this.shiftReel0 = shiftReel0;
-            this.shiftReel1 = shiftReel1;
-            this.shiftReel2 = shiftReel2;
-        }
-
-        public double getWinnings() {
-            return winnings;
-        }
-
-        public double getMultiplier() {
-            return multiplier;
-        }
-
-        public int getShiftReel0() {
-            return shiftReel0;
-        }
-
-        public int getShiftReel1() {
-            return shiftReel1;
-        }
-
-        public int getShiftReel2() {
-            return shiftReel2;
-        }
+    private ResultsContainer(double winnings, double multiplier, int shiftReel0, int shiftReel1, int shiftReel2) {
+        this.winnings = winnings;
+        this.multiplier = multiplier;
+        this.shiftReel0 = shiftReel0;
+        this.shiftReel1 = shiftReel1;
+        this.shiftReel2 = shiftReel2;
     }
+
+    public double getWinnings() {
+        return winnings;
+    }
+
+    public double getMultiplier() {
+        return multiplier;
+    }
+
+    public int getShiftReel0() {
+        return shiftReel0;
+    }
+
+    public int getShiftReel1() {
+        return shiftReel1;
+    }
+
+    public int getShiftReel2() {
+        return shiftReel2;
+    }
+}
 }
