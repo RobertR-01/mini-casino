@@ -293,7 +293,8 @@
                 <RowConstraints percentHeight="100"/>
             </rowConstraints>
             <Button fx:id="infoButton" GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER"
-                    GridPane.halignment="CENTER" prefWidth="Infinity" prefHeight="Infinity">
+                    GridPane.halignment="CENTER" prefWidth="Infinity" prefHeight="Infinity"
+                    onAction="#handleInfoButton">
                 <graphic>
                     <ImageView>
                         <Image url="@/toolbarButtonGraphics/general/Information24.gif"/>

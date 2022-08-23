@@ -10,6 +10,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,10 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class SlotsController {
     @FXML
@@ -578,4 +576,57 @@ public class SlotsController {
     public void turboButtonHandler() {
         isTurboOn = turboButton.isSelected();
     }
+
+    @FXML
+    public void handleInfoButton() {
+        // set up the new dialog:
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(topLevelLayout.getScene().getWindow());
+        dialog.setTitle("Info Dialog");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("slots-info-dialog-1.fxml"));
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println("Couldn't load the dialog.");
+            e.printStackTrace();
+            return;
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+
+        // adding arrow buttons:
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+//
+//        NewProfileDialogController controller = fxmlLoader.getController();
+//
+//        // event filter for input validation:
+//        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+//        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
+//            // Check whether some conditions are fulfilled
+//            if (controller.validateNameArgument() == null) {
+//                // the TextField contents are prohibited, so we consume th event
+//                // to prevent the dialog from closing
+//                actionEvent.consume();
+//                // warning alert:
+//                Alert alert = new Alert(Alert.AlertType.WARNING);
+//                alert.setTitle("Profile edition error");
+//                alert.setHeaderText("Invalid profile name!");
+//                alert.setContentText("The profile name cannot be set to: \"Empty\" or left void.");
+//                alert.showAndWait();
+//            }
+//        });
+
+        // dialog result processing:
+        Optional<ButtonType> result = dialog.showAndWait();
+//        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            controller.processTextInput();
+//            // TODO: do something about this god damnit
+//            ProfileData.getProfileDataInstance().forceListChange();
+//        }
+//
+//        editedProfile.setBeingEdited(false);
+    }
+
 }
