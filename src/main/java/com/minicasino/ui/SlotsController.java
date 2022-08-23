@@ -363,7 +363,7 @@ public class SlotsController {
                 }
 
                 // gets info on possible nudges, acquired multiplier and winnings:
-                SlotsLogic.ResultsContainer result = currentSession.processResults2(reel0SymbolList,
+                SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
                                                                                    reel1SymbolList,
                                                                                    reel2SymbolList);
 
