@@ -34,3 +34,7 @@
     -fx-background-color: black;
     -fx-opacity: 0.6;
 }
+
+#veil {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+}

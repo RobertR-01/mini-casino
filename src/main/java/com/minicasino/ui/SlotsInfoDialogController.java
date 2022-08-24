@@ -1,48 +1,54 @@
 package com.minicasino.ui;
 
-import com.minicasino.data.ProfileData;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class SlotsInfoDialogController {
     @FXML
-    private TextField profileNameTextField;
+    private StackPane topLevelLayout;
     @FXML
-    private Label balanceLabel;
+    private Button previousButton;
     @FXML
-    private Label highestWinLabel;
+    private Button continueButton;
+    @FXML
+    private Button nextButton;
+    @FXML
+    private Label p0leftTitleLabel;
+    @FXML
+    private Label p0leftHeaderLabel;
+    @FXML
+    private Label p0leftContentLabel;
+    @FXML
+    private Label p0rightTitleLabel;
+    @FXML
+    private Label p0rightHeaderLabel;
+    @FXML
+    private Label p0rightContentLabel;
+    @FXML
+    private Label p0Title;
 
-    private ProfileData.Profile editedProfile;
+    private int activePage;
 
     public void initialize() {
-        editedProfile = ProfileData.getProfileDataInstance().getCurrentlyEditedProfile();
-        profileNameTextField.setText(editedProfile.getName());
-        balanceLabel.setText(String.valueOf(editedProfile.getBalance()));
-        highestWinLabel.setText(String.valueOf(editedProfile.getHighestWin()));
+        activePage = 1;
+
+
+
+
     }
 
-    public String validateNameArgument() {
-        String name = profileNameTextField.getText().trim();
-        if (name.length() != 0 && !name.equalsIgnoreCase("empty")) {
-            return name;
-        }
-        return null;
+    @FXML
+    public void handleChangePageButton() {
+
     }
 
-    public void processTextInput() {
-        // parameters validation done in ProfileData
-        // TODO: check if editedProfile needs validation first
-        if (validateNameArgument() != null) {
-            editedProfile.setName(validateNameArgument());
-            editedProfile.setEmpty(false);
-        } else {
-            System.out.println("NewProfileDialogController.processTextInput() -> can't set name;"
-                               + " validateNameArgument returned null");
-        }
-    }
-
-    public String getTextFieldValue() {
-        return profileNameTextField.getText();
+    @FXML
+    public void handleContinueButton(ActionEvent event) {
+        ((Stage) topLevelLayout.getScene().getWindow()).close();
     }
 }

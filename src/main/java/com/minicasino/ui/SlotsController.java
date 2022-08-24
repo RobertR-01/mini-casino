@@ -11,18 +11,23 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.*;
 
 public class SlotsController {
     @FXML
-    private BorderPane topLevelLayout;
+    private StackPane topLevelLayout;
     @FXML
     private GridPane nestedGridPane;
     @FXML
@@ -75,6 +80,8 @@ public class SlotsController {
     private ToggleButton turboButton;
     @FXML
     private ToggleButton autoSpinButton;
+    @FXML
+    private Region veil;
 
     private List<SlotsData.SlotSymbol> reel0SymbolList;
     private List<SlotsData.SlotSymbol> reel1SymbolList;
@@ -101,6 +108,9 @@ public class SlotsController {
                 topLevelLayout.requestFocus();
             }
         });
+
+        // veil (for info dialog) initially not visible:
+        setVeilVisibility(false);
 
         // auto-spin initially off:
         isAutoOn = false;
@@ -579,54 +589,33 @@ public class SlotsController {
 
     @FXML
     public void handleInfoButton() {
-        // set up the new dialog:
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(topLevelLayout.getScene().getWindow());
-        dialog.setTitle("Info Dialog");
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("slots-info-dialog-1.fxml"));
+        setVeilVisibility(true);
 
+        // set up the new dialog (window):
+        Stage infoDialog = new Stage(StageStyle.UNDECORATED);
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("slots-info-dialog.fxml"));
+        Parent root;
         try {
-            dialog.getDialogPane().setContent(fxmlLoader.load());
+            root = fxmlLoader.load();
         } catch (IOException e) {
             System.out.println("Couldn't load the dialog.");
             e.printStackTrace();
             return;
         }
+        Scene scene = new Scene(root, 500, 350);
+        infoDialog.setTitle("Info");
+        infoDialog.resizableProperty().set(false);
+        infoDialog.initStyle(StageStyle.UNDECORATED);
+        infoDialog.setScene(scene);
+        infoDialog.initOwner(topLevelLayout.getScene().getWindow());
+        infoDialog.initModality(Modality.WINDOW_MODAL);
+        infoDialog.setOnCloseRequest(event -> setVeilVisibility(false));
 
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-
-        // adding arrow buttons:
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-//
-//        NewProfileDialogController controller = fxmlLoader.getController();
-//
-//        // event filter for input validation:
-//        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-//        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
-//            // Check whether some conditions are fulfilled
-//            if (controller.validateNameArgument() == null) {
-//                // the TextField contents are prohibited, so we consume th event
-//                // to prevent the dialog from closing
-//                actionEvent.consume();
-//                // warning alert:
-//                Alert alert = new Alert(Alert.AlertType.WARNING);
-//                alert.setTitle("Profile edition error");
-//                alert.setHeaderText("Invalid profile name!");
-//                alert.setContentText("The profile name cannot be set to: \"Empty\" or left void.");
-//                alert.showAndWait();
-//            }
-//        });
-
-        // dialog result processing:
-        Optional<ButtonType> result = dialog.showAndWait();
-//        if (result.isPresent() && result.get() == ButtonType.OK) {
-//            controller.processTextInput();
-//            // TODO: do something about this god damnit
-//            ProfileData.getProfileDataInstance().forceListChange();
-//        }
-//
-//        editedProfile.setBeingEdited(false);
+        infoDialog.showAndWait();
+        setVeilVisibility(false);
     }
 
+    public void setVeilVisibility(boolean isVisible) {
+        veil.setVisible(isVisible);
+    }
 }
