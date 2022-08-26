@@ -136,7 +136,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/meat48.png"/>
+                            <Image url="slots/symbols/meat48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -150,7 +150,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/hotdog48.png"/>
+                            <Image url="slots/symbols/hotdog48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -164,7 +164,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/cheese48.png"/>
+                            <Image url="slots/symbols/cheese48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -178,7 +178,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/icecream48.png"/>
+                            <Image url="slots/symbols/icecream48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -192,7 +192,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/mustard48.png"/>
+                            <Image url="slots/symbols/mustard48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -224,7 +224,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/drink48.png"/>
+                            <Image url="slots/symbols/drink48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -238,7 +238,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/coffee48.png"/>
+                            <Image url="slots/symbols/coffee48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -252,7 +252,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/water48.png"/>
+                            <Image url="slots/symbols/water48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -266,7 +266,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/pear48.png"/>
+                            <Image url="slots/symbols/pear48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>
@@ -280,7 +280,7 @@
                     </font>
                     <graphic>
                         <ImageView fitWidth="30" fitHeight="30">
-                            <Image url="set_two/cherries48.png"/>
+                            <Image url="slots/symbols/cherries48.png"/>
                         </ImageView>
                     </graphic>
                 </Label>

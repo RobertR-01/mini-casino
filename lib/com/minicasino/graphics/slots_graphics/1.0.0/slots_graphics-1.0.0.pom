@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.minicasino.graphics</groupId>
-  <artifactId>symbols</artifactId>
-  <version>0.0.1</version>
+  <artifactId>slots_graphics</artifactId>
+  <version>1.0.0</version>
   <description>POM was created from install:install-file</description>
 </project>

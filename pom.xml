@@ -63,8 +63,8 @@
         </dependency>
         <dependency>
             <groupId>com.minicasino.graphics</groupId>
-            <artifactId>symbols</artifactId>
-            <version>0.0.1</version>
+            <artifactId>slots_graphics</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

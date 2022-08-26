@@ -14,81 +14,81 @@ public class SlotsData {
         emptySymbol = new SlotSymbol();
         symbolsList = new ArrayList<>();
         // the first half of all symbols:
-//        addSymbol(new SlotSymbol(new Image("set_two/meat48.png"), 4, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/meat48.png"), 4, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/hotdog48.png"), 3, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/hotdog48.png"), 3, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/cheese48.png"), 3, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/cheese48.png"), 3, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/icecream48.png"), 2, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/icecream48.png"), 2, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/mustard48.png"), 2, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/mustard48.png"), 2, false, false, false));
 //        addSymbol(new SlotSymbol());
 
         // with the second half only:
-        addSymbol(new SlotSymbol(new Image("set_two/drink48.png"), 25, false, true, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/coffee48.png"), 15, false, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 15, false, false, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/water48.png"), 7, false, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/water48.png"), 7, false, false, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/pear48.png"), 1, false, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/pear48.png"), 1, false, false, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/cherries48.png"), 15, true, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/cherries48.png"), 15, true, false, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/drink48.png"), 25, false, true, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/coffee48.png"), 15, false, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 15, false, false, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/water48.png"), 7, false, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/water48.png"), 7, false, false, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/pear48.png"), 1, false, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/pear48.png"), 1, false, false, false));
         addSymbol(new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("set_two/cherries48.png"), 15, true, false, false));
+        addSymbol(new SlotSymbol(new Image("slots/symbols/cherries48.png"), 15, true, false, false));
         addSymbol(new SlotSymbol());
 
         // the list for testing:
-//        addSymbol(new SlotSymbol(new Image("set_two/drink48.png"), 25, false, true, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/coffee48.png"), 15, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 15, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/drink48.png"), 25, false, true, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/coffee48.png"), 15, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 15, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/drink48.png"), 25, false, true, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/coffee48.png"), 15, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 15, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/drink48.png"), 25, false, true, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/coffee48.png"), 15, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 15, false, false, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/drink48.png"), 25, false, true, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
 //        addSymbol(new SlotSymbol());
 //
-//        addSymbol(new SlotSymbol(new Image("set_two/coffee48.png"), 15, false, false, false));
+//        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 15, false, false, false));
 //        addSymbol(new SlotSymbol());
     }
 
@@ -127,7 +127,7 @@ public class SlotsData {
         }
 
         private SlotSymbol() {
-            this(new Image("set_two/empty48.png"), 0, false, false, true);
+            this(new Image("slots/symbols/empty48.png"), 0, false, false, true);
         }
 
         // should return copy?

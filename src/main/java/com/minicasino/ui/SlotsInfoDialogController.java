@@ -4,13 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class SlotsInfoDialogController {
     @FXML
-    private StackPane topLevelLayout;
+    private GridPane topLevelLayout;
     @FXML
     private Button previousButton;
     @FXML
@@ -31,11 +32,15 @@ public class SlotsInfoDialogController {
     private Label p0rightContentLabel;
     @FXML
     private Label p0Title;
+    @FXML
+    private GridPane page0GridPane;
+    @FXML
+    private GridPane page1GridPane;
 
     private int activePage;
 
     public void initialize() {
-        activePage = 1;
+        activePage = 0;
 
 
 
@@ -45,6 +50,18 @@ public class SlotsInfoDialogController {
     @FXML
     public void handleChangePageButton() {
 
+    }
+
+    @FXML
+    public void handleNextPageButton() {
+        page0GridPane.visibleProperty().set(false);
+        page1GridPane.visibleProperty().set(true);
+    }
+
+    @FXML
+    public void handlePreviousPageButton() {
+        page0GridPane.visibleProperty().set(true);
+        page1GridPane.visibleProperty().set(false);
     }
 
     @FXML

@@ -25,7 +25,7 @@ public class MainApp extends Application {
         scene = new Scene(loadFXML("main-window"), 800, 500);
         stage.setTitle("MiniCasino \u00A9");
         stage.resizableProperty().set(false);
-        stage.initStyle(StageStyle.UTILITY);
+//        stage.initStyle(StageStyle.UNDECORATED);
         stage.setOnCloseRequest(this::handleTopBarCloseButton);
         stage.setScene(scene);
         stage.show();
