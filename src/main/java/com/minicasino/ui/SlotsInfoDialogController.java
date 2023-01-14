@@ -4,9 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class SlotsInfoDialogController {
@@ -36,14 +35,13 @@ public class SlotsInfoDialogController {
     private GridPane page0GridPane;
     @FXML
     private GridPane page1GridPane;
-
-    private int activePage;
+    @FXML
+    private RadioButton radioButton1;
+    @FXML
+    private RadioButton radioButton2;
 
     public void initialize() {
-        activePage = 0;
-
-
-
+        previousButton.setDisable(true);
 
     }
 
@@ -56,12 +54,20 @@ public class SlotsInfoDialogController {
     public void handleNextPageButton() {
         page0GridPane.visibleProperty().set(false);
         page1GridPane.visibleProperty().set(true);
+        previousButton.setDisable(false);
+        nextButton.setDisable(true);
+        radioButton2.selectedProperty().set(true);
+        radioButton1.selectedProperty().set(false);
     }
 
     @FXML
     public void handlePreviousPageButton() {
         page0GridPane.visibleProperty().set(true);
         page1GridPane.visibleProperty().set(false);
+        nextButton.setDisable(false);
+        previousButton.setDisable(true);
+        radioButton2.selectedProperty().set(false);
+        radioButton1.selectedProperty().set(true);
     }
 
     @FXML

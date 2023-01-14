@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.lang.String?>
 <GridPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml" stylesheets="@styles-dialog.css"
           fx:controller="com.minicasino.ui.SlotsInfoDialogController" id="outerBorder">
     <rowConstraints>
-        <RowConstraints percentHeight="80"/>
-        <RowConstraints percentHeight="20"/>
+        <RowConstraints percentHeight="85"/>
+        <RowConstraints percentHeight="15"/>
     </rowConstraints>
     <padding>
         <Insets right="10" left="10"/>
@@ -18,17 +18,17 @@
     <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0">
         <GridPane fx:id="page0GridPane">
             <rowConstraints>
-                <RowConstraints percentHeight="20"/>
-                <RowConstraints percentHeight="80"/>
+                <RowConstraints percentHeight="10"/>
+                <RowConstraints percentHeight="90"/>
             </rowConstraints>
-            <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
-                <Label fx:id="p0Title" text="PAY TABLE">
+            <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER" GridPane.hgrow="ALWAYS">
+                <Label fx:id="p0Title" text="PAY TABLE" HBox.hgrow="ALWAYS">
                     <font>
-                        <Font name="Arial" size="20"/>
+                        <Font name="Arial Bold" size="20"/>
                     </font>
                 </Label>
             </HBox>
-            <GridPane GridPane.rowIndex="1" GridPane.columnIndex="0" hgap="10">
+            <GridPane GridPane.rowIndex="1" GridPane.columnIndex="0" hgap="10" GridPane.hgrow="ALWAYS">
                 <columnConstraints>
                     <ColumnConstraints percentWidth="50"/>
                     <ColumnConstraints percentWidth="50"/>
@@ -46,6 +46,9 @@
                         </Label>
                     </HBox>
                     <VBox alignment="CENTER_LEFT" spacing="5">
+                        <padding>
+                            <Insets top="50" left="20" right="20"/>
+                        </padding>
                         <Label fx:id="p0leftHeaderLabel" text="WILD">
                             <font>
                                 <Font name="Arial Bold" size="15"/>
@@ -72,6 +75,9 @@
                         </Label>
                     </HBox>
                     <VBox alignment="CENTER_LEFT" spacing="5">
+                        <padding>
+                            <Insets top="50" left="20" right="20"/>
+                        </padding>
                         <Label fx:id="p0rightHeaderLabel" text="FREE SPINS">
                             <font>
                                 <Font name="Arial Bold" size="15"/>
@@ -90,51 +96,55 @@
         <!--next page-->
         <GridPane fx:id="page1GridPane" visible="false">
             <rowConstraints>
-                <RowConstraints percentHeight="20"/>
-                <RowConstraints percentHeight="80"/>
+                <RowConstraints percentHeight="10"/>
+                <RowConstraints percentHeight="90"/>
             </rowConstraints>
-            <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
-                <Label fx:id="p1Title" text="PAY TABLE">
+            <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER" GridPane.hgrow="ALWAYS">
+                <Label fx:id="p1Title" text="PAY TABLE" HBox.hgrow="ALWAYS">
                     <font>
-                        <Font name="Arial" size="20"/>
+                        <Font name="Arial Bold" size="20"/>
                     </font>
                 </Label>
             </HBox>
-            <GridPane GridPane.rowIndex="1" GridPane.columnIndex="0" alignment="CENTER">
+            <GridPane GridPane.rowIndex="1" GridPane.columnIndex="0" alignment="CENTER" GridPane.hgrow="ALWAYS">
                 <rowConstraints>
-                    <RowConstraints percentHeight="50"/>
-                    <RowConstraints percentHeight="50"/>
+                    <RowConstraints percentHeight="70"/>
+                    <RowConstraints percentHeight="30"/>
                 </rowConstraints>
-                <Label GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
-                    <graphic>
-                        <ImageView>
-                            <Image url="slots/info_dialog/slots_info_nudge.png"/>
-                        </ImageView>
-                    </graphic>
-                </Label>
+                <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.vgrow="ALWAYS"
+                      GridPane.hgrow="ALWAYS" GridPane.halignment="CENTER" GridPane.valignment="CENTER"
+                      alignment="CENTER">
+                    <Label alignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="200" preserveRatio="true">
+                                <Image url="slots/info_dialog/slots_info_nudge.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                </HBox>
                 <VBox id="innerBorder" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.vgrow="ALWAYS"
-                      spacing="30">
+                      spacing="5" GridPane.hgrow="ALWAYS">
                     <padding>
                         <Insets top="5" right="5" bottom="5" left="5"/>
                     </padding>
                     <HBox alignment="CENTER">
-                        <Label fx:id="p1leftTitleLabel" text="WILD">
-                            <font>
-                                <Font name="Arial Bold" size="20"/>
-                            </font>
-                        </Label>
-                    </HBox>
-                    <VBox alignment="CENTER_LEFT" spacing="5">
-                        <Label fx:id="p1leftHeaderLabel" text="WILD">
+                        <Label fx:id="p1leftTitleLabel" text="NUDGE">
                             <font>
                                 <Font name="Arial Bold" size="15"/>
                             </font>
                         </Label>
-                        <Label fx:id="p1leftContentLabel" wrapText="true">
+                    </HBox>
+                    <VBox alignment="CENTER_LEFT" spacing="5">
+                        <Label fx:id="p1leftContentLabel" wrapText="true" text="After a spin is completed, some reels will shift one position upwards or downwards if it produces a winning combination. The game always chooses the most profitable shifting option for the player.&#10;BASE GAME - 2 reels can shift&#10;FREE SPINS - 3 reels can shift">
                             <font>
-                                <Font name="Arial" size="15"/>
+                                <Font name="Arial" size="11"/>
                             </font>
-                            WILD substitutes all symbols except FREE SPINS. It appears on all reels.
+<!--                            <text>
+                                After a spin is completed, some reels will shift one position upwards or downwards if it produces a winning combination.
+                                &#10;The game always chooses the most profitable shifting option for the player.
+                                &#10;BASE GAME - 2 reels can shift
+                                &#10;FREE SPINS - 3 reels can shift
+                            </text>-->
                         </Label>
                     </VBox>
                 </VBox>
@@ -149,11 +159,15 @@
             <fx:define>
                 <ToggleGroup fx:id="toggleGroup"/>
             </fx:define>
-            <RadioButton toggleGroup="$toggleGroup" scaleX="0.7" scaleY="0.7" selected="true"/>
-            <RadioButton toggleGroup="$toggleGroup" scaleX="0.7" scaleY="0.7"/>
-            <RadioButton toggleGroup="$toggleGroup" scaleX="0.7" scaleY="0.7"/>
+            <RadioButton fx:id="radioButton1" toggleGroup="$toggleGroup" scaleX="0.7" scaleY="0.7" selected="true"
+            onAction="#handlePreviousPageButton"/>
+            <RadioButton fx:id="radioButton2" toggleGroup="$toggleGroup" scaleX="0.7" scaleY="0.7"
+            onAction="#handleNextPageButton"/>
         </HBox>
         <HBox alignment="CENTER">
+            <padding>
+                <Insets top="5"/>
+            </padding>
             <Button fx:id="previousButton" prefHeight="Infinity" onAction="#handlePreviousPageButton">
                 <graphic>
                     <ImageView>

@@ -11,19 +11,23 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class SlotsController {
     @FXML
@@ -602,7 +606,7 @@ public class SlotsController {
             e.printStackTrace();
             return;
         }
-        Scene scene = new Scene(root, 500, 350);
+        Scene scene = new Scene(root, 700, 450);
         infoDialog.setTitle("Info");
         infoDialog.resizableProperty().set(false);
         infoDialog.initStyle(StageStyle.UNDECORATED);
@@ -610,6 +614,21 @@ public class SlotsController {
         infoDialog.initOwner(topLevelLayout.getScene().getWindow());
         infoDialog.initModality(Modality.WINDOW_MODAL);
         infoDialog.setOnCloseRequest(event -> setVeilVisibility(false));
+
+
+        // tie the dialog to the parent window position:
+        double parentX = topLevelLayout.getScene().getWindow().getX();
+        double parentY = topLevelLayout.getScene().getWindow().getY();
+        double parentWidth = topLevelLayout.getScene().getWindow().getWidth();
+        double parentHeight = topLevelLayout.getScene().getWindow().getHeight();
+
+        double dialogWidth = scene.getWidth();
+        double dialogHeight = scene.getHeight();
+        double newDialogX = (parentWidth - dialogWidth) / 2 + parentX;
+        double newDialogY = (parentHeight - dialogHeight) / 2 + parentY;
+
+        infoDialog.setX(newDialogX);
+        infoDialog.setY(newDialogY);
 
         infoDialog.showAndWait();
         setVeilVisibility(false);
