@@ -58,7 +58,7 @@ public class MainApp extends Application {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
         alert.setHeaderText("This button has been deactivated.");
-        alert.setContentText("Use Close button in the Main Menu to close the game.");
+        alert.setContentText("Use Exit button in the Main Menu to close the game.");
         alert.showAndWait();
     }
 

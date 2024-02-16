@@ -5,6 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Line?>
 <StackPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml" stylesheets="@styles.css"
            fx:controller="com.minicasino.ui.SlotsController">
     <BorderPane>
@@ -20,10 +21,17 @@
                     <ColumnConstraints percentWidth="20"/>
                     <ColumnConstraints percentWidth="20"/>
                 </columnConstraints>
+                <HBox alignment="CENTER_LEFT" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                      GridPane.halignment="CENTER">
+                    <Button fx:id="toggleExtraSymbolsB" text="Toggle left column" wrapText="true"
+                            onAction="#handleToggleExtraSymbolsB"/>
+                </HBox>
                 <Label fx:id="titleLabel" text="Classic Fruits" GridPane.rowIndex="0" GridPane.columnIndex="2"
                        GridPane.halignment="CENTER"/>
-                <Button fx:id="mainMenuButton" text="Return to Main Menu" onAction="#handleMainMenuButton"
-                        GridPane.rowIndex="0" GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
+                <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="0" GridPane.columnIndex="4"
+                      GridPane.halignment="CENTER">
+                    <Button fx:id="mainMenuButton" text="Return to Main Menu" onAction="#handleMainMenuButton"/>
+                </HBox>
             </GridPane>
         </top>
         <center>
@@ -112,7 +120,7 @@
             </HBox>
         </center>
         <left>
-            <GridPane BorderPane.alignment="CENTER" alignment="CENTER" maxWidth="100">
+            <GridPane fx:id="extraSymbolsGP" BorderPane.alignment="CENTER" alignment="CENTER" maxWidth="100">
                 <padding>
                     <Insets bottom="10" top="10"/>
                 </padding>
@@ -126,7 +134,7 @@
                 <columnConstraints>
                     <ColumnConstraints percentWidth="100"/>
                 </columnConstraints>
-                <Label id="infoIcons" text="x4" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="Infinity"
+                <Label id="infoIcons" text="x10" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="Infinity"
                        alignment="CENTER" contentDisplay="TOP">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -140,7 +148,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label id="infoIcons" text="x3" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
+                <Label id="infoIcons" text="x5" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
                        alignment="CENTER" contentDisplay="TOP">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -182,7 +190,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label id="infoIcons" text="x2" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
+                <Label id="infoIcons" text="x1" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
                        alignment="CENTER" contentDisplay="TOP">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -213,7 +221,7 @@
                 <columnConstraints>
                     <ColumnConstraints percentWidth="100"/>
                 </columnConstraints>
-                <Label fx:id="wildInfoLabel" id="infoIcons" text="x25 (WILD)" GridPane.rowIndex="0"
+                <Label fx:id="wildInfoLabel" id="infoIcons" text="x75 (WILD)" GridPane.rowIndex="0"
                        GridPane.columnIndex="0"
                        prefWidth="Infinity" alignment="CENTER" contentDisplay="TOP">
                     <padding>
@@ -228,7 +236,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label id="infoIcons" text="x15" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
+                <Label id="infoIcons" text="x50" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
                        alignment="CENTER" contentDisplay="TOP">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -242,7 +250,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label id="infoIcons" text="x7" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
+                <Label id="infoIcons" text="x25" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
                        alignment="CENTER" contentDisplay="TOP">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -256,7 +264,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label id="infoIcons" text="x1" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
+                <Label id="infoIcons" text="x20" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
                        alignment="CENTER" contentDisplay="TOP">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -270,7 +278,7 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <Label id="infoIcons" text="FREE" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
+                <Label id="infoIcons" text="x15" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
                        alignment="CENTER" contentDisplay="TOP">
                     <padding>
                         <Insets top="5" bottom="5" left="5" right="5"/>
@@ -366,7 +374,7 @@
                 <Button fx:id="maxBetButton" text="MAX BET" GridPane.rowIndex="0" GridPane.columnIndex="3"
                         prefWidth="Infinity" prefHeight="Infinity" onAction="#maxBetHandler"/>
                 <ToggleButton fx:id="turboButton" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="Infinity"
-                              prefHeight="Infinity" onAction="#turboButtonHandler">
+                              prefHeight="Infinity" onAction="#turboButtonHandler" text="TURBO" contentDisplay="TOP">
                     <graphic>
                         <ImageView>
                             <Image url="@/toolbarButtonGraphics/general/Stop24.gif"/>

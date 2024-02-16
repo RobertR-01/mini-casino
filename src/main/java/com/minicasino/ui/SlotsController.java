@@ -86,6 +86,10 @@ public class SlotsController {
     private ToggleButton autoSpinButton;
     @FXML
     private Region veil;
+    @FXML
+    private Button toggleExtraSymbolsB;
+    @FXML
+    private GridPane extraSymbolsGP;
 
     private List<SlotsData.SlotSymbol> reel0SymbolList;
     private List<SlotsData.SlotSymbol> reel1SymbolList;
@@ -632,6 +636,12 @@ public class SlotsController {
 
         infoDialog.showAndWait();
         setVeilVisibility(false);
+    }
+
+    @FXML
+    private void handleToggleExtraSymbolsB() {
+        boolean toggle = extraSymbolsGP.visibleProperty().getValue();
+        extraSymbolsGP.setVisible(!toggle);
     }
 
     public void setVeilVisibility(boolean isVisible) {
