@@ -9,41 +9,49 @@ public class SlotsData {
     private static final SlotsData SLOTS_DATA_INSTANCE = new SlotsData();
     private final List<SlotSymbol> symbolsList;
     private final SlotSymbol emptySymbol;
+    private final List<SlotSymbol> leftSideSymbols;
+    private final List<SlotSymbol> rightSideSymbols;
 
     private SlotsData() {
         emptySymbol = new SlotSymbol();
         symbolsList = new ArrayList<>();
+        leftSideSymbols = new ArrayList<>();
+        rightSideSymbols = new ArrayList<>();
+
         // left side symbols:
-        addSymbol(new SlotSymbol(new Image("slots/symbols/meat48.png"), 10, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(leftSideSymbols, new SlotSymbol(new Image("slots/symbols/meat48.png"), 10, false, false, false));
+        addSymbol(leftSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/hotdog48.png"), 5, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(leftSideSymbols, new SlotSymbol(new Image("slots/symbols/hotdog48.png"), 5, false, false, false));
+        addSymbol(leftSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/cheese48.png"), 3, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(leftSideSymbols, new SlotSymbol(new Image("slots/symbols/cheese48.png"), 3, false, false, false));
+        addSymbol(leftSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/icecream48.png"), 2, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(leftSideSymbols, new SlotSymbol(new Image("slots/symbols/icecream48.png"), 2, false, false, false));
+        addSymbol(leftSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/mustard48.png"), 1, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(leftSideSymbols, new SlotSymbol(new Image("slots/symbols/mustard48.png"), 1, false, false, false));
+        addSymbol(leftSideSymbols, new SlotSymbol());
 
         // right side symbols:
-        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 75, false, true, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(rightSideSymbols, new SlotSymbol(new Image("slots/symbols/drink48.png"), 75, false, true, false));
+        addSymbol(rightSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/coffee48.png"), 50, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(rightSideSymbols, new SlotSymbol(new Image("slots/symbols/coffee48.png"), 50, false, false, false));
+        addSymbol(rightSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/water48.png"), 25, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(rightSideSymbols, new SlotSymbol(new Image("slots/symbols/water48.png"), 25, false, false, false));
+        addSymbol(rightSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/pear48.png"), 20, false, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(rightSideSymbols, new SlotSymbol(new Image("slots/symbols/pear48.png"), 20, false, false, false));
+        addSymbol(rightSideSymbols, new SlotSymbol());
 
-        addSymbol(new SlotSymbol(new Image("slots/symbols/cherries48.png"), 15, true, false, false));
-        addSymbol(new SlotSymbol());
+        addSymbol(rightSideSymbols, new SlotSymbol(new Image("slots/symbols/cherries48.png"), 15, true, false, false));
+        addSymbol(rightSideSymbols, new SlotSymbol());
+
+        symbolsList.addAll(leftSideSymbols);
+        symbolsList.addAll(rightSideSymbols);
 
         // the list for testing:
 //        addSymbol(new SlotSymbol(new Image("slots/symbols/drink48.png"), 25, false, true, false));
@@ -81,9 +89,9 @@ public class SlotsData {
         return SLOTS_DATA_INSTANCE;
     }
 
-    private void addSymbol(SlotSymbol symbol) {
-        if (symbol != null) {
-            symbolsList.add(symbol);
+    private void addSymbol(List<SlotSymbol> list, SlotSymbol symbol) {
+        if (symbol != null && list != null) {
+            list.add(symbol);
         }
     }
 
@@ -94,6 +102,14 @@ public class SlotsData {
     public List<SlotSymbol> getSymbolsList() {
 //        return Collections.unmodifiableList(symbolsList);
         return new ArrayList<>(symbolsList);
+    }
+
+    public List<SlotSymbol> getLeftSideSymbols() {
+        return new ArrayList<>(leftSideSymbols);
+    }
+
+    public List<SlotSymbol> getRightSideSymbols() {
+        return new ArrayList<>(rightSideSymbols);
     }
 
     public static class SlotSymbol {

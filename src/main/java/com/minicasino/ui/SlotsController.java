@@ -87,7 +87,7 @@ public class SlotsController {
     @FXML
     private Region veil;
     @FXML
-    private Button toggleExtraSymbolsB;
+    private Button toggleExtraSymbolsButton;
     @FXML
     private GridPane extraSymbolsGP;
 
@@ -380,8 +380,8 @@ public class SlotsController {
 
                 // gets info on possible nudges, acquired multiplier and winnings:
                 SlotsLogic.ResultsContainer result = currentSession.processResults(reel0SymbolList,
-                                                                                   reel1SymbolList,
-                                                                                   reel2SymbolList);
+                        reel1SymbolList,
+                        reel2SymbolList);
 
                 double winnings = 0;
 
@@ -489,6 +489,7 @@ public class SlotsController {
                 betAmountSpinner.disableProperty().set(isDisabled);
                 maxBetButton.disableProperty().set(isDisabled);
                 turboButton.disableProperty().set(isDisabled);
+                toggleExtraSymbolsButton.disableProperty().set(isDisabled);
                 // to keep auto button enabled in auto mode (so it can turn the mode off):
                 if (!isAutoOn || !isDisabled) {
                     autoSpinButton.disableProperty().set(isDisabled);
@@ -640,8 +641,21 @@ public class SlotsController {
 
     @FXML
     private void handleToggleExtraSymbolsB() {
-        boolean toggle = extraSymbolsGP.visibleProperty().getValue();
-        extraSymbolsGP.setVisible(!toggle);
+        boolean isLeftSideVisible = extraSymbolsGP.visibleProperty().getValue();
+        if (isLeftSideVisible) {
+            reel0SymbolList.removeAll(SlotsData.getSlotsDataInstance().getLeftSideSymbols());
+            reel1SymbolList.removeAll(SlotsData.getSlotsDataInstance().getLeftSideSymbols());
+            reel2SymbolList.removeAll(SlotsData.getSlotsDataInstance().getLeftSideSymbols());
+            extraSymbolsGP.setVisible(false);
+        } else {
+            reel0SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
+            reel1SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
+            reel2SymbolList = new ArrayList<>(SlotsData.getSlotsDataInstance().getSymbolsList());
+            extraSymbolsGP.setVisible(true);
+        }
+        initializeReels(reel0SymbolList, reel0LabelList);
+        initializeReels(reel1SymbolList, reel1LabelList);
+        initializeReels(reel2SymbolList, reel2LabelList);
     }
 
     public void setVeilVisibility(boolean isVisible) {

@@ -206,7 +206,7 @@ public class ProfileChoiceController {
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
             // Check whether some conditions are fulfilled
             if (controller.validateNameArgument() == null) {
-                // the TextField contents are prohibited, so we consume th event
+                // the TextField contents are prohibited, so we consume the event
                 // to prevent the dialog from closing
                 actionEvent.consume();
                 // warning alert:

@@ -23,7 +23,7 @@
                 </columnConstraints>
                 <HBox alignment="CENTER_LEFT" GridPane.rowIndex="0" GridPane.columnIndex="0"
                       GridPane.halignment="CENTER">
-                    <Button fx:id="toggleExtraSymbolsB" text="Toggle left column" wrapText="true"
+                    <Button fx:id="toggleExtraSymbolsButton" text="Toggle left column" wrapText="true"
                             onAction="#handleToggleExtraSymbolsB"/>
                 </HBox>
                 <Label fx:id="titleLabel" text="Classic Fruits" GridPane.rowIndex="0" GridPane.columnIndex="2"
