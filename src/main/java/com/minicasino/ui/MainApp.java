@@ -2,21 +2,17 @@ package com.minicasino.ui;
 
 import com.minicasino.data.ProfileData;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
 public class MainApp extends Application {
-    public final static String APP_VERSION = "0.1.0";
+    public final static String APP_VERSION = "0.1.1";
     private static Scene scene;
     private Exception exception;
 
