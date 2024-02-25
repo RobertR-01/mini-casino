@@ -1,0 +1,40 @@
+#infoIcons {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+}
+
+#spinButtonStyle {
+    -fx-background-color: dodgerblue;
+}
+
+#stopButtonStyle {
+    -fx-background-color: red;
+}
+
+#reel0Outline {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2 1 2 2;
+}
+
+#reel1Outline {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2 1 2 1;
+}
+
+#reel2Outline {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2 2 2 1;
+}
+
+#translucentRow {
+    -fx-background-color: black;
+    -fx-opacity: 0.6;
+}
+
+#veil {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+}

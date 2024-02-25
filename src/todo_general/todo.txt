@@ -1,0 +1,19 @@
+- min width of profile info labels on the main screen (or something else to keep that grid in check)
+- min width of the window or all elements? (regarding window resizing)
+- dynamic window size depending on a native screen res?
+- balance/bet/highest_win formatting (for display)
+- rolling lights around reels
+- nudge mechanics for reels
+- wild symbol mechanics for reels
+- free spins mechanics for reels
+- buy in for all games (separate dialog with slider; probably requires some changes regarding the current session init)
+- remaining buttons for the slots window
+- add directory verification (if doesn't exist create it) to the data save/load methods
+
+- fix maven dependencies (possible duplicates, e.g. javafx-graphics)
+
+- override equals and hashcode for SlotSymbol and Profile
+
+- move button text, style and handler setup to a separate method (SlotsController) to prevent duplication
+- change time based synchronisation to sentinel variable based one in SlotsController / SlotsLogic
+- fix nudging - so in case of the same multiplier outcome the same symbol is chosen if possible instead of a random one

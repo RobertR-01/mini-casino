@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml" hgap="20" vgap="60" alignment="CENTER"
+          fx:controller="com.minicasino.ui.GameChoiceController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+    <Label fx:id="headerLabel" text="Choose the game to play:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+           GridPane.columnSpan="2" textAlignment="CENTER" GridPane.halignment="CENTER"/>
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="20" alignment="CENTER">
+        <Button fx:id="slotsButton" text="Slots - Classic Fruits" prefWidth="200" onAction="#handleSlotsButton"/>
+        <Button text="..." prefWidth="200"/>
+        <Button text="..." prefWidth="200"/>
+        <Button text="..." prefWidth="200"/>
+    </VBox>
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1">
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="20" alignment="CENTER">
+            <Button text="..." prefWidth="200"/>
+            <Button text="..." prefWidth="200"/>
+            <Button text="..." prefWidth="200"/>
+            <Button text="..." prefWidth="200"/>
+        </VBox>
+    </VBox>
+    <Button fx:id="backButton" text="Back" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+            onAction="#handleBackButton" GridPane.halignment="CENTER"/>
+</GridPane>

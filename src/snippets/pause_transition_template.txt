@@ -1,0 +1,6 @@
+PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
+pause.setOnFinished(event -> {
+    nudgeReelFXThread(reel0SymbolList, reel0LabelList, distance0);
+    System.out.println("nudging reel0");
+});
+pause.play();

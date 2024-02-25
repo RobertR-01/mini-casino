@@ -1,0 +1,29 @@
+#selectedButton {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2 1 2 2;
+}
+
+#selectedRadioButton {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2 2 2 1;
+}
+
+#selectedProfileRow {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+}
+
+#unselectedProfileRow {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 0;
+}
+
+#clearProfileButton {
+    -fx-font-family: sans-serif;
+    -fx-font-weight: bold;
+    -fx-text-fill: red;
+}

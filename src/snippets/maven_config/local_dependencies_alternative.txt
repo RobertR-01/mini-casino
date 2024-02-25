@@ -1,0 +1,78 @@
+Automatically installing all required JARs via maven-install-plugin:
+
+Use maven-install-plugin in pom file:
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-install-plugin</artifactId>
+    <version>2.5.2</version>
+    <executions>
+        <execution>
+            <phase>initialize</phase>
+            <goals>
+                <goal>install-file</goal>
+            </goals>
+            <configuration>
+                <file>lib/yourJar.jar</file>
+                <groupId>com.somegroup.id</groupId>
+                <artifactId>artefact-id</artifactId>
+                <version>x.y.z</version>
+                <packaging>jar</packaging>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+In this case you can perform mvn initialize and jar will be installed in local
+maven repo. Now this jar is available during any maven step on this machine (do
+not forget to include this dependency as any other maven dependency in pom with
+<dependency></dependency> tag). It is also possible to bind jar install not to
+initialize step, but any other step you like.
+
+--------------------------------------------------------------------------------
+
+Automatically installing all required JARs via Maven build:
+
+Creating a local repository holding jars not available in a public repository
+
+Assumptions
+    - The jar was created by Maven in another project with the following...
+
+        <groupId>com.foo</groupId>
+        <artifactId>test</artifactId>
+        <version>0.1.1</version>
+        <packaging>jar</packaging>
+
+In Project (that wants to access the jars)
+    - Create repo directory just off the project base directory
+    - For each jar to be accessed locally...
+        - add directories for each level of the groupID (ex. /repo/com/foo)
+        - add jar name (aka artifactId) without the version
+        (ex. /repo/com/foo/test)
+        - add directory for the version of the jar
+        (ex. /repo/com/foo/test/0.1.1)
+        - put the jar in that directory
+        (ex. /repo/com/foo/test/0.1.1/test-0.1.1.jar)
+
+In pom.xml (for the project that wants to access the jars)
+    - Define the local repository
+
+        <repositories>
+          <repository>
+            <id>data-local</id>
+            <name>data</name>
+            <url>file://${project.basedir}/repo</url>
+          </repository>
+        </repositories>
+
+    - Add the dependency on the local jar. From our example above, this would
+    be...
+
+        <dependency>
+          <groupId>com.foo</groupId>
+          <artifactId>test</artifactId>
+          <version>0.1.1</version>
+        </dependency>
+
+Rebuild
+    - Rt click pom.xml -> Run as -> Maven build

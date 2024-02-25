@@ -1,0 +1,19 @@
+// the method:
+
+private void delayTask(int milliseconds, Runnable continuation) {
+    Task<Void> sleeper = new Task<Void>() {
+        @Override
+        protected Void call() throws Exception {
+            sleepCurrentThread(1000);
+            return null;
+        }
+    };
+    sleeper.setOnSucceeded(event -> continuation.run());
+    new Thread(sleeper).start();
+}
+
+// usage:
+
+delayTask(1000, () -> {
+    // task
+});

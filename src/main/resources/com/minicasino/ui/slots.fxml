@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.Line?>
+<StackPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml" stylesheets="@styles.css"
+           fx:controller="com.minicasino.ui.SlotsController">
+    <BorderPane>
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20"/>
+        </padding>
+        <top>
+            <GridPane BorderPane.alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="20"/>
+                    <ColumnConstraints percentWidth="20"/>
+                    <ColumnConstraints percentWidth="20"/>
+                    <ColumnConstraints percentWidth="20"/>
+                    <ColumnConstraints percentWidth="20"/>
+                </columnConstraints>
+                <HBox alignment="CENTER_LEFT" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                      GridPane.halignment="CENTER">
+                    <Button fx:id="toggleExtraSymbolsButton" text="Toggle left column" wrapText="true"
+                            onAction="#handleToggleExtraSymbolsB"/>
+                </HBox>
+                <Label fx:id="titleLabel" text="Classic Fruits" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                       GridPane.halignment="CENTER"/>
+                <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="0" GridPane.columnIndex="4"
+                      GridPane.halignment="CENTER">
+                    <Button fx:id="mainMenuButton" text="Return to Main Menu" onAction="#handleMainMenuButton"/>
+                </HBox>
+            </GridPane>
+        </top>
+        <center>
+            <HBox BorderPane.alignment="CENTER" alignment="CENTER">
+                <padding>
+                    <Insets bottom="20" top="20"/>
+                </padding>
+                <GridPane fx:id="reel0" id="reel0Outline" prefWidth="100">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="100"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                    </rowConstraints>
+                    <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                        <Label fx:id="reel0pos0"/>
+                        <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                    </StackPane>
+                    <Label fx:id="reel0pos1" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <Label fx:id="reel0pos2" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <Label fx:id="reel0pos3" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                        <Label fx:id="reel0pos4"/>
+                        <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                    </StackPane>
+                </GridPane>
+                <GridPane fx:id="reel1" id="reel1Outline" prefWidth="100.0">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="100"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                    </rowConstraints>
+                    <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                        <Label fx:id="reel1pos0"/>
+                        <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                    </StackPane>
+                    <Label fx:id="reel1pos1" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <Label fx:id="reel1pos2" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <Label fx:id="reel1pos3" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                        <Label fx:id="reel1pos4"/>
+                        <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                    </StackPane>
+                </GridPane>
+                <GridPane fx:id="reel2" id="reel2Outline" prefWidth="100">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="100"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                        <RowConstraints percentHeight="20"/>
+                    </rowConstraints>
+                    <StackPane GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                        <Label fx:id="reel2pos0"/>
+                        <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                    </StackPane>
+                    <Label fx:id="reel2pos1" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <Label fx:id="reel2pos2" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <Label fx:id="reel2pos3" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER"/>
+                    <StackPane GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                        <Label fx:id="reel2pos4"/>
+                        <Label id="translucentRow" prefHeight="Infinity" prefWidth="Infinity"/>
+                    </StackPane>
+                </GridPane>
+            </HBox>
+        </center>
+        <left>
+            <GridPane fx:id="extraSymbolsGP" BorderPane.alignment="CENTER" alignment="CENTER" maxWidth="100">
+                <padding>
+                    <Insets bottom="10" top="10"/>
+                </padding>
+                <rowConstraints>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                </rowConstraints>
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100"/>
+                </columnConstraints>
+                <Label id="infoIcons" text="x10" GridPane.rowIndex="0" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/meat48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x5" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/hotdog48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x3" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/cheese48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x2" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/icecream48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x1" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/mustard48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </GridPane>
+        </left>
+        <right>
+            <GridPane BorderPane.alignment="CENTER" alignment="CENTER" maxWidth="100">
+                <padding>
+                    <Insets bottom="10" top="10"/>
+                </padding>
+                <rowConstraints>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                    <RowConstraints percentHeight="20"/>
+                </rowConstraints>
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="100"/>
+                </columnConstraints>
+                <Label fx:id="wildInfoLabel" id="infoIcons" text="x75 (WILD)" GridPane.rowIndex="0"
+                       GridPane.columnIndex="0"
+                       prefWidth="Infinity" alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/drink48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x50" GridPane.rowIndex="1" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/coffee48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x25" GridPane.rowIndex="2" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/water48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x20" GridPane.rowIndex="3" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/pear48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+                <Label id="infoIcons" text="x15" GridPane.rowIndex="4" GridPane.columnIndex="0" prefWidth="Infinity"
+                       alignment="CENTER" contentDisplay="TOP">
+                    <padding>
+                        <Insets top="5" bottom="5" left="5" right="5"/>
+                    </padding>
+                    <font>
+                        <Font name="Arial bold" size="15"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitWidth="30" fitHeight="30">
+                            <Image url="slots/symbols/cherries48.png"/>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </GridPane>
+        </right>
+        <bottom>
+            <GridPane fx:id="nestedGridPane" BorderPane.alignment="CENTER" alignment="CENTER" vgap="10" maxHeight="50">
+                <padding>
+                    <Insets top="5" bottom="5" left="5" right="5"/>
+                </padding>
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="10"/>
+                    <ColumnConstraints percentWidth="20"/>
+                    <ColumnConstraints percentWidth="20"/>
+                    <ColumnConstraints percentWidth="10"/>
+                    <ColumnConstraints percentWidth="10"/>
+                    <ColumnConstraints percentWidth="10"/>
+                    <ColumnConstraints percentWidth="20"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="100"/>
+                </rowConstraints>
+                <Button fx:id="infoButton" GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER"
+                        GridPane.halignment="CENTER" prefWidth="Infinity" prefHeight="Infinity"
+                        onAction="#handleInfoButton">
+                    <graphic>
+                        <ImageView>
+                            <Image url="@/toolbarButtonGraphics/general/Information24.gif"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <GridPane GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="Infinity" prefHeight="Infinity">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="50"/>
+                        <RowConstraints percentHeight="50"/>
+                    </rowConstraints>
+                    <Label fx:id="balanceLabel" text="Balance:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                           prefWidth="Infinity" prefHeight="Infinity">
+                        <padding>
+                            <Insets top="5" bottom="5" left="5" right="5"/>
+                        </padding>
+                    </Label>
+                    <Label fx:id="balanceValueLabel" text="0 000 000" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                           prefWidth="Infinity" prefHeight="Infinity" alignment="CENTER">
+                        <padding>
+                            <Insets top="5" bottom="5" left="5" right="5"/>
+                        </padding>
+                    </Label>
+                    <Label fx:id="betAmountLabel" text="Total bet:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           prefWidth="Infinity" prefHeight="Infinity">
+                        <padding>
+                            <Insets top="5" bottom="5" left="5" right="5"/>
+                        </padding>
+                    </Label>
+                    <Spinner fx:id="betAmountSpinner" GridPane.rowIndex="1" GridPane.columnIndex="1" initialValue="500"
+                             max="5000" min="500" amountToStepBy="500" prefWidth="Infinity" prefHeight="Infinity"/>
+                </GridPane>
+                <GridPane GridPane.rowIndex="0" GridPane.columnIndex="2" prefWidth="Infinity" prefHeight="Infinity">
+                    <rowConstraints>
+                        <RowConstraints percentHeight="50"/>
+                        <RowConstraints percentHeight="50"/>
+                    </rowConstraints>
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="100"/>
+                    </columnConstraints>
+                    <Label fx:id="lastWinLabel" text="Last win:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                           prefWidth="Infinity" prefHeight="Infinity">
+                        <padding>
+                            <Insets top="5" bottom="5" left="5" right="5"/>
+                        </padding>
+                    </Label>
+                    <Label fx:id="lastWinValueLabel" text="0.0" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                           prefWidth="Infinity" prefHeight="Infinity" alignment="CENTER">
+                        <padding>
+                            <Insets top="5" bottom="5" left="5" right="5"/>
+                        </padding>
+                    </Label>
+                </GridPane>
+                <Button fx:id="maxBetButton" text="MAX BET" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                        prefWidth="Infinity" prefHeight="Infinity" onAction="#maxBetHandler"/>
+                <ToggleButton fx:id="turboButton" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="Infinity"
+                              prefHeight="Infinity" onAction="#turboButtonHandler" text="TURBO" contentDisplay="TOP">
+                    <graphic>
+                        <ImageView>
+                            <Image url="@/toolbarButtonGraphics/general/Stop24.gif"/>
+                        </ImageView>
+                    </graphic>
+                </ToggleButton>
+                <ToggleButton fx:id="autoSpinButton" text="Auto Spin" GridPane.rowIndex="0" GridPane.columnIndex="5"
+                              prefWidth="Infinity" prefHeight="Infinity" onAction="#autoSpinButtonHandler"/>
+                <Button fx:id="spinButton" text="SPIN" GridPane.rowIndex="0" GridPane.columnIndex="6"
+                        prefWidth="Infinity"
+                        prefHeight="Infinity" onAction="#handleSpinButton"/>
+            </GridPane>
+        </bottom>
+    </BorderPane>
+    <Region fx:id="veil" id="veil"/>
+</StackPane>

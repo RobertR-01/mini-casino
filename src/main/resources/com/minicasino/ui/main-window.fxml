@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="topLevelLayout" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.minicasino.ui.MainWindowController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+    <top>
+        <VBox BorderPane.alignment="CENTER" alignment="CENTER">
+            <Label fx:id="titleLabel" textAlignment="CENTER"/>
+            <Label fx:id="subTitleLabel" textAlignment="CENTER"/>
+            <VBox alignment="CENTER">
+                <padding>
+                    <Insets top="40" right="20"/>
+                </padding>
+                <HBox alignment="CENTER_RIGHT">
+                    <Label text="Name: "/>
+                    <Label fx:id="nameLabel" text="No profile selected!"/>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT">
+                    <Label text="Balance: "/>
+                    <Label fx:id="balanceLabel" text="No profile selected!"/>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT">
+                    <Label text="Highest win: "/>
+                    <Label fx:id="highestWinLabel" text="No profile selected!"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </top>
+    <center>
+        <VBox spacing="20" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="40"/>
+            </padding>
+            <Button fx:id="playButton" text="Play" prefWidth="100" onAction="#handlePlayButton"/>
+            <Button fx:id="profileButton" text="Player Profile" prefWidth="100" onAction="#handleProfileButton"/>
+            <Button fx:id="optionsButton" text="Options" prefWidth="100" onAction="#handleOptionsButton"/>
+            <Button fx:id="aboutButton" text="Credits" prefWidth="100" onAction="#handleAboutButton"/>
+            <Button fx:id="exitButton" text="Exit" prefWidth="100" onAction="#handleExitButton"/>
+        </VBox>
+    </center>
+</BorderPane>
