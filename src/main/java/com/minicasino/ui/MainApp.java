@@ -25,7 +25,7 @@ public class MainApp extends Application {
         scene = new Scene(loadFXML("main-window"), 800, 500);
         stage.setTitle("MiniCasino \u00A9");
         stage.resizableProperty().set(false);
-        stage.initStyle(StageStyle.UTILITY);
+//        stage.initStyle(StageStyle.UNDECORATED);
         stage.setOnCloseRequest(this::handleTopBarCloseButton);
         stage.setScene(scene);
         stage.show();
@@ -58,7 +58,7 @@ public class MainApp extends Application {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
         alert.setHeaderText("This button has been deactivated.");
-        alert.setContentText("Use Close button in the Main Menu to close the game.");
+        alert.setContentText("Use Exit button in the Main Menu to close the game.");
         alert.showAndWait();
     }
 

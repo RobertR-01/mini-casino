@@ -78,8 +78,31 @@ public class MainWindowController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About Mini Casino");
         alert.setHeaderText("Mini Casino: The Game");
+//        alert.setContentText("v" + MainApp.APP_VERSION + "\n\nCopyright \u00A9 2022 RobertR-01"
+//                             + "\nSource code: https://github.com/RobertR-01/mini-casino");
         alert.setContentText("v" + MainApp.APP_VERSION + "\n\nCopyright \u00A9 2022 RobertR-01"
-                             + "\nSource code: https://github.com/RobertR-01/mini-casino");
+                + "\nSource code: https://github.com/RobertR-01/mini-casino\n"
+                + """
+                \n----------------------------------------------------------------------
+                \nGraphics used for this application:
+                
+                food icon set
+                https://freeicons.io/icon-list/food-icon-set
+                author: Reda
+            
+                Icon Pack: Fruit | Flat
+                https://www.flaticon.com/packs/fruit-80
+                author: amonrat rungreangfangsai
+
+                Icon Pack: Casino | Outline Color
+                https://www.flaticon.com/packs/casino-144
+                author: Backwoods
+
+                Icon Pack: Casino | Flat
+                https://www.flaticon.com/packs/casino-243
+                author: Freepik
+                    
+                """);
         alert.show();
     }
 

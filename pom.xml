@@ -12,24 +12,31 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.9.0</junit.version>
+        <junit.version>5.9.2</junit.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>Local repository</id>
+            <url>file://${basedir}/lib</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>18.0.2</version>
+            <version>19.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
-            <version>18.0.2</version>
+            <version>19.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>18.0.2</version>
+            <version>19.0.2</version>
         </dependency>
 
         <dependency>
@@ -49,22 +56,15 @@
             <artifactId>jlfgr</artifactId>
             <version>1_0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.local.graphics</groupId>-->
-<!--            <artifactId>graphics</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${basedir}/src/main/resources/jar/graphics.jar</systemPath>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>com.minicasino</groupId>
-            <artifactId>local-graphics</artifactId>
-            <version>1.0</version>
-        </dependency>
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
             <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.minicasino.graphics</groupId>
+            <artifactId>slots_graphics</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
@@ -88,7 +88,6 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-<!--                            <mainClass>com.minicasino.minicasino/com.minicasino.ui.MainApp</mainClass>-->
                             <mainClass>com.minicasino.ui.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

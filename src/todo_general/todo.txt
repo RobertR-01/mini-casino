@@ -13,3 +13,7 @@
 - fix maven dependencies (possible duplicates, e.g. javafx-graphics)
 
 - override equals and hashcode for SlotSymbol and Profile
+
+- move button text, style and handler setup to a separate method (SlotsController) to prevent duplication
+- change time based synchronisation to sentinel variable based one in SlotsController / SlotsLogic
+- fix nudging - so in case of the same multiplier outcome the same symbol is chosen if possible instead of a random one
