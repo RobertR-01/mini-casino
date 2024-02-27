@@ -5,7 +5,7 @@ A small, 3-reel classic slots game for PC developed with JavaFX.
 ## :ledger: Index
 
 - [About](#beginner-about)
-- [Technologies used](bulb-technologies-used)
+- [Technologies used](#bulb-technologies-used)
 - [Features](#star2-features)
 - [Usage](#zap-usage)
   - [Requirements](#electric_plug-requirements)
