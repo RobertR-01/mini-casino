@@ -13,10 +13,8 @@ A small, 3-reel classic slots game for PC developed with JavaFX.
   - [Planned features](#bulb-planned-features)
   - [Pre-Requisites](#pencil-pre-requisites)
   - [Installing JARs](#nut_and_bolt-installing-jars)
-- [Resources](#page_facing_up-resources)
 - [Gallery](#camera-gallery)
-- [Credit/Acknowledgment](#pray-creditacknowledgment)
-- [License](#lock-license)
+- [Credits](#pray-credits)
 
 ## :beginner: About
 The base game features a standard 3-reel slots with 10 symbols in play. Currently there's also a debugging option available for toggling between 5 and 10 symbols for the ease of testing. The game has a functional GUI and a profile management system implemented, which allows the user to create different in-game profiles for keeping separate balance records. All profile data is stored externally in a dedicated directory as an XML file.
@@ -87,9 +85,6 @@ Any new dependency used in the project and coming from this repository must be a
       <version>1.0.0</version>
     </dependency>
 
-## :page_facing_up: Resources
-Add important resources here
-
 ## :camera: Gallery
 
 <div align="center">
@@ -127,7 +122,7 @@ Add important resources here
   </p>
 </div>
 
-## :pray: Credit/Acknowledgment
+## :pray: Credits
 Graphics used for this application:
 
 | Graphics pack                      |          Author          | Link                                         |
@@ -136,6 +131,3 @@ Graphics used for this application:
 | Icon Pack: Fruit \| Flat           | amonrat rungreangfangsai | https://www.flaticon.com/packs/fruit-80      |
 | Icon Pack: Casino \| Outline Color | Backwoods                | https://www.flaticon.com/packs/casino-144    |
 | Icon Pack: Casino \| Flat          | Freepik                  | https://www.flaticon.com/packs/casino-243    |
-
-## :lock: License
-Add a license here (or a link to it).
