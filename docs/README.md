@@ -93,6 +93,7 @@ Any new dependency used in the project and coming from this repository must be a
     <i>Main menu</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/preview_2.png" width="75%" height="75%" align="center">
@@ -100,6 +101,7 @@ Any new dependency used in the project and coming from this repository must be a
     <i>Slots game window (half of the symbols disabled)</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/profile_preview_1.png" width="75%" height="75%" align="center">
@@ -107,6 +109,7 @@ Any new dependency used in the project and coming from this repository must be a
     <i>In-game profile selection window</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/profile_preview_2.png" width="35%" height="35%" align="center">
@@ -114,6 +117,7 @@ Any new dependency used in the project and coming from this repository must be a
     <i>Editing the selected profile</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/nudge_preview.png" width="60%" height="60%" align="center">
